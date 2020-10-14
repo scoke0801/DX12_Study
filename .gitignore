@@ -1,5 +1,6 @@
 /vs
 /.vs
+/ipch
 *.exe
 *.ilk
 *.pdb
@@ -11,3 +12,4 @@
 *.lastbuildstate
 *.suo
 *.db
+*.ipch
