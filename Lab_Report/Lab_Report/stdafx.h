@@ -12,12 +12,10 @@
 // C의 런타임 헤더 파일입니다.
 #include <stdlib.h>
 #include <malloc.h>
-#include <memory.h>
 #include <tchar.h>
 #include <math.h>
 
 #include <string>
-#include <wrl.h>
 #include <shellapi.h>
 
 #include <d3d12.h>
@@ -30,6 +28,13 @@
 
 #include <Mmsystem.h>
 
+#include <assert.h>
+#include <algorithm>
+#include <memory.h>
+#include <wrl.h>
+
+#include <vector>
+
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
@@ -38,26 +43,22 @@ using Microsoft::WRL::ComPtr;
 #define FRAME_BUFFER_WIDTH		640
 #define FRAME_BUFFER_HEIGHT		480
 
-#define MAX_LIGHTS				8 
-#define MAX_MATERIALS			8 
-
-#define POINT_LIGHT				1
-#define SPOT_LIGHT				2
-#define DIRECTIONAL_LIGHT		3
-
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
+/*#pragma comment(lib, "DirectXTex.lib") */
+
 // TODO: 프로그램에 필요한 추가 헤더는 여기에서 참조합니다.
 
-//extern UINT gnCbvSrvDescriptorIncrementSize;
+extern UINT	gnCbvSrvDescriptorIncrementSize;
 
 extern ID3D12Resource *CreateBufferResource(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, void *pData, UINT nBytes, D3D12_HEAP_TYPE d3dHeapType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES d3dResourceStates = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource **ppd3dUploadBuffer = NULL);
+extern ID3D12Resource *CreateTextureResourceFromDDSFile(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, wchar_t *pszFileName, ID3D12Resource **ppd3dUploadBuffer, D3D12_RESOURCE_STATES d3dResourceStates = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
-#define RANDOM_COLOR			XMFLOAT4(rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX))
+#define RANDOM_COLOR	XMFLOAT4(rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX))
 
-#define EPSILON					1.0e-10f
+#define EPSILON			1.0e-10f
 
 inline bool IsZero(float fValue) { return((fabsf(fValue) < EPSILON)); }
 inline bool IsEqual(float fA, float fB) { return(::IsZero(fA - fB)); }
@@ -66,6 +67,12 @@ inline void Swap(float *pfS, float *pfT) { float fTemp = *pfS; *pfS = *pfT; *pfT
 
 namespace Vector3
 {
+	inline bool IsZero(XMFLOAT3& xmf3Vector)
+	{
+		if (::IsZero(xmf3Vector.x) && ::IsZero(xmf3Vector.y) && ::IsZero(xmf3Vector.z)) return(true);
+		return(false);
+	}
+
 	inline XMFLOAT3 XMVectorToFloat3(XMVECTOR& xmvVector)
 	{
 		XMFLOAT3 xmf3Result;
@@ -172,6 +179,20 @@ namespace Vector4
 	{
 		XMFLOAT4 xmf4Result;
 		XMStoreFloat4(&xmf4Result, XMLoadFloat4(&xmf4Vector1) + XMLoadFloat4(&xmf4Vector2));
+		return(xmf4Result);
+	}
+
+	inline XMFLOAT4 Multiply(XMFLOAT4& xmf4Vector1, XMFLOAT4& xmf4Vector2)
+	{
+		XMFLOAT4 xmf4Result;
+		XMStoreFloat4(&xmf4Result, XMLoadFloat4(&xmf4Vector1) * XMLoadFloat4(&xmf4Vector2));
+		return(xmf4Result);
+	}
+
+	inline XMFLOAT4 Multiply(float fScalar, XMFLOAT4& xmf4Vector)
+	{
+		XMFLOAT4 xmf4Result;
+		XMStoreFloat4(&xmf4Result, fScalar * XMLoadFloat4(&xmf4Vector));
 		return(xmf4Result);
 	}
 }

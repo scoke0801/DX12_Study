@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DDSTextureLoader12.h" />
     <ClInclude Include="GameFramework.h" />
     <ClInclude Include="Lab_Report.h" />
     <ClInclude Include="Mesh.h" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DDSTextureLoader12.cpp" />
     <ClCompile Include="GameFramework.cpp" />
     <ClCompile Include="Lab_Report.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -165,7 +167,6 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
@@ -186,7 +187,6 @@
     </FxCompile>
     <FxCompile Include="Shaders.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

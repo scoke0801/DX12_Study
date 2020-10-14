@@ -21,7 +21,7 @@
     <ClInclude Include="Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Lab_Report.h">
+    <ClInclude Include="DDSTextureLoader12.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -51,9 +51,12 @@
     <ClInclude Include="Timer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Lab_Report.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Lab_Report.cpp">
+    <ClCompile Include="DDSTextureLoader12.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -81,6 +84,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Lab_Report.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
