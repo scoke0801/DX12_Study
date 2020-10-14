@@ -1,6 +1,7 @@
 /vs
 /.vs
 /ipch
+/debug
 *.exe
 *.ilk
 *.pdb
