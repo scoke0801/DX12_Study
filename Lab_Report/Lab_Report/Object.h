@@ -25,6 +25,7 @@ class CShader;
 struct CB_GAMEOBJECT_INFO
 {
 	XMFLOAT4X4						m_xmf4x4World;
+	UINT							m_nObjectID;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,13 +44,10 @@ private:
 	int								m_nTextures = 0;
 	_TCHAR							(*m_ppstrTextureNames)[64] = NULL;
 	ID3D12Resource**				m_ppd3dTextures = NULL;
-	ID3D12Resource**				m_ppd3dTextureUploadBuffers;
-
+	ID3D12Resource**				m_ppd3dTextureUploadBuffers = NULL;
 	UINT*							m_pnResourceTypes = NULL;
-
 	DXGI_FORMAT*					m_pdxgiBufferFormats = NULL;
 	int*							m_pnBufferElements = NULL;
-
 	int								m_nRootParameters = 0;
 	UINT*							m_pnRootParameterIndices = NULL;
 	D3D12_GPU_DESCRIPTOR_HANDLE*	m_pd3dSrvGpuDescriptorHandles = NULL;
@@ -127,9 +125,10 @@ public:
 
 public:
 	XMFLOAT4X4						m_xmf4x4World;
+	UINT							m_nObjectID = 0;
 
-	CMesh							**m_ppMeshes;
-	int								m_nMeshes;
+	CMesh							**m_ppMeshes = NULL;
+	int								m_nMeshes = 0;
 
 	CMaterial						*m_pMaterial = NULL;
 

@@ -6,6 +6,8 @@
 #include "Object.h"
 #include "Shader.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 CTexture::CTexture(int nTextures, UINT nTextureType, int nSamplers, int nRootParameters)
 {
 	m_nTextureType = nTextureType;
@@ -283,6 +285,7 @@ void CGameObject::ReleaseShaderVariables()
 void CGameObject::UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList)
 {
 	XMStoreFloat4x4(&m_pcbMappedGameObject->m_xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&m_xmf4x4World)));
+	m_pcbMappedGameObject->m_nObjectID = m_nObjectID;
 }
 
 void CGameObject::Animate(float fTimeElapsed)
@@ -308,7 +311,7 @@ void CGameObject::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pC
 		}
 	}
 
-	pd3dCommandList->SetGraphicsRootDescriptorTable(0, m_d3dCbvGPUDescriptorHandle);
+	pd3dCommandList->SetGraphicsRootDescriptorTable(2, m_d3dCbvGPUDescriptorHandle);
 
 	if (m_ppMeshes)
 	{
