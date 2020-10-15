@@ -22,8 +22,8 @@
 #include <dxgi1_4.h>
 #include <D3Dcompiler.h>
 #include <DirectXMath.h>
-#include <DirectXPackedVector.h>
-#include <DirectXColors.h>
+#include <DirectXPackedVector.h>
+#include <DirectXColors.h>
 #include <DirectXCollision.h>
 
 #include <Mmsystem.h>
@@ -43,6 +43,10 @@ using Microsoft::WRL::ComPtr;
 #define FRAME_BUFFER_WIDTH		640
 #define FRAME_BUFFER_HEIGHT		480
 
+//#define _WITH_CB_GAMEOBJECT_32BIT_CONSTANTS
+//#define _WITH_CB_GAMEOBJECT_ROOT_DESCRIPTOR
+#define _WITH_CB_WORLD_MATRIX_DESCRIPTOR_TABLE
+
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -58,7 +62,7 @@ extern ID3D12Resource *CreateTextureResourceFromDDSFile(ID3D12Device *pd3dDevice
 
 #define RANDOM_COLOR	XMFLOAT4(rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX))
 
-#define EPSILON			1.0e-10f
+#define EPSILON				1.0e-10f
 
 inline bool IsZero(float fValue) { return((fabsf(fValue) < EPSILON)); }
 inline bool IsEqual(float fA, float fB) { return(::IsZero(fA - fB)); }

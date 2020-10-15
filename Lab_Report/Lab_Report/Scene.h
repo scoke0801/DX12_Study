@@ -32,11 +32,15 @@ public:
 
 	void ReleaseUploadBuffers();
 
+	CHeightMapTerrain *GetTerrain() { return(m_pTerrain); }
+
 	CPlayer						*m_pPlayer = NULL;
 
 protected:
 	CShader						**m_ppShaders = NULL;
 	int							m_nShaders = 0;
+
+	CHeightMapTerrain			*m_pTerrain = NULL;
 
 	ID3D12RootSignature			*m_pd3dGraphicsRootSignature = NULL;
 };

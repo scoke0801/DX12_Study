@@ -25,7 +25,6 @@ class CShader;
 struct CB_GAMEOBJECT_INFO
 {
 	XMFLOAT4X4						m_xmf4x4World;
-	UINT							m_nObjectID;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,14 +41,16 @@ private:
 	UINT							m_nTextureType;
 
 	int								m_nTextures = 0;
-	_TCHAR							(*m_ppstrTextureNames)[64] = NULL;
 	ID3D12Resource**				m_ppd3dTextures = NULL;
-	ID3D12Resource**				m_ppd3dTextureUploadBuffers = NULL;
+	ID3D12Resource**				m_ppd3dTextureUploadBuffers;
+
 	UINT*							m_pnResourceTypes = NULL;
+
 	DXGI_FORMAT*					m_pdxgiBufferFormats = NULL;
 	int*							m_pnBufferElements = NULL;
+
 	int								m_nRootParameters = 0;
-	UINT*							m_pnRootParameterIndices = NULL;
+	int*							m_pnRootParameterIndices = NULL;
 	D3D12_GPU_DESCRIPTOR_HANDLE*	m_pd3dSrvGpuDescriptorHandles = NULL;
 
 	int								m_nSamplers = 0;
@@ -66,16 +67,15 @@ public:
 	void ReleaseShaderVariables();
 
 	void LoadTextureFromDDSFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex);
+//	void LoadBufferFromFile(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, wchar_t *pszFileName, UINT nIndex);
+	void LoadBuffer(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, void* pData, UINT nElements, UINT nStride, DXGI_FORMAT ndxgiFormat, UINT nIndex);
 
 	void SetRootParameterIndex(int nIndex, UINT nRootParameterIndex);
 	void SetGpuDescriptorHandle(int nIndex, D3D12_GPU_DESCRIPTOR_HANDLE d3dSrvGpuDescriptorHandle);
 
 	int GetRootParameters() { return(m_nRootParameters); }
 	int GetTextures() { return(m_nTextures); }
-	_TCHAR* GetTextureName(int nIndex) { return(m_ppstrTextureNames[nIndex]); }
 	ID3D12Resource* GetResource(int nIndex) { return(m_ppd3dTextures[nIndex]); }
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGpuDescriptorHandle(int nIndex) { return(m_pd3dSrvGpuDescriptorHandles[nIndex]); }
-	int GetRootParameter(int nIndex) { return(m_pnRootParameterIndices[nIndex]); }
 
 	UINT GetTextureType() { return(m_nTextureType); }
 	UINT GetTextureType(int nIndex) { return(m_pnResourceTypes[nIndex]); }
@@ -125,10 +125,9 @@ public:
 
 public:
 	XMFLOAT4X4						m_xmf4x4World;
-	UINT							m_nObjectID = 0;
 
-	CMesh							**m_ppMeshes = NULL;
-	int								m_nMeshes = 0;
+	CMesh							**m_ppMeshes;
+	int								m_nMeshes;
 
 	CMaterial						*m_pMaterial = NULL;
 
@@ -211,3 +210,30 @@ public:
 	virtual void Animate(float fTimeElapsed);
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+class CHeightMapTerrain : public CGameObject
+{
+public:
+	CHeightMapTerrain(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature, LPCTSTR pFileName, int nWidth, int nLength, int nBlockWidth, int nBlockLength, XMFLOAT3 xmf3Scale, XMFLOAT4 xmf4Color);
+	virtual ~CHeightMapTerrain();
+
+private:
+	CHeightMapImage					*m_pHeightMapImage;
+
+	int								m_nWidth;
+	int								m_nLength;
+
+	XMFLOAT3						m_xmf3Scale;
+
+public:
+	float GetHeight(float x, float z, bool bReverseQuad = false) { return(m_pHeightMapImage->GetHeight(x, z, bReverseQuad) * m_xmf3Scale.y); } //World
+	XMFLOAT3 GetNormal(float x, float z) { return(m_pHeightMapImage->GetHeightMapNormal(int(x / m_xmf3Scale.x), int(z / m_xmf3Scale.z))); }
+
+	int GetHeightMapWidth() { return(m_pHeightMapImage->GetHeightMapWidth()); }
+	int GetHeightMapLength() { return(m_pHeightMapImage->GetHeightMapLength()); }
+
+	XMFLOAT3 GetScale() { return(m_xmf3Scale); }
+	float GetWidth() { return(m_nWidth * m_xmf3Scale.x); }
+	float GetLength() { return(m_nLength * m_xmf3Scale.z); }
+};
