@@ -492,6 +492,24 @@ void CGameFramework::AnimateObjects()
 	if (m_pScene) m_pScene->AnimateObjects(m_GameTimer.GetTimeElapsed());
 }
 
+void CGameFramework::UpdateShaderVariables()
+{
+	float fCurrentTime = m_GameTimer.GetTotalTime();
+	float fElapsedTime = m_GameTimer.GetTimeElapsed();
+
+	m_pd3dCommandList->SetGraphicsRoot32BitConstants(6, 1, &fCurrentTime, 0);
+	m_pd3dCommandList->SetGraphicsRoot32BitConstants(6, 1, &fElapsedTime, 1);
+
+	POINT ptCursorPos;
+	::GetCursorPos(&ptCursorPos);
+	::ScreenToClient(m_hWnd, &ptCursorPos);
+	float fxCursorPos = (ptCursorPos.x < 0) ? 0.0f : float(ptCursorPos.x);
+	float fyCursorPos = (ptCursorPos.y < 0) ? 0.0f : float(ptCursorPos.y);
+
+	m_pd3dCommandList->SetGraphicsRoot32BitConstants(6, 1, &fxCursorPos, 2);
+	m_pd3dCommandList->SetGraphicsRoot32BitConstants(6, 1, &fyCursorPos, 3);
+}
+
 void CGameFramework::WaitForGpuComplete()
 {
 	const UINT64 nFenceValue = ++m_nFenceValues[m_nSwapChainBufferIndex];
@@ -551,6 +569,9 @@ void CGameFramework::FrameAdvance()
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
 
 	m_pd3dCommandList->OMSetRenderTargets(1, &d3dRtvCPUDescriptorHandle, TRUE, &d3dDsvCPUDescriptorHandle);
+
+	if (m_pScene) m_pScene->PrepareRender(m_pd3dCommandList);
+	UpdateShaderVariables();
 
 	m_pScene->Render(m_pd3dCommandList, m_pCamera);
 

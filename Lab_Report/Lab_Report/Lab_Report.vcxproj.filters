@@ -31,9 +31,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Lab_Report.cpp">
       <Filter>불변파일</Filter>
     </ClCompile>
@@ -111,6 +108,11 @@
     <ClInclude Include="Timer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd">
+      <Filter>불변파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Light.hlsl" />

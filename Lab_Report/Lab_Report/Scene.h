@@ -28,7 +28,9 @@ public:
 
 	bool ProcessInput(UCHAR *pKeysBuffer);
     void AnimateObjects(float fTimeElapsed);
-    void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera=NULL);
+
+	void PrepareRender(ID3D12GraphicsCommandList* pd3dCommandList);
+	void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera=NULL);
 
 	void ReleaseUploadBuffers();
 
@@ -41,6 +43,9 @@ protected:
 	int							m_nShaders = 0;
 
 	CHeightMapTerrain			*m_pTerrain = NULL;
+
+	CTerrainWater				*m_pTerrainWater = NULL;
+	XMFLOAT4X4					m_xmf4x4WaterAnimation;
 
 	ID3D12RootSignature			*m_pd3dGraphicsRootSignature = NULL;
 };

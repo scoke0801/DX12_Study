@@ -27,6 +27,8 @@ public:
     void BuildObjects();
     void ReleaseObjects();
 
+	void UpdateShaderVariables();
+
     void ProcessInput();
     void AnimateObjects();
     void FrameAdvance();
