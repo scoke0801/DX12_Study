@@ -115,28 +115,28 @@ ID3D12Resource *CreateTextureResourceFromDDSFile(ID3D12Device *pd3dDevice, ID3D1
 	d3dHeapPropertiesDesc.CreationNodeMask = 1;
 	d3dHeapPropertiesDesc.VisibleNodeMask = 1;
 
-	//	D3D12_RESOURCE_DESC d3dResourceDesc = pd3dTexture->GetDesc();
-	//	UINT nSubResources = d3dResourceDesc.DepthOrArraySize * d3dResourceDesc.MipLevels;
+	//D3D12_RESOURCE_DESC d3dTextureResourceDesc = pd3dTexture->GetDesc();
+	//UINT nSubResources = d3dTextureResourceDesc.DepthOrArraySize * d3dTextureResourceDesc.MipLevels;
 	UINT nSubResources = (UINT)vSubresources.size();
-	//	UINT64 nBytes = 0;
-	//	pd3dDevice->GetCopyableFootprints(&d3dResourceDesc, 0, nSubResources, 0, NULL, NULL, NULL, &nBytes);
+	//UINT64 nBytes = 0;
+	//pd3dDevice->GetCopyableFootprints(&d3dResourceDesc, 0, nSubResources, 0, NULL, NULL, NULL, &nBytes);
 	UINT64 nBytes = GetRequiredIntermediateSize(pd3dTexture, 0, nSubResources);
 
-	D3D12_RESOURCE_DESC d3dResourceDesc;
-	::ZeroMemory(&d3dResourceDesc, sizeof(D3D12_RESOURCE_DESC));
-	d3dResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER; //Upload Heap에는 텍스쳐를 생성할 수 없음
-	d3dResourceDesc.Alignment = 0;
-	d3dResourceDesc.Width = nBytes;
-	d3dResourceDesc.Height = 1;
-	d3dResourceDesc.DepthOrArraySize = 1;
-	d3dResourceDesc.MipLevels = 1;
-	d3dResourceDesc.Format = DXGI_FORMAT_UNKNOWN;
-	d3dResourceDesc.SampleDesc.Count = 1;
-	d3dResourceDesc.SampleDesc.Quality = 0;
-	d3dResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	d3dResourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	D3D12_RESOURCE_DESC d3dUploadResourceDesc;
+	::ZeroMemory(&d3dUploadResourceDesc, sizeof(D3D12_RESOURCE_DESC));
+	d3dUploadResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER; //Upload Heap에는 텍스쳐를 생성할 수 없음
+	d3dUploadResourceDesc.Alignment = 0;
+	d3dUploadResourceDesc.Width = nBytes;
+	d3dUploadResourceDesc.Height = 1;
+	d3dUploadResourceDesc.DepthOrArraySize = 1;
+	d3dUploadResourceDesc.MipLevels = 1;
+	d3dUploadResourceDesc.Format = DXGI_FORMAT_UNKNOWN;
+	d3dUploadResourceDesc.SampleDesc.Count = 1;
+	d3dUploadResourceDesc.SampleDesc.Quality = 0;
+	d3dUploadResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	d3dUploadResourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-	pd3dDevice->CreateCommittedResource(&d3dHeapPropertiesDesc, D3D12_HEAP_FLAG_NONE, &d3dResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, NULL, __uuidof(ID3D12Resource), (void **)ppd3dUploadBuffer);
+	pd3dDevice->CreateCommittedResource(&d3dHeapPropertiesDesc, D3D12_HEAP_FLAG_NONE, &d3dUploadResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, NULL, __uuidof(ID3D12Resource), (void **)ppd3dUploadBuffer);
 
 	//UINT nSubResources = (UINT)vSubresources.size();
 	//D3D12_SUBRESOURCE_DATA *pd3dSubResourceData = new D3D12_SUBRESOURCE_DATA[nSubResources];

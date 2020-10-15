@@ -29,6 +29,14 @@ struct CB_GAMEOBJECT_INFO
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+struct MATERIAL
+{
+	XMFLOAT4						m_xmf4Ambient;
+	XMFLOAT4						m_xmf4Diffuse;
+	XMFLOAT4						m_xmf4Specular; //(r,g,b,a=power)
+	XMFLOAT4						m_xmf4Emissive;
+};
+
 class CTexture
 {
 public:
@@ -42,7 +50,7 @@ private:
 
 	int								m_nTextures = 0;
 	ID3D12Resource**				m_ppd3dTextures = NULL;
-	ID3D12Resource**				m_ppd3dTextureUploadBuffers;
+	ID3D12Resource**				m_ppd3dTextureUploadBuffers = NULL;
 
 	UINT*							m_pnResourceTypes = NULL;
 
@@ -66,8 +74,9 @@ public:
 	void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
 	void ReleaseShaderVariables();
 
-	void LoadTextureFromDDSFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex);
-//	void LoadBufferFromFile(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, wchar_t *pszFileName, UINT nIndex);
+	void LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nIndex);
+	void LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex);
+	//	void LoadBufferFromFile(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, wchar_t *pszFileName, UINT nIndex);
 	void LoadBuffer(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, void* pData, UINT nElements, UINT nStride, DXGI_FORMAT ndxgiFormat, UINT nIndex);
 
 	void SetRootParameterIndex(int nIndex, UINT nRootParameterIndex);
@@ -102,10 +111,12 @@ public:
 
 	XMFLOAT4						m_xmf4Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
+	MATERIAL						*m_pReflection = NULL;
 	CTexture						*m_pTexture = NULL;
 	CShader							*m_pShader = NULL;
 
 	void SetAlbedo(XMFLOAT4 xmf4Albedo) { m_xmf4Albedo = xmf4Albedo; }
+	void SetReflection(MATERIAL *m_pReflection);
 	void SetTexture(CTexture *pTexture);
 	void SetShader(CShader *pShader);
 
@@ -121,7 +132,7 @@ class CGameObject
 {
 public:
 	CGameObject(int nMeshes=1);
-	virtual ~CGameObject();
+    virtual ~CGameObject();
 
 public:
 	XMFLOAT4X4						m_xmf4x4World;
@@ -173,17 +184,15 @@ public:
 	void Rotate(XMFLOAT3 *pxmf3Axis, float fAngle);
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 class CRotatingObject : public CGameObject
 {
 public:
 	CRotatingObject(int nMeshes=1);
-	virtual ~CRotatingObject();
+    virtual ~CRotatingObject();
 
 private:
-	XMFLOAT3						m_xmf3RotationAxis;
-	float							m_fRotationSpeed;
+	XMFLOAT3					m_xmf3RotationAxis;
+	float						m_fRotationSpeed;
 
 public:
 	void SetRotationSpeed(float fRotationSpeed) { m_fRotationSpeed = fRotationSpeed; }
@@ -200,8 +209,8 @@ public:
 	virtual ~CRevolvingObject();
 
 private:
-	XMFLOAT3						m_xmf3RevolutionAxis;
-	float							m_fRevolutionSpeed;
+	XMFLOAT3					m_xmf3RevolutionAxis;
+	float						m_fRevolutionSpeed;
 
 public:
 	void SetRevolutionSpeed(float fRevolutionSpeed) { m_fRevolutionSpeed = fRevolutionSpeed; }
@@ -219,12 +228,12 @@ public:
 	virtual ~CHeightMapTerrain();
 
 private:
-	CHeightMapImage					*m_pHeightMapImage;
+	CHeightMapImage				*m_pHeightMapImage;
 
-	int								m_nWidth;
-	int								m_nLength;
+	int							m_nWidth;
+	int							m_nLength;
 
-	XMFLOAT3						m_xmf3Scale;
+	XMFLOAT3					m_xmf3Scale;
 
 public:
 	float GetHeight(float x, float z, bool bReverseQuad = false) { return(m_pHeightMapImage->GetHeight(x, z, bReverseQuad) * m_xmf3Scale.y); } //World
@@ -240,22 +249,12 @@ public:
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class CTerrainWater : public CGameObject
+class CSkyBox : public CGameObject
 {
 public:
-	CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, float nWidth, float nLength);
-	//	CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, int nWidth, int nLength, int nBlockWidth, int nBlockLength, XMFLOAT3 xmf3Scale);
-	virtual ~CTerrainWater();
+	CSkyBox(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature);
+	virtual ~CSkyBox();
 
-private:
-	int							m_nWidth;
-	int							m_nLength;
-
-	XMFLOAT3					m_xmf3Scale;
-
-public:
-	XMFLOAT4X4					m_xmf4x4Texture;
-
-	//	virtual void Animate(float fTimeElapsed);
-	//	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, CCamera* pCamera = NULL);
+	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera = NULL);
 };
+

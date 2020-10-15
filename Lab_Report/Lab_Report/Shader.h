@@ -106,13 +106,13 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-#define _WITH_BATCH_MATERIAL
+//#define _WITH_BATCH_MATERIAL
 
 class CObjectsShader : public CTexturedShader
 {
 public:
-	CObjectsShader();
-	virtual ~CObjectsShader();
+    CObjectsShader();
+    virtual ~CObjectsShader();
 
 	virtual void BuildObjects(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, void *pContext=NULL);
 	virtual void AnimateObjects(float fTimeElapsed);
@@ -147,7 +147,6 @@ public:
 	virtual ~CTerrainShader();
 
 	virtual D3D12_INPUT_LAYOUT_DESC CreateInputLayout();
-
 	virtual D3D12_SHADER_BYTECODE CreateVertexShader(ID3DBlob **ppd3dShaderBlob);
 	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob **ppd3dShaderBlob);
 
@@ -156,16 +155,14 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class CTerrainWaterShader : public CTexturedShader
+class CSkyBoxShader : public CTexturedShader
 {
 public:
-	CTerrainWaterShader();
-	virtual ~CTerrainWaterShader();
+	CSkyBoxShader();
+	virtual ~CSkyBoxShader();
 
-	virtual D3D12_INPUT_LAYOUT_DESC CreateInputLayout();
+	virtual D3D12_DEPTH_STENCIL_DESC CreateDepthStencilState();
+	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob **ppd3dShaderBlob);
 
-	virtual D3D12_SHADER_BYTECODE CreateVertexShader(ID3DBlob** ppd3dShaderBlob);
-	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob** ppd3dShaderBlob);
-
-	virtual void CreateShader(ID3D12Device* pd3dDevice, ID3D12RootSignature* pd3dGraphicsRootSignature);
+	virtual void CreateShader(ID3D12Device *pd3dDevice, ID3D12RootSignature *pd3dGraphicsRootSignature);
 };
