@@ -58,7 +58,7 @@ float4 DirectionalLight(int nIndex, float3 f3Normal, float3 f3ToCamera)
 #ifdef _WITH_REFLECT
 			float3 f3Reflect = reflect(-f3ToLight, f3Normal);
 			fSpecularFactor = pow(max(dot(f3Reflect, f3ToCamera), 0.0f), gMaterials[gnMaterial].m_f4Specular.a);
-#else
+#elseA
 #ifdef _WITH_LOCAL_VIEWER_HIGHLIGHTING
 			float3 f3Half = normalize(f3ToCamera + f3ToLight);
 #else
