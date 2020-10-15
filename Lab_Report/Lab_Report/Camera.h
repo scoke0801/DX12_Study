@@ -39,7 +39,10 @@ protected:
 	D3D12_VIEWPORT					m_d3dViewport;
 	D3D12_RECT						m_d3dScissorRect;
 
-	CPlayer							*m_pPlayer;
+	CPlayer							*m_pPlayer = NULL;
+
+	ID3D12Resource					*m_pd3dcbCamera = NULL;
+	VS_CB_CAMERA_INFO				*m_pcbMappedCamera = NULL;
 
 public:
 	CCamera();
@@ -50,8 +53,6 @@ public:
 	virtual void ReleaseShaderVariables();
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList);
 
-	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList *pd3dCommandList);
-
 	void GenerateViewMatrix();
 	void GenerateViewMatrix(XMFLOAT3 xmf3Position, XMFLOAT3 xmf3LookAt, XMFLOAT3 xmf3Up);
 	void RegenerateViewMatrix();
@@ -60,6 +61,8 @@ public:
 
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float fMinZ = 0.0f, float fMaxZ = 1.0f);
 	void SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom);
+
+	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList *pd3dCommandList);
 
 	void SetPlayer(CPlayer *pPlayer) { m_pPlayer = pPlayer; }
 	CPlayer *GetPlayer() { return(m_pPlayer); }
@@ -81,8 +84,8 @@ public:
 	float& GetRoll() { return(m_fRoll); }
 	float& GetYaw() { return(m_fYaw); }
 
-//	void SetOffset(XMFLOAT3 xmf3Offset) { m_xmf3Offset = xmf3Offset; }
-	void SetOffset(XMFLOAT3 xmf3Offset) { m_xmf3Offset = xmf3Offset; m_xmf3Position.x += xmf3Offset.x; m_xmf3Position.y += xmf3Offset.y; m_xmf3Position.z += xmf3Offset.z; }
+	void SetOffset(XMFLOAT3 xmf3Offset) { m_xmf3Offset = xmf3Offset; }
+//	void SetOffset(XMFLOAT3 xmf3Offset) { m_xmf3Offset = xmf3Offset; m_xmf3Position.x += xmf3Offset.x; m_xmf3Position.y += xmf3Offset.y; m_xmf3Position.z += xmf3Offset.z; }
 	XMFLOAT3& GetOffset() { return(m_xmf3Offset); }
 
 	void SetTimeLag(float fTimeLag) { m_fTimeLag = fTimeLag; }
@@ -97,10 +100,6 @@ public:
 	virtual void Rotate(float fPitch = 0.0f, float fYaw = 0.0f, float fRoll = 0.0f) { }
 	virtual void Update(XMFLOAT3& xmf3LookAt, float fTimeElapsed) { }
 	virtual void SetLookAt(XMFLOAT3& xmf3LookAt) { }
-
-protected:
-	ID3D12Resource					*m_pd3dcbCamera = NULL;
-	VS_CB_CAMERA_INFO				*m_pcbMappedCamera = NULL;
 };
 
 class CSpaceShipCamera : public CCamera
