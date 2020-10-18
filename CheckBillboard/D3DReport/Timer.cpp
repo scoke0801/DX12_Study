@@ -32,31 +32,31 @@ void CGameTimer::Tick(float fLockFPS)
 		m_fTimeElapsed = 0.0f;
 		return;
 	}
-	float fTimeElapsed;
+	float fDeltaTime;
 
 	::QueryPerformanceCounter((LARGE_INTEGER *)&m_nCurrentPerformanceCounter);
-	fTimeElapsed = float((m_nCurrentPerformanceCounter - m_nLastPerformanceCounter) * m_fTimeScale);
+	fDeltaTime = float((m_nCurrentPerformanceCounter - m_nLastPerformanceCounter) * m_fTimeScale);
 
     if (fLockFPS > 0.0f)
     {
-        while (fTimeElapsed < (1.0f / fLockFPS))
+        while (fDeltaTime < (1.0f / fLockFPS))
         {
 	        ::QueryPerformanceCounter((LARGE_INTEGER *)&m_nCurrentPerformanceCounter);
-	        fTimeElapsed = float((m_nCurrentPerformanceCounter - m_nLastPerformanceCounter) * m_fTimeScale);
+	        fDeltaTime = float((m_nCurrentPerformanceCounter - m_nLastPerformanceCounter) * m_fTimeScale);
         }
     } 
 
 	m_nLastPerformanceCounter = m_nCurrentPerformanceCounter;
 
-    if (fabsf(fTimeElapsed - m_fTimeElapsed) < 1.0f)
+    if (fabsf(fDeltaTime - m_fTimeElapsed) < 1.0f)
     {
         ::memmove(&m_fFrameTime[1], m_fFrameTime, (MAX_SAMPLE_COUNT - 1) * sizeof(float));
-        m_fFrameTime[0] = fTimeElapsed;
+        m_fFrameTime[0] = fDeltaTime;
         if (m_nSampleCount < MAX_SAMPLE_COUNT) m_nSampleCount++;
     }
 
 	m_nFramesPerSecond++;
-	m_fFPSTimeElapsed += fTimeElapsed;
+	m_fFPSTimeElapsed += fDeltaTime;
 	if (m_fFPSTimeElapsed > 1.0f) 
     {
 		m_nCurrentFrameRate	= m_nFramesPerSecond;

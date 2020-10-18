@@ -6,6 +6,8 @@
 #include "Object.h"
 #include "Shader.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 CTexture::CTexture(int nTextures, UINT nTextureType, int nSamplers, int nRootParameters)
 {
 	m_nTextureType = nTextureType;
@@ -102,17 +104,6 @@ void CTexture::ReleaseUploadBuffers()
 	}
 }
 
-void CTexture::LoadTextureFromDDSFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex)
-{
-	m_pnResourceTypes[nIndex] = nResourceType;
-	m_ppd3dTextures[nIndex] = ::CreateTextureResourceFromDDSFile(pd3dDevice, pd3dCommandList, pszFileName, &m_ppd3dTextureUploadBuffers[nIndex], D3D12_RESOURCE_STATE_GENERIC_READ/*D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE*/);
-}
-
-void CTexture::LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nIndex)
-{
-	m_ppd3dTextures[nIndex] = ::CreateTextureResourceFromDDSFile(pd3dDevice, pd3dCommandList, pszFileName, &m_ppd3dTextureUploadBuffers[nIndex], D3D12_RESOURCE_STATE_GENERIC_READ);
-}
-
 void CTexture::LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex)
 {
 	m_pnResourceTypes[nIndex] = nResourceType;
@@ -188,7 +179,7 @@ CMaterial::~CMaterial()
 	if (m_pShader) m_pShader->Release();
 }
 
-void CMaterial::SetReflection(MATERIAL* m_pReflection)
+void CMaterial::SetReflection(MATERIAL *m_pReflection)
 {
 	m_pReflection = m_pReflection;
 }
@@ -304,7 +295,7 @@ void CGameObject::UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandLi
 	XMStoreFloat4x4(&m_pcbMappedGameObject->m_xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&m_xmf4x4World)));
 }
 
-void CGameObject::Animate(float fTimeElapsed)
+void CGameObject::Animate(float fDeltaTime)
 {
 }
 
@@ -419,6 +410,23 @@ void CGameObject::Rotate(XMFLOAT3 *pxmf3Axis, float fAngle)
 	m_xmf4x4World = Matrix4x4::Multiply(mtxRotate, m_xmf4x4World);
 }
 
+void CGameObject::SetLookAt(XMFLOAT3& xmf3Target, XMFLOAT3& xmf3Up)
+{
+	XMFLOAT3 xmf3Position(m_xmf4x4World._41, m_xmf4x4World._42, m_xmf4x4World._43);
+	XMFLOAT4X4 mtxLookAt = Matrix4x4::LookAtLH(xmf3Position, xmf3Target, xmf3Up);
+	m_xmf4x4World._11 = mtxLookAt._11; m_xmf4x4World._12 = mtxLookAt._21; m_xmf4x4World._13 = mtxLookAt._31;
+	m_xmf4x4World._21 = mtxLookAt._12; m_xmf4x4World._22 = mtxLookAt._22; m_xmf4x4World._23 = mtxLookAt._32;
+	m_xmf4x4World._31 = mtxLookAt._13; m_xmf4x4World._32 = mtxLookAt._23; m_xmf4x4World._33 = mtxLookAt._33;
+/*	
+	XMFLOAT3 xmf3Look = Vector3::Normalize(Vector3::Subtract(xmf3Target, xmf3Position));
+	XMFLOAT3 xmf3Right = Vector3::CrossProduct(xmf3Up, xmf3Look, true);
+	xmf3Up = Vector3::CrossProduct(xmf3Look, xmf3Right, true);
+	m_xmf4x4World._11 = xmf3Right.x; m_xmf4x4World._12 = xmf3Right.y; m_xmf4x4World._13 = xmf3Right.z;
+	m_xmf4x4World._21 = xmf3Up.x; m_xmf4x4World._22 = xmf3Up.y; m_xmf4x4World._23 = xmf3Up.z;
+	m_xmf4x4World._31 = xmf3Look.x; m_xmf4x4World._32 = xmf3Look.y; m_xmf4x4World._33 = xmf3Look.z;
+	*/
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 CRotatingObject::CRotatingObject(int nMeshes)
@@ -431,9 +439,9 @@ CRotatingObject::~CRotatingObject()
 {
 }
 
-void CRotatingObject::Animate(float fTimeElapsed)
+void CRotatingObject::Animate(float fDeltaTime)
 {
-	CGameObject::Rotate(&m_xmf3RotationAxis, m_fRotationSpeed * fTimeElapsed);
+	CGameObject::Rotate(&m_xmf3RotationAxis, m_fRotationSpeed * fDeltaTime);
 }
 
 void CRotatingObject::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera)
@@ -453,9 +461,9 @@ CRevolvingObject::~CRevolvingObject()
 {
 }
 
-void CRevolvingObject::Animate(float fTimeElapsed)
+void CRevolvingObject::Animate(float fDeltaTime)
 {
-	XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(&m_xmf3RevolutionAxis), XMConvertToRadians(m_fRevolutionSpeed * fTimeElapsed));
+	XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(&m_xmf3RevolutionAxis), XMConvertToRadians(m_fRevolutionSpeed * fDeltaTime));
 	m_xmf4x4World = Matrix4x4::Multiply(m_xmf4x4World, mtxRotate);
 }
 
@@ -494,18 +502,18 @@ CHeightMapTerrain::CHeightMapTerrain(ID3D12Device *pd3dDevice, ID3D12GraphicsCom
 
 	CreateShaderVariables(pd3dDevice, pd3dCommandList);
 
-	CTexture *pTerrainTexture = new CTexture(2, RESOURCE_TEXTURE2D, 0, 1);
+	CTexture *pTerrainTexture = new CTexture(3, RESOURCE_TEXTURE2D, 0, 3);
 
-	pTerrainTexture->LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, L"Image/Base_Texture.dds", RESOURCE_TEXTURE2D, 0);
-	pTerrainTexture->LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, L"Image/Detail_Texture_7.dds", RESOURCE_TEXTURE2D, 1);
-	// pTerrainTexture->LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, L"Image/Detail_Texture_1.dds", RESOURCE_TEXTURE2D, 2);
-	
+	pTerrainTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, L"Image/Base_Texture.dds", RESOURCE_TEXTURE2D, 0);
+	pTerrainTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, L"Image/Detail_Texture_7.dds", RESOURCE_TEXTURE2D, 1);
+	pTerrainTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, L"Image/HeightMap(Alpha).dds", RESOURCE_TEXTURE2D, 2);
+
 	UINT ncbElementBytes = ((sizeof(CB_GAMEOBJECT_INFO) + 255) & ~255); //256의 배수
 
 	CTerrainShader *pTerrainShader = new CTerrainShader();
-	pTerrainShader->CreateShader(pd3dDevice, pd3dGraphicsRootSignature);
+	pTerrainShader->CreateShader(pd3dDevice, pd3dGraphicsRootSignature, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
 	pTerrainShader->CreateShaderVariables(pd3dDevice, pd3dCommandList);
-	pTerrainShader->CreateCbvSrvDescriptorHeaps(pd3dDevice, 1, 2);
+	pTerrainShader->CreateCbvSrvDescriptorHeaps(pd3dDevice, 1, 3);
 	pTerrainShader->CreateConstantBufferViews(pd3dDevice, 1, m_pd3dcbGameObject, ncbElementBytes);
 	pTerrainShader->CreateShaderResourceViews(pd3dDevice, pTerrainTexture, 0, 4);
 
@@ -526,47 +534,9 @@ CHeightMapTerrain::~CHeightMapTerrain(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
-CTerrainWater::CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, float fWidth, float fLength) : CGameObject(1)
+CSkyBox::CSkyBox(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature) : CGameObject(6)
 {
-	CTexturedRectMesh* pWaterMesh = new CTexturedRectMesh(pd3dDevice, pd3dCommandList, fWidth, 0.0f, fLength, 0.0f, 0.0f, 0.0f);
-	SetMesh(0, pWaterMesh);
-
-	CreateShaderVariables(pd3dDevice, pd3dCommandList);
-
-	CTexture* pWaterTexture = new CTexture(3, RESOURCE_TEXTURE2D, 0, 1);
-
-	pWaterTexture->LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, L"Image/Water_Base_Texture_0.dds", RESOURCE_TEXTURE2D, 0);
-	pWaterTexture->LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, L"Image/Water_Detail_Texture_0.dds", RESOURCE_TEXTURE2D, 1);
-	pWaterTexture->LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, L"Image/Lava(Diffuse).dds", RESOURCE_TEXTURE2D, 2);
-	//	pWaterTexture->LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, L"Image/Water_Texture_Alpha.dds", RESOURCE_TEXTURE2D, 2);
-
-	UINT ncbElementBytes = ((sizeof(CB_GAMEOBJECT_INFO) + 255) & ~255); //256의 배수
-
-	CTerrainWaterShader* pWaterShader = new CTerrainWaterShader();
-	pWaterShader->CreateShader(pd3dDevice, pd3dGraphicsRootSignature);
-	pWaterShader->CreateShaderVariables(pd3dDevice, pd3dCommandList);
-	pWaterShader->CreateCbvSrvDescriptorHeaps(pd3dDevice, 1, 3);
-	pWaterShader->CreateConstantBufferViews(pd3dDevice, 1, m_pd3dcbGameObject, ncbElementBytes);
-	pWaterShader->CreateShaderResourceViews(pd3dDevice, pWaterTexture, 0, 5);
-
-	CMaterial* pWaterMaterial = new CMaterial();
-	pWaterMaterial->SetTexture(pWaterTexture);
-
-	SetMaterial(pWaterMaterial);
-
-	SetCbvGPUDescriptorHandle(pWaterShader->GetGPUCbvDescriptorStartHandle());
-
-	SetShader(pWaterShader);
-}
-
-CTerrainWater::~CTerrainWater()
-{
-}
-
-
-CSkyBox::CSkyBox(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature) : CGameObject(6)
-{
-	CTexturedRectMesh* pSkyBoxMesh = new CTexturedRectMesh(pd3dDevice, pd3dCommandList, 20.0f, 20.0f, 0.0f, 0.0f, 0.0f, +10.0f);
+	CTexturedRectMesh *pSkyBoxMesh = new CTexturedRectMesh(pd3dDevice, pd3dCommandList, 20.0f, 20.0f, 0.0f, 0.0f, 0.0f, +10.0f);
 	SetMesh(0, pSkyBoxMesh);
 	pSkyBoxMesh = new CTexturedRectMesh(pd3dDevice, pd3dCommandList, 20.0f, 20.0f, 0.0f, 0.0f, 0.0f, -10.0f);
 	SetMesh(1, pSkyBoxMesh);
@@ -581,7 +551,7 @@ CSkyBox::CSkyBox(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dComman
 
 	CreateShaderVariables(pd3dDevice, pd3dCommandList);
 
-	CTexture* pSkyBoxTexture = new CTexture(6, RESOURCE_TEXTURE2D, 0, 1);
+	CTexture *pSkyBoxTexture = new CTexture(6, RESOURCE_TEXTURE2D, 0, 1);
 
 	pSkyBoxTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, L"Image/SkyBox_Front_0.dds", RESOURCE_TEXTURE2D, 0);
 	pSkyBoxTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, L"Image/SkyBox_Back_0.dds", RESOURCE_TEXTURE2D, 1);
@@ -592,14 +562,14 @@ CSkyBox::CSkyBox(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dComman
 
 	UINT ncbElementBytes = ((sizeof(CB_GAMEOBJECT_INFO) + 255) & ~255); //256의 배수
 
-	CSkyBoxShader* pSkyBoxShader = new CSkyBoxShader();
-	pSkyBoxShader->CreateShader(pd3dDevice, pd3dGraphicsRootSignature);
+	CSkyBoxShader *pSkyBoxShader = new CSkyBoxShader();
+	pSkyBoxShader->CreateShader(pd3dDevice, pd3dGraphicsRootSignature, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
 	pSkyBoxShader->CreateShaderVariables(pd3dDevice, pd3dCommandList);
 	pSkyBoxShader->CreateCbvSrvDescriptorHeaps(pd3dDevice, 1, 6);
 	pSkyBoxShader->CreateConstantBufferViews(pd3dDevice, 1, m_pd3dcbGameObject, ncbElementBytes);
-	pSkyBoxShader->CreateShaderResourceViews(pd3dDevice, pSkyBoxTexture, 0, 6);
+	pSkyBoxShader->CreateShaderResourceViews(pd3dDevice, pSkyBoxTexture, 0, 3);
 
-	CMaterial* pSkyBoxMaterial = new CMaterial();
+	CMaterial *pSkyBoxMaterial = new CMaterial();
 	pSkyBoxMaterial->SetTexture(pSkyBoxTexture);
 
 	SetMaterial(pSkyBoxMaterial);
@@ -613,7 +583,7 @@ CSkyBox::~CSkyBox()
 {
 }
 
-void CSkyBox::Render(ID3D12GraphicsCommandList* pd3dCommandList, CCamera* pCamera)
+void CSkyBox::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera)
 {
 	XMFLOAT3 xmf3CameraPos = pCamera->GetPosition();
 	SetPosition(xmf3CameraPos.x, xmf3CameraPos.y, xmf3CameraPos.z);
@@ -639,10 +609,28 @@ void CSkyBox::Render(ID3D12GraphicsCommandList* pd3dCommandList, CCamera* pCamer
 		{
 			if (m_pMaterial)
 			{
-				if (m_pMaterial->m_pTexture) m_pMaterial->m_pTexture->UpdateShaderVariable(pd3dCommandList, 0, i);
+				if (m_pMaterial->m_pTexture) m_pMaterial->m_pTexture->UpdateShaderVariable(pd3dCommandList, 0, i);				
 			}
 			if (m_ppMeshes[i]) m_ppMeshes[i]->Render(pd3dCommandList);
 		}
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+CGrassObject::CGrassObject()
+{
+}
+
+CGrassObject::~CGrassObject()
+{
+}
+
+void CGrassObject::Animate(float fDeltaTime)
+{
+	if (m_fRotationAngle <= -1.5f) m_fRotationDelta = 1.0f;
+	if (m_fRotationAngle >= +1.5f) m_fRotationDelta = -1.0f;
+	m_fRotationAngle += m_fRotationDelta * fDeltaTime;
+
+	Rotate(0.0f, 0.0f, m_fRotationAngle);
+}

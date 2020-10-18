@@ -22,31 +22,22 @@ public:
 	ID3D12RootSignature *GetGraphicsRootSignature() { return(m_pd3dGraphicsRootSignature); }
 	void SetGraphicsRootSignature(ID3D12GraphicsCommandList *pd3dCommandList) { pd3dCommandList->SetGraphicsRootSignature(m_pd3dGraphicsRootSignature); }
 
-	virtual void CreateShaderVariables(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList);
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList);
-	virtual void ReleaseShaderVariables();
-
 	bool ProcessInput(UCHAR *pKeysBuffer);
-    void AnimateObjects(float fTimeElapsed);
+    void AnimateObjects(float fDeltaTime);
 
-	void PrepareRender(ID3D12GraphicsCommandList* pd3dCommandList);
+	void OnPrepareRender(ID3D12GraphicsCommandList* pd3dCommandList, CCamera* pCamera);
 	void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera=NULL);
 
 	void ReleaseUploadBuffers();
 
 	CHeightMapTerrain *GetTerrain() { return(m_pTerrain); }
 
-	CPlayer						*m_pPlayer = NULL;
-
 protected:
 	CShader						**m_ppShaders = NULL;
 	int							m_nShaders = 0;
 
 	CHeightMapTerrain			*m_pTerrain = NULL;
-
-	CTerrainWater				*m_pTerrainWater = NULL;
-	XMFLOAT4X4					m_xmf4x4WaterAnimation;
-	CSkyBox* m_pSkyBox = NULL;
+	CSkyBox						*m_pSkyBox = NULL;
 
 	ID3D12RootSignature			*m_pd3dGraphicsRootSignature = NULL;
 };

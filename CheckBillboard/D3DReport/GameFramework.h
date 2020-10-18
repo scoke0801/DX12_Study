@@ -4,6 +4,12 @@
 #include "Player.h"
 #include "Scene.h"
 
+struct CB_FRAMEWORK_INFO
+{
+	float					m_fCurrentTime;
+	float					m_fElapsedTime;
+};
+
 class CGameFramework
 {
 public:
@@ -27,8 +33,6 @@ public:
     void BuildObjects();
     void ReleaseObjects();
 
-	void UpdateShaderVariables();
-
     void ProcessInput();
     void AnimateObjects();
     void FrameAdvance();
@@ -39,6 +43,10 @@ public:
 	void OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	LRESULT CALLBACK OnProcessingWindowMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+
+	void CreateShaderVariables();
+	void UpdateShaderVariables();
+	void ReleaseShaderVariables();
 
 private:
 	HINSTANCE					m_hInstance;
@@ -85,6 +93,10 @@ private:
 
 	POINT						m_ptOldCursorPos;
 
-	_TCHAR						m_pszFrameRate[50];
+	_TCHAR						m_pszCaption[70];
+
+protected:
+	ID3D12Resource* m_pd3dcbFrameworkInfo = NULL;
+	CB_FRAMEWORK_INFO* m_pcbMappedFrameworkInfo = NULL;
 };
 

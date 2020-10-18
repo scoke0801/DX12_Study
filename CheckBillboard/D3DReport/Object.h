@@ -27,6 +27,8 @@ struct CB_GAMEOBJECT_INFO
 	XMFLOAT4X4						m_xmf4x4World;
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 struct MATERIAL
 {
 	XMFLOAT4						m_xmf4Ambient;
@@ -35,8 +37,6 @@ struct MATERIAL
 	XMFLOAT4						m_xmf4Emissive;
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 class CTexture
 {
 public:
@@ -50,7 +50,7 @@ private:
 
 	int								m_nTextures = 0;
 	ID3D12Resource**				m_ppd3dTextures = NULL;
-	ID3D12Resource**				m_ppd3dTextureUploadBuffers;
+	ID3D12Resource**				m_ppd3dTextureUploadBuffers = NULL;
 
 	UINT*							m_pnResourceTypes = NULL;
 
@@ -74,13 +74,12 @@ public:
 	void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
 	void ReleaseShaderVariables();
 
-	void LoadTextureFromDDSFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex);
-	void LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nIndex);
 	void LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex);
 	//	void LoadBufferFromFile(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, wchar_t *pszFileName, UINT nIndex);
 	void LoadBuffer(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, void* pData, UINT nElements, UINT nStride, DXGI_FORMAT ndxgiFormat, UINT nIndex);
 
 	void SetRootParameterIndex(int nIndex, UINT nRootParameterIndex);
+	int GetRootParameterIndex(int nIndex) { return(m_pnRootParameterIndices[nIndex]); }
 	void SetGpuDescriptorHandle(int nIndex, D3D12_GPU_DESCRIPTOR_HANDLE d3dSrvGpuDescriptorHandle);
 
 	int GetRootParameters() { return(m_nRootParameters); }
@@ -117,7 +116,7 @@ public:
 	CShader							*m_pShader = NULL;
 
 	void SetAlbedo(XMFLOAT4 xmf4Albedo) { m_xmf4Albedo = xmf4Albedo; }
-	void SetReflection(MATERIAL* m_pReflection);
+	void SetReflection(MATERIAL *m_pReflection);
 	void SetTexture(CTexture *pTexture);
 	void SetShader(CShader *pShader);
 
@@ -133,7 +132,7 @@ class CGameObject
 {
 public:
 	CGameObject(int nMeshes=1);
-	virtual ~CGameObject();
+    virtual ~CGameObject();
 
 public:
 	XMFLOAT4X4						m_xmf4x4World;
@@ -162,7 +161,7 @@ public:
 	virtual void ReleaseShaderVariables();
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList);
 
-	virtual void Animate(float fTimeElapsed);
+	virtual void Animate(float fDeltaTime);
 	virtual void OnPrepareRender() { }
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera=NULL);
 
@@ -183,25 +182,25 @@ public:
 
 	void Rotate(float fPitch = 10.0f, float fYaw = 10.0f, float fRoll = 10.0f);
 	void Rotate(XMFLOAT3 *pxmf3Axis, float fAngle);
+
+	void SetLookAt(XMFLOAT3& xmf3Target, XMFLOAT3& xmf3Up=XMFLOAT3(0.0f, 1.0f, 0.0f));
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 class CRotatingObject : public CGameObject
 {
 public:
 	CRotatingObject(int nMeshes=1);
-	virtual ~CRotatingObject();
+    virtual ~CRotatingObject();
 
 private:
-	XMFLOAT3						m_xmf3RotationAxis;
-	float							m_fRotationSpeed;
+	XMFLOAT3					m_xmf3RotationAxis;
+	float						m_fRotationSpeed;
 
 public:
 	void SetRotationSpeed(float fRotationSpeed) { m_fRotationSpeed = fRotationSpeed; }
 	void SetRotationAxis(XMFLOAT3 xmf3RotationAxis) { m_xmf3RotationAxis = xmf3RotationAxis; }
 
-	virtual void Animate(float fTimeElapsed);
+	virtual void Animate(float fDeltaTime);
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera = NULL);
 };
 
@@ -212,14 +211,14 @@ public:
 	virtual ~CRevolvingObject();
 
 private:
-	XMFLOAT3						m_xmf3RevolutionAxis;
-	float							m_fRevolutionSpeed;
+	XMFLOAT3					m_xmf3RevolutionAxis;
+	float						m_fRevolutionSpeed;
 
 public:
 	void SetRevolutionSpeed(float fRevolutionSpeed) { m_fRevolutionSpeed = fRevolutionSpeed; }
 	void SetRevolutionAxis(XMFLOAT3 xmf3RevolutionAxis) { m_xmf3RevolutionAxis = xmf3RevolutionAxis; }
 
-	virtual void Animate(float fTimeElapsed);
+	virtual void Animate(float fDeltaTime);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,19 +230,19 @@ public:
 	virtual ~CHeightMapTerrain();
 
 private:
-	CHeightMapImage					*m_pHeightMapImage;
+	CHeightMapImage				*m_pHeightMapImage;
 
-	int								m_nWidth;
-	int								m_nLength;
+	int							m_nWidth;
+	int							m_nLength;
 
-	XMFLOAT3						m_xmf3Scale;
+	XMFLOAT3					m_xmf3Scale;
 
 public:
 	float GetHeight(float x, float z, bool bReverseQuad = false) { return(m_pHeightMapImage->GetHeight(x, z, bReverseQuad) * m_xmf3Scale.y); } //World
 	XMFLOAT3 GetNormal(float x, float z) { return(m_pHeightMapImage->GetHeightMapNormal(int(x / m_xmf3Scale.x), int(z / m_xmf3Scale.z))); }
 
-	int GetHeightMapWidth() { return(m_pHeightMapImage->GetHeightMapWidth()); }
-	int GetHeightMapLength() { return(m_pHeightMapImage->GetHeightMapLength()); }
+	int GetRawImageWidth() { return(m_pHeightMapImage->GetRawImageWidth()); }
+	int GetRawImageLength() { return(m_pHeightMapImage->GetRawImageLength()); }
 
 	XMFLOAT3 GetScale() { return(m_xmf3Scale); }
 	float GetWidth() { return(m_nWidth * m_xmf3Scale.x); }
@@ -252,31 +251,26 @@ public:
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class CTerrainWater : public CGameObject
-{
-public:
-	CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, float nWidth, float nLength);
-	//	CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, int nWidth, int nLength, int nBlockWidth, int nBlockLength, XMFLOAT3 xmf3Scale);
-	virtual ~CTerrainWater();
-
-private:
-	int							m_nWidth;
-	int							m_nLength;
-
-	XMFLOAT3					m_xmf3Scale;
-
-public:
-	XMFLOAT4X4					m_xmf4x4Texture;
-
-	//	virtual void Animate(float fTimeElapsed);
-	//	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, CCamera* pCamera = NULL);
-};
-
 class CSkyBox : public CGameObject
 {
 public:
-	CSkyBox(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature);
+	CSkyBox(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature);
 	virtual ~CSkyBox();
 
-	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, CCamera* pCamera = NULL);
+	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera = NULL);
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+class CGrassObject : public CGameObject
+{
+public:
+	CGrassObject();
+	virtual ~CGrassObject();
+
+	virtual void Animate(float fDeltaTime);
+
+	float m_fRotationAngle = 0.0f;
+	float m_fRotationDelta = 1.0f;
+};
+
