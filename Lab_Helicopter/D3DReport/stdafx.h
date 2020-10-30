@@ -45,12 +45,22 @@ using namespace DirectX::PackedVector;
 
 using Microsoft::WRL::ComPtr;
 
-#define FRAME_BUFFER_WIDTH		640
-#define FRAME_BUFFER_HEIGHT		480
+#define FRAME_BUFFER_WIDTH					640
+#define FRAME_BUFFER_HEIGHT					480
 
 //#define _WITH_CB_GAMEOBJECT_32BIT_CONSTANTS
 //#define _WITH_CB_GAMEOBJECT_ROOT_DESCRIPTOR
 #define _WITH_CB_WORLD_MATRIX_DESCRIPTOR_TABLE
+
+#define _WITH_STANDARD_TEXTURE_MULTIPLE_DESCRIPTORS
+
+#define PARAMETER_STANDARD_TEXTURE			3
+
+#ifdef _WITH_STANDARD_TEXTURE_MULTIPLE_DESCRIPTORS
+	#define PARAMETER_SKYBOX_CUBE_TEXTURE	10
+#else
+	#define PARAMETER_SKYBOX_CUBE_TEXTURE	4
+#endif
 
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "d3d12.lib")

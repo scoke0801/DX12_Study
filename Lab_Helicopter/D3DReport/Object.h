@@ -28,6 +28,13 @@ struct CB_GAMEOBJECT_INFO
 //
 class CGameObject
 {
+private:
+	int								m_nReferences = 0;
+
+public:
+	void AddRef();
+	void Release();
+
 public:
 	CGameObject();
 	CGameObject(int nMaterials, int nMeshes);
@@ -58,6 +65,7 @@ protected:
 public:
 	void SetMesh(int nIndex, CMesh *pMesh);
 	void SetShader(CShader *pShader);
+	void SetShader(int nMaterial, CShader* pShader);
 	void SetMaterial(int nMaterial, CMaterial* pMaterial);
 
 	void SetChild(CGameObject* pChild);
@@ -68,14 +76,19 @@ public:
 
 	virtual void CreateShaderVariables(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList);
 	virtual void ReleaseShaderVariables();
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList);
 
-	virtual void Animate(float fDeltaTime);
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
+	virtual void UpdateShaderVariable(ID3D12GraphicsCommandList* pd3dCommandList, XMFLOAT4X4* pxmf4x4World);
+	virtual void UpdateShaderVariable(ID3D12GraphicsCommandList* pd3dCommandList, CMaterial* pMaterial);
+	
+	virtual void BuildMaterials(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList) { }
+	virtual void ReleaseUploadBuffers();
+
+	virtual void PrepareAnimate() { }
+	virtual void Animate(float fTimeElapsed, XMFLOAT4X4* pxmf4x4Parent = NULL);
+
 	virtual void OnPrepareRender() { }
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera=NULL);
-
-	virtual void BuildMaterials(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList) { }
-	virtual void ReleaseUploadBuffers();
 
 	XMFLOAT3 GetPosition();
 	XMFLOAT3 GetLook();
@@ -93,6 +106,22 @@ public:
 	void Rotate(XMFLOAT3 *pxmf3Axis, float fAngle);
 
 	void SetLookAt(XMFLOAT3& xmf3Target, XMFLOAT3& xmf3Up=XMFLOAT3(0.0f, 1.0f, 0.0f));
+
+	CGameObject* GetParent() { return(m_pParent); }
+	void UpdateTransform(XMFLOAT4X4* pxmf4x4Parent = NULL);
+	CGameObject* FindFrame(char* pstrFrameName);
+
+	int FindReplicatedTexture(_TCHAR* pstrTextureName, D3D12_GPU_DESCRIPTOR_HANDLE* pd3dSrvGpuDescriptorHandle);
+
+	UINT GetMeshType(int nIndex) { return((m_ppMeshes[nIndex]) ? m_ppMeshes[nIndex]->GetType() : 0x00); }
+
+public:
+	void LoadMaterialsFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, CGameObject* pParent, FILE* pInFile, CShader* pShader);
+
+	static CGameObject* LoadFrameHierarchyFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, CGameObject* pParent, FILE* pInFile, CShader* pShader);
+	static CGameObject* LoadGeometryFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, char* pstrFileName, CShader* pShader);
+
+	static void PrintFrameInfo(CGameObject* pGameObject, CGameObject* pParent);
 };
 
 class CRotatingObject : public CGameObject

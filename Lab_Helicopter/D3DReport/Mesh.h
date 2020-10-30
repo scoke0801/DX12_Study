@@ -113,6 +113,10 @@ public:
 	void ReleaseUploadBuffers();
 
 protected:
+	char							m_pstrMeshName[256] = { 0 };
+
+	UINT							m_nType = 0x00;
+
 	ID3D12Resource					*m_pd3dVertexBuffer = NULL;
 	ID3D12Resource					*m_pd3dVertexUploadBuffer = NULL;
 
@@ -133,6 +137,8 @@ protected:
 	int								m_nBaseVertex = 0;
 
 public:
+	UINT GetType() { return(m_nType); }
+
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList);
 };
 
