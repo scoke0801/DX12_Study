@@ -7,6 +7,8 @@
 #include "Object.h"
 #include "Camera.h"
 
+class CTexture;
+
 class CShader
 {
 public:

@@ -14,116 +14,14 @@
 #define DIR_UP						0x10
 #define DIR_DOWN					0x20
 
-#define RESOURCE_TEXTURE2D			0x01
-#define RESOURCE_TEXTURE2D_ARRAY	0x02	//[]
-#define RESOURCE_TEXTURE2DARRAY		0x03
-#define RESOURCE_TEXTURE_CUBE		0x04
-#define RESOURCE_BUFFER				0x05
-
 class CShader;
+class CStandardShader;
+class CGameObject;
+class CMaterial;
 
 struct CB_GAMEOBJECT_INFO
 {
 	XMFLOAT4X4						m_xmf4x4World;
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-struct MATERIAL
-{
-	XMFLOAT4						m_xmf4Ambient;
-	XMFLOAT4						m_xmf4Diffuse;
-	XMFLOAT4						m_xmf4Specular; //(r,g,b,a=power)
-	XMFLOAT4						m_xmf4Emissive;
-};
-
-class CTexture
-{
-public:
-	CTexture(int nTextureResources, UINT nResourceType, int nSamplers, int nRootParameters);
-	virtual ~CTexture();
-
-private:
-	int								m_nReferences = 0;
-
-	UINT							m_nTextureType;
-
-	int								m_nTextures = 0;
-	ID3D12Resource**				m_ppd3dTextures = NULL;
-	ID3D12Resource**				m_ppd3dTextureUploadBuffers = NULL;
-
-	UINT*							m_pnResourceTypes = NULL;
-
-	DXGI_FORMAT*					m_pdxgiBufferFormats = NULL;
-	int*							m_pnBufferElements = NULL;
-
-	int								m_nRootParameters = 0;
-	int*							m_pnRootParameterIndices = NULL;
-	D3D12_GPU_DESCRIPTOR_HANDLE*	m_pd3dSrvGpuDescriptorHandles = NULL;
-
-	int								m_nSamplers = 0;
-	D3D12_GPU_DESCRIPTOR_HANDLE*	m_pd3dSamplerGpuDescriptorHandles = NULL;
-
-public:
-	void AddRef() { m_nReferences++; }
-	void Release() { if (--m_nReferences <= 0) delete this; }
-
-	void SetSampler(int nIndex, D3D12_GPU_DESCRIPTOR_HANDLE d3dSamplerGpuDescriptorHandle);
-
-	void UpdateShaderVariable(ID3D12GraphicsCommandList* pd3dCommandList, int nParameterIndex, int nTextureIndex);
-	void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
-	void ReleaseShaderVariables();
-
-	void LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, UINT nResourceType, UINT nIndex);
-	//	void LoadBufferFromFile(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, wchar_t *pszFileName, UINT nIndex);
-	void LoadBuffer(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, void* pData, UINT nElements, UINT nStride, DXGI_FORMAT ndxgiFormat, UINT nIndex);
-
-	void SetRootParameterIndex(int nIndex, UINT nRootParameterIndex);
-	int GetRootParameterIndex(int nIndex) { return(m_pnRootParameterIndices[nIndex]); }
-	void SetGpuDescriptorHandle(int nIndex, D3D12_GPU_DESCRIPTOR_HANDLE d3dSrvGpuDescriptorHandle);
-
-	int GetRootParameters() { return(m_nRootParameters); }
-	int GetTextures() { return(m_nTextures); }
-	ID3D12Resource* GetResource(int nIndex) { return(m_ppd3dTextures[nIndex]); }
-
-	UINT GetTextureType() { return(m_nTextureType); }
-	UINT GetTextureType(int nIndex) { return(m_pnResourceTypes[nIndex]); }
-	DXGI_FORMAT GetBufferFormat(int nIndex) { return(m_pdxgiBufferFormats[nIndex]); }
-	int GetBufferElements(int nIndex) { return(m_pnBufferElements[nIndex]); }
-
-	D3D12_SHADER_RESOURCE_VIEW_DESC GetShaderResourceViewDesc(int nIndex);
-
-	void ReleaseUploadBuffers();
-};
-
-class CMaterial
-{
-public:
-	CMaterial();
-	virtual ~CMaterial();
-
-private:
-	int								m_nReferences = 0;
-
-public:
-	void AddRef() { m_nReferences++; }
-	void Release() { if (--m_nReferences <= 0) delete this; }
-
-	XMFLOAT4						m_xmf4Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-
-	MATERIAL						*m_pReflection = NULL;
-	CTexture						*m_pTexture = NULL;
-	CShader							*m_pShader = NULL;
-
-	void SetAlbedo(XMFLOAT4 xmf4Albedo) { m_xmf4Albedo = xmf4Albedo; }
-	void SetReflection(MATERIAL *m_pReflection);
-	void SetTexture(CTexture *pTexture);
-	void SetShader(CShader *pShader);
-
-	void UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList);
-	void ReleaseShaderVariables();
-
-	void ReleaseUploadBuffers();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,6 +41,10 @@ public:
 	CMaterial						*m_pMaterial = NULL;
 
 	D3D12_GPU_DESCRIPTOR_HANDLE		m_d3dCbvGPUDescriptorHandle;
+
+	CGameObject						*m_pParent = NULL;
+	CGameObject						*m_pChild = NULL;
+	CGameObject						*m_pSibling = NULL;
 
 protected:
 	ID3D12Resource					*m_pd3dcbGameObject = NULL;
@@ -204,22 +106,6 @@ public:
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera = NULL);
 };
 
-class CRevolvingObject : public CGameObject
-{
-public:
-	CRevolvingObject(int nMeshes=1);
-	virtual ~CRevolvingObject();
-
-private:
-	XMFLOAT3					m_xmf3RevolutionAxis;
-	float						m_fRevolutionSpeed;
-
-public:
-	void SetRevolutionSpeed(float fRevolutionSpeed) { m_fRevolutionSpeed = fRevolutionSpeed; }
-	void SetRevolutionAxis(XMFLOAT3 xmf3RevolutionAxis) { m_xmf3RevolutionAxis = xmf3RevolutionAxis; }
-
-	virtual void Animate(float fDeltaTime);
-};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //

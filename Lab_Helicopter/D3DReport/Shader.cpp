@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Shader.h"
 #include "DDSTextureLoader12.h"
+#include "Texture.h"
 
 CShader::CShader()
 {

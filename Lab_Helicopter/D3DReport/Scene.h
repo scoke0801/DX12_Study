@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Shader.h"
+#include "Lights.h"
 
 class CScene
 {
@@ -15,6 +16,11 @@ public:
 	bool OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	bool OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 
+	virtual void CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList);
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
+	virtual void ReleaseShaderVariables();
+
+	void BuildDefaultLightsAndMaterials();
 	void BuildObjects(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList);
 	void ReleaseObjects();
 
@@ -41,4 +47,12 @@ protected:
 	CTerrainWater				*m_pTerrainWater = NULL;
 
 	ID3D12RootSignature			*m_pd3dGraphicsRootSignature = NULL;
+
+	LIGHT* m_pLights = NULL;
+	int							m_nLights = 0;
+
+	XMFLOAT4					m_xmf4GlobalAmbient;
+
+	ID3D12Resource				* m_pd3dcbLights = NULL;
+	LIGHTS						* m_pcbMappedLights = NULL;
 };
