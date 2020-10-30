@@ -10,16 +10,29 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-CGameObject::CGameObject(int nMeshes)
+CGameObject::CGameObject()
 {
+	m_xmf4x4Transform = Matrix4x4::Identity();
 	m_xmf4x4World = Matrix4x4::Identity();
+}
 
+CGameObject::CGameObject(int nMaterials, int nMeshes)
+	:CGameObject()
+{
 	m_nMeshes = nMeshes;
 	m_ppMeshes = NULL;
 	if (m_nMeshes > 0)
 	{
-		m_ppMeshes = new CMesh*[m_nMeshes];
+		m_ppMeshes = new CMesh * [m_nMeshes];
 		for (int i = 0; i < m_nMeshes; i++)	m_ppMeshes[i] = NULL;
+	}
+
+	m_nMaterials = nMaterials;
+	m_ppMaterials = NULL;
+	if (m_nMaterials > 0)
+	{
+		m_ppMaterials = new CMaterial * [m_nMaterials];
+		for (int i = 0; i < m_nMaterials; i++) m_ppMaterials[i] = NULL;
 	}
 }
 
@@ -36,7 +49,15 @@ CGameObject::~CGameObject()
 		}
 		delete[] m_ppMeshes;
 	}
-	if (m_pMaterial) m_pMaterial->Release();
+	
+	if (m_nMaterials > 0)
+	{
+		for (int i = 0; i < m_nMaterials; i++)
+		{
+			if (m_ppMaterials[i]) m_ppMaterials[i]->Release();
+		}
+	}
+	if (m_ppMaterials) delete[] m_ppMaterials;
 }
 
 void CGameObject::SetMesh(int nIndex, CMesh *pMesh)
@@ -51,19 +72,38 @@ void CGameObject::SetMesh(int nIndex, CMesh *pMesh)
 
 void CGameObject::SetShader(CShader *pShader)
 {
-	if (!m_pMaterial)
+	if (!m_ppMaterials[0])
 	{
-		CMaterial *pMaterial = new CMaterial();
-		SetMaterial(pMaterial);
+		if (!m_nMaterials) m_nMaterials = 1;
+
+		CMaterial* pMaterial = new CMaterial();
+		SetMaterial(0, pMaterial);
 	}
-	if (m_pMaterial) m_pMaterial->SetShader(pShader);
+	if (m_ppMaterials) m_ppMaterials[0]->SetShader(pShader);
 }
 
-void CGameObject::SetMaterial(CMaterial *pMaterial)
+void CGameObject::SetMaterial(int nMaterial, CMaterial* pMaterial)
 {
-	if (m_pMaterial) m_pMaterial->Release();
-	m_pMaterial = pMaterial;
-	if (m_pMaterial) m_pMaterial->AddRef();
+	if (m_ppMaterials[nMaterial]) m_ppMaterials[nMaterial]->Release();
+	m_ppMaterials[nMaterial] = pMaterial;
+	if (m_ppMaterials[nMaterial]) m_ppMaterials[nMaterial]->AddRef();
+}
+
+void CGameObject::SetChild(CGameObject* pChild)
+{
+	if (m_pChild)
+	{
+		if (pChild) pChild->m_pSibling = m_pChild->m_pSibling;
+		m_pChild->m_pSibling = pChild;
+	}
+	else
+	{
+		m_pChild = pChild;
+	}
+	if (pChild)
+	{
+		pChild->m_pParent = this;
+	}
 }
 
 void CGameObject::CreateShaderVariables(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList)
@@ -81,7 +121,11 @@ void CGameObject::ReleaseShaderVariables()
 		m_pd3dcbGameObject->Unmap(0, NULL);
 		m_pd3dcbGameObject->Release();
 	}
-	if (m_pMaterial) m_pMaterial->ReleaseShaderVariables();
+
+	for (int i = 0; i < m_nMaterials; ++i)
+	{
+		m_ppMaterials[i]->ReleaseShaderVariables();
+	}
 }
 
 void CGameObject::UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList)
@@ -97,6 +141,24 @@ void CGameObject::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pC
 {
 	OnPrepareRender();
 
+	if (m_nMaterials > 0)
+	{
+		for (int i = 0; i < m_nMaterials; i++)
+		{
+			if (m_ppMaterials[i]->m_pShader)
+			{
+				m_ppMaterials[i]->m_pShader->Render(pd3dCommandList, pCamera);
+				m_ppMaterials[i]->m_pShader->UpdateShaderVariables(pd3dCommandList);
+
+				UpdateShaderVariables(pd3dCommandList);
+			}
+			if (m_ppMaterials[i]->m_pTexture)
+			{
+				m_ppMaterials[i]->m_pTexture->UpdateShaderVariables(pd3dCommandList);
+			}
+		}
+	}
+	/*
 	if (m_pMaterial)
 	{
 		if (m_pMaterial->m_pShader)
@@ -111,7 +173,7 @@ void CGameObject::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pC
 			m_pMaterial->m_pTexture->UpdateShaderVariables(pd3dCommandList);
 		}
 	}
-
+	*/
 	pd3dCommandList->SetGraphicsRootDescriptorTable(2, m_d3dCbvGPUDescriptorHandle);
 
 	if (m_ppMeshes)
@@ -132,8 +194,10 @@ void CGameObject::ReleaseUploadBuffers()
 			if (m_ppMeshes[i]) m_ppMeshes[i]->ReleaseUploadBuffers();
 		}
 	}
-
-	if (m_pMaterial) m_pMaterial->ReleaseUploadBuffers();
+	for (int i = 0; i < m_nMaterials; ++i)
+	{
+		m_ppMaterials[i]->ReleaseUploadBuffers();
+	}
 }
 
 void CGameObject::SetPosition(float x, float y, float z)
@@ -225,6 +289,7 @@ void CGameObject::SetLookAt(XMFLOAT3& xmf3Target, XMFLOAT3& xmf3Up)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 CRotatingObject::CRotatingObject(int nMeshes)
+	:CGameObject(1, nMeshes)
 {
 	m_xmf3RotationAxis = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_fRotationSpeed = 15.0f;
@@ -246,7 +311,8 @@ void CRotatingObject::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-CHeightMapTerrain::CHeightMapTerrain(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature, LPCTSTR pFileName, int nWidth, int nLength, int nBlockWidth, int nBlockLength, XMFLOAT3 xmf3Scale, XMFLOAT4 xmf4Color) : CGameObject(0)
+CHeightMapTerrain::CHeightMapTerrain(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature, LPCTSTR pFileName, int nWidth, int nLength, int nBlockWidth, int nBlockLength, XMFLOAT3 xmf3Scale, XMFLOAT4 xmf4Color)
+	: CGameObject(1, 1)
 {
 	m_nWidth = nWidth;
 	m_nLength = nLength;
@@ -297,7 +363,7 @@ CHeightMapTerrain::CHeightMapTerrain(ID3D12Device *pd3dDevice, ID3D12GraphicsCom
 	CMaterial *pTerrainMaterial = new CMaterial();
 	pTerrainMaterial->SetTexture(pTerrainTexture);
 
-	SetMaterial(pTerrainMaterial);
+	SetMaterial(0, pTerrainMaterial);
 
 	SetCbvGPUDescriptorHandle(pTerrainShader->GetGPUCbvDescriptorStartHandle());
 
@@ -311,7 +377,8 @@ CHeightMapTerrain::~CHeightMapTerrain(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
-CSkyBox::CSkyBox(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature) : CGameObject(6)
+CSkyBox::CSkyBox(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature *pd3dGraphicsRootSignature) 
+	: CGameObject(1, 6)
 {
 	CTexturedRectMesh *pSkyBoxMesh = new CTexturedRectMesh(pd3dDevice, pd3dCommandList, 20.0f, 20.0f, 0.0f, 0.0f, 0.0f, +10.0f);
 	SetMesh(0, pSkyBoxMesh);
@@ -349,7 +416,7 @@ CSkyBox::CSkyBox(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dComman
 	CMaterial *pSkyBoxMaterial = new CMaterial();
 	pSkyBoxMaterial->SetTexture(pSkyBoxTexture);
 
-	SetMaterial(pSkyBoxMaterial);
+	SetMaterial(0, pSkyBoxMaterial);
 
 	SetCbvGPUDescriptorHandle(pSkyBoxShader->GetGPUCbvDescriptorStartHandle());
 
@@ -366,15 +433,17 @@ void CSkyBox::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamer
 	SetPosition(xmf3CameraPos.x, xmf3CameraPos.y, xmf3CameraPos.z);
 
 	OnPrepareRender();
-
-	if (m_pMaterial)
+	if (m_nMaterials > 0)
 	{
-		if (m_pMaterial->m_pShader)
+		for (int i = 0; i < m_nMaterials; ++i)
 		{
-			m_pMaterial->m_pShader->Render(pd3dCommandList, pCamera);
-			m_pMaterial->m_pShader->UpdateShaderVariables(pd3dCommandList);
+			if (m_ppMaterials[i]->m_pShader)
+			{
+				m_ppMaterials[i]->m_pShader->Render(pd3dCommandList, pCamera);
+				m_ppMaterials[i]->m_pShader->UpdateShaderVariables(pd3dCommandList);
 
-			UpdateShaderVariables(pd3dCommandList);
+				UpdateShaderVariables(pd3dCommandList);
+			}
 		}
 	}
 
@@ -384,9 +453,10 @@ void CSkyBox::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamer
 	{
 		for (int i = 0; i < m_nMeshes; i++)
 		{
-			if (m_pMaterial)
+			if (m_nMaterials > 0)
 			{
-				if (m_pMaterial->m_pTexture) m_pMaterial->m_pTexture->UpdateShaderVariable(pd3dCommandList, 0, i);				
+				if (m_ppMaterials[0]->m_pTexture) 
+					m_ppMaterials[0]->m_pTexture->UpdateShaderVariable(pd3dCommandList, 0, i);				
 			}
 			if (m_ppMeshes[i]) m_ppMeshes[i]->Render(pd3dCommandList);
 		}
@@ -396,6 +466,7 @@ void CSkyBox::Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamer
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 CGrassObject::CGrassObject()
+	:CGameObject(1, 1)
 {
 }
 
@@ -414,7 +485,8 @@ void CGrassObject::Animate(float fDeltaTime)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
-CTerrainWater::CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, float fWidth, float fLength) : CGameObject(1)
+CTerrainWater::CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, float fWidth, float fLength) 
+	: CGameObject(1, 1)
 {
 	m_xmf4x4WaterAnimation = XMFLOAT4X4(
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -447,7 +519,7 @@ CTerrainWater::CTerrainWater(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList
 	CMaterial* pWaterMaterial = new CMaterial();
 	pWaterMaterial->SetTexture(pWaterTexture);
 
-	SetMaterial(pWaterMaterial);
+	SetMaterial(0, pWaterMaterial);
 
 	SetCbvGPUDescriptorHandle(pWaterShader->GetGPUCbvDescriptorStartHandle());
 

@@ -29,16 +29,21 @@ struct CB_GAMEOBJECT_INFO
 class CGameObject
 {
 public:
-	CGameObject(int nMeshes=1);
+	CGameObject();
+	CGameObject(int nMaterials, int nMeshes);
     virtual ~CGameObject();
 
 public:
+	char							m_pstrFrameName[64];
+
 	XMFLOAT4X4						m_xmf4x4World;
+	XMFLOAT4X4						m_xmf4x4Transform;
 
 	CMesh							**m_ppMeshes;
 	int								m_nMeshes;
 
-	CMaterial						*m_pMaterial = NULL;
+	CMaterial						**m_ppMaterials = NULL;
+	int								m_nMaterials = 0;
 
 	D3D12_GPU_DESCRIPTOR_HANDLE		m_d3dCbvGPUDescriptorHandle;
 
@@ -53,7 +58,9 @@ protected:
 public:
 	void SetMesh(int nIndex, CMesh *pMesh);
 	void SetShader(CShader *pShader);
-	void SetMaterial(CMaterial *pMaterial);
+	void SetMaterial(int nMaterial, CMaterial* pMaterial);
+
+	void SetChild(CGameObject* pChild);
 
 	void SetCbvGPUDescriptorHandle(D3D12_GPU_DESCRIPTOR_HANDLE d3dCbvGPUDescriptorHandle) { m_d3dCbvGPUDescriptorHandle = d3dCbvGPUDescriptorHandle; }
 	void SetCbvGPUDescriptorHandlePtr(UINT64 nCbvGPUDescriptorHandlePtr) { m_d3dCbvGPUDescriptorHandle.ptr = nCbvGPUDescriptorHandlePtr; }
