@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "HelicopterObject.h"
 
-/*
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 CSuperCobraObject::CSuperCobraObject(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature)
@@ -63,7 +63,7 @@ void CGunshipObject::Animate(float fTimeElapsed, XMFLOAT4X4* pxmf4x4Parent)
 		m_pTailRotorFrame->m_xmf4x4Transform = Matrix4x4::Multiply(xmmtxRotate, m_pTailRotorFrame->m_xmf4x4Transform);
 	}
 
-	//CGameObject::Animate(fTimeElapsed, pxmf4x4Parent);
+	CGameObject::Animate(fTimeElapsed, pxmf4x4Parent);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +95,5 @@ void CMi24Object::Animate(float fTimeElapsed, XMFLOAT4X4* pxmf4x4Parent)
 		m_pTailRotorFrame->m_xmf4x4Transform = Matrix4x4::Multiply(xmmtxRotate, m_pTailRotorFrame->m_xmf4x4Transform);
 	}
 
-	//CGameObject::Animate(fTimeElapsed, pxmf4x4Parent);
+	CGameObject::Animate(fTimeElapsed, pxmf4x4Parent);
 }
-*/
