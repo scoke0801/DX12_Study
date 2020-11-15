@@ -222,6 +222,8 @@ ID3D12RootSignature *CScene::CreateGraphicsRootSignature(ID3D12Device *pd3dDevic
 	pd3dRootParameters[10].DescriptorTable.NumDescriptorRanges = 1;
 	pd3dRootParameters[10].DescriptorTable.pDescriptorRanges = &(pd3dDescriptorRanges[7]);
 	pd3dRootParameters[10].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
+
 #else
 	D3D12_DESCRIPTOR_RANGE pd3dDescriptorRanges[2];
 

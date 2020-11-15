@@ -301,3 +301,10 @@ namespace Plane
 		return(xmf4Result);
 	}
 }
+
+
+float Random(float fMin, float fMax);
+
+float Random();
+
+XMFLOAT3 RandomPositionInSphere(XMFLOAT3 xmf3Center, float fRadius, int nColumn, int nColumnSpace);

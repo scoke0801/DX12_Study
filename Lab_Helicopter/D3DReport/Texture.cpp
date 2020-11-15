@@ -11,8 +11,13 @@ CTexture::CTexture(int nTextures, UINT nTextureType, int nSamplers, int nRootPar
 	m_nTextures = nTextures;
 	if (m_nTextures > 0)
 	{
+		m_ppd3dTextureUploadBuffers = new ID3D12Resource * [m_nTextures];
 		m_ppd3dTextures = new ID3D12Resource * [m_nTextures];
-		for (int i = 0; i < m_nTextures; i++) m_ppd3dTextures[i] = NULL;
+		for (int i = 0; i < m_nTextures; i++) m_ppd3dTextureUploadBuffers[i] = m_ppd3dTextures[i] = NULL;
+		
+		m_ppstrTextureNames = new _TCHAR[m_nTextures][64];
+		for (int i = 0; i < m_nTextures; i++) m_ppstrTextureNames[i][0] = '\0';
+
 		m_ppd3dTextureUploadBuffers = new ID3D12Resource * [m_nTextures];
 		for (int i = 0; i < m_nTextures; i++) m_ppd3dTextureUploadBuffers[i] = NULL;
 		m_pd3dSrvGpuDescriptorHandles = new D3D12_GPU_DESCRIPTOR_HANDLE[m_nTextures];
@@ -23,6 +28,7 @@ CTexture::CTexture(int nTextures, UINT nTextureType, int nSamplers, int nRootPar
 
 		m_pdxgiBufferFormats = new DXGI_FORMAT[m_nTextures];
 		for (int i = 0; i < m_nTextures; i++) m_pnResourceTypes[i] = DXGI_FORMAT_UNKNOWN;
+		
 		m_pnBufferElements = new int[m_nTextures];
 		for (int i = 0; i < m_nTextures; i++) m_pnBufferElements[i] = 0;
 	}
@@ -41,6 +47,9 @@ CTexture::~CTexture()
 		for (int i = 0; i < m_nTextures; i++) if (m_ppd3dTextures[i]) m_ppd3dTextures[i]->Release();
 		delete[] m_ppd3dTextures;
 	}
+
+	if (m_ppstrTextureNames) delete[] m_ppstrTextureNames;
+
 	if (m_pnResourceTypes) delete[] m_pnResourceTypes;
 	if (m_pdxgiBufferFormats) delete[] m_pdxgiBufferFormats;
 	if (m_pnBufferElements) delete[] m_pnBufferElements;

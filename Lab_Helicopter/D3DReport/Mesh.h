@@ -117,6 +117,17 @@ protected:
 
 	UINT							m_nType = 0x00;
 
+	XMFLOAT3						m_xmf3AABBCenter = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	XMFLOAT3						m_xmf3AABBExtents = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	
+	D3D12_PRIMITIVE_TOPOLOGY		m_d3dPrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	UINT							m_nSlot = 0;
+	UINT							m_nOffset = 0;
+
+protected:
+	UINT							m_nVertices = 0;
+	UINT							m_nStride = 0;
+
 	ID3D12Resource					*m_pd3dVertexBuffer = NULL;
 	ID3D12Resource					*m_pd3dVertexUploadBuffer = NULL;
 
@@ -125,21 +136,30 @@ protected:
 
 	D3D12_VERTEX_BUFFER_VIEW		m_d3dVertexBufferView;
 	D3D12_INDEX_BUFFER_VIEW			m_d3dIndexBufferView;
-
-	D3D12_PRIMITIVE_TOPOLOGY		m_d3dPrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	UINT							m_nSlot = 0;
-	UINT							m_nVertices = 0;
-	UINT							m_nStride = 0;
-	UINT							m_nOffset = 0;
-
+ 
 	UINT							m_nIndices = 0;
 	UINT							m_nStartIndex = 0;
 	int								m_nBaseVertex = 0;
+
+	XMFLOAT3						*m_pxmf3Positions = NULL;
+
+	ID3D12Resource					*m_pd3dPositionBuffer = NULL;
+	ID3D12Resource					*m_pd3dPositionUploadBuffer = NULL;
+	D3D12_VERTEX_BUFFER_VIEW		m_d3dPositionBufferView;
+
+	int								m_nSubMeshes = 0;
+	int								*m_pnSubSetIndices = NULL;
+	UINT							**m_ppnSubSetIndices = NULL;
+
+	ID3D12Resource					**m_ppd3dSubSetIndexBuffers = NULL;
+	ID3D12Resource					**m_ppd3dSubSetIndexUploadBuffers = NULL;
+	D3D12_INDEX_BUFFER_VIEW			*m_pd3dSubSetIndexBufferViews = NULL;
 
 public:
 	UINT GetType() { return(m_nType); }
 
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList);
+	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, int nSubSet);
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,6 +264,50 @@ public:
 	CTexturedRectMesh(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, float fWidth=20.0f, float fHeight=20.0f, float fDepth=20.0f, float fxPosition=0.0f, float fyPosition=0.0f, float fzPosition=0.0f);
 	virtual ~CTexturedRectMesh();
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+class CStandardMesh : public CMesh
+{
+public:
+	CStandardMesh(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList);
+	virtual ~CStandardMesh();
+
+protected:
+	XMFLOAT4* m_pxmf4Colors = NULL;
+	XMFLOAT3* m_pxmf3Normals = NULL;
+	XMFLOAT3* m_pxmf3Tangents = NULL;
+	XMFLOAT3* m_pxmf3BiTangents = NULL;
+	XMFLOAT2* m_pxmf2TextureCoords0 = NULL;
+	XMFLOAT2* m_pxmf2TextureCoords1 = NULL;
+
+	ID3D12Resource* m_pd3dTextureCoord0Buffer = NULL;
+	ID3D12Resource* m_pd3dTextureCoord0UploadBuffer = NULL;
+	D3D12_VERTEX_BUFFER_VIEW		m_d3dTextureCoord0BufferView;
+
+	ID3D12Resource* m_pd3dTextureCoord1Buffer = NULL;
+	ID3D12Resource* m_pd3dTextureCoord1UploadBuffer = NULL;
+	D3D12_VERTEX_BUFFER_VIEW		m_d3dTextureCoord1BufferView;
+
+	ID3D12Resource* m_pd3dNormalBuffer = NULL;
+	ID3D12Resource* m_pd3dNormalUploadBuffer = NULL;
+	D3D12_VERTEX_BUFFER_VIEW		m_d3dNormalBufferView;
+
+	ID3D12Resource* m_pd3dTangentBuffer = NULL;
+	ID3D12Resource* m_pd3dTangentUploadBuffer = NULL;
+	D3D12_VERTEX_BUFFER_VIEW		m_d3dTangentBufferView;
+
+	ID3D12Resource* m_pd3dBiTangentBuffer = NULL;
+	ID3D12Resource* m_pd3dBiTangentUploadBuffer = NULL;
+	D3D12_VERTEX_BUFFER_VIEW		m_d3dBiTangentBufferView;
+
+public:
+	void LoadMeshFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, FILE* pInFile);
+
+	virtual void ReleaseUploadBuffers();
+	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, int nSubSet);
+};
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //

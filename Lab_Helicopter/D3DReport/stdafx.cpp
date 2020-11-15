@@ -266,3 +266,28 @@ ID3D12Resource* CreateTexture2DResource(ID3D12Device* pd3dDevice, ID3D12Graphics
 	return(pd3dTexture);
 }
 
+
+float Random(float fMin, float fMax)
+{
+	float fRandomValue = (float)rand();
+	if (fRandomValue < fMin) fRandomValue = fMin;
+	if (fRandomValue > fMax) fRandomValue = fMax;
+	return(fRandomValue);
+}
+
+float Random()
+{
+	return(rand() / float(RAND_MAX));
+}
+
+XMFLOAT3 RandomPositionInSphere(XMFLOAT3 xmf3Center, float fRadius, int nColumn, int nColumnSpace)
+{
+	float fAngle = Random() * 360.0f * (2.0f * 3.14159f / 360.0f);
+
+	XMFLOAT3 xmf3Position;
+	xmf3Position.x = xmf3Center.x + fRadius * sin(fAngle);
+	xmf3Position.y = xmf3Center.y - (nColumn * float(nColumnSpace) / 2.0f) + (nColumn * nColumnSpace) + Random();
+	xmf3Position.z = xmf3Center.z + fRadius * cos(fAngle);
+
+	return(xmf3Position);
+}

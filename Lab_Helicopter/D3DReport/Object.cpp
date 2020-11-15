@@ -7,20 +7,33 @@
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
+#include "Mesh.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 CGameObject::CGameObject()
 {
+	m_ppMeshes = NULL;
 	m_xmf4x4Transform = Matrix4x4::Identity();
 	m_xmf4x4World = Matrix4x4::Identity();
+}
+
+CGameObject::CGameObject(int nMeshes)
+	:CGameObject()
+{
+	m_nMeshes = nMeshes;
+	if (m_nMeshes > 0)
+	{
+		m_ppMeshes = new CMesh * [m_nMeshes];
+		for (int i = 0; i < m_nMeshes; i++)	m_ppMeshes[i] = NULL;
+	}
 }
 
 CGameObject::CGameObject(int nMaterials, int nMeshes)
 	:CGameObject()
 {
 	m_nMeshes = nMeshes;
-	m_ppMeshes = NULL;
+	//m_ppMeshes = NULL;
 	if (m_nMeshes > 0)
 	{
 		m_ppMeshes = new CMesh * [m_nMeshes];
@@ -77,6 +90,10 @@ void CGameObject::Release()
 }
 void CGameObject::SetMesh(int nIndex, CMesh *pMesh)
 {
+	if (!m_ppMeshes)
+	{
+		int stop;
+	}
 	if (m_ppMeshes)
 	{
 		if (m_ppMeshes[nIndex]) m_ppMeshes[nIndex]->Release();
@@ -383,7 +400,7 @@ void CGameObject::LoadMaterialsFromFile(ID3D12Device* pd3dDevice, ID3D12Graphics
 			pTexture->SetRootParameterIndex(0, PARAMETER_STANDARD_TEXTURE);
 #endif
 			pMaterial->SetTexture(pTexture);
-			//			pMaterial->SetShader(pShader);
+			//pMaterial->SetShader(pShader);
 			SetMaterial(nMaterial, pMaterial);
 
 			UINT nMeshType = GetMeshType(0);
@@ -474,7 +491,7 @@ CGameObject* CGameObject::LoadFrameHierarchyFromFile(ID3D12Device* pd3dDevice, I
 
 		if (!strcmp(pstrToken, "<Frame>:"))
 		{
-			pGameObject = new CGameObject();
+			pGameObject = new CGameObject(1);
 
 			nReads = (UINT)::fread(&nFrame, sizeof(int), 1, pInFile);
 			nReads = (UINT)::fread(&nTextures, sizeof(int), 1, pInFile);
@@ -498,9 +515,9 @@ CGameObject* CGameObject::LoadFrameHierarchyFromFile(ID3D12Device* pd3dDevice, I
 		}
 		else if (!strcmp(pstrToken, "<Mesh>:"))
 		{
-			// CStandardMesh* pMesh = new CStandardMesh(pd3dDevice, pd3dCommandList);
-			// pMesh->LoadMeshFromFile(pd3dDevice, pd3dCommandList, pInFile);
-			// pGameObject->SetMesh(pMesh);
+			CStandardMesh* pMesh = new CStandardMesh(pd3dDevice, pd3dCommandList);
+			pMesh->LoadMeshFromFile(pd3dDevice, pd3dCommandList, pInFile);
+			pGameObject->SetMesh(0, pMesh);
 		}
 		else if (!strcmp(pstrToken, "<Materials>:"))
 		{
@@ -514,8 +531,11 @@ CGameObject* CGameObject::LoadFrameHierarchyFromFile(ID3D12Device* pd3dDevice, I
 			{
 				for (int i = 0; i < nChilds; i++)
 				{
-					CGameObject* pChild = CGameObject::LoadFrameHierarchyFromFile(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature, pGameObject, pInFile, pShader);
-					if (pChild) pGameObject->SetChild(pChild);
+					CGameObject* pChild = 
+						CGameObject::LoadFrameHierarchyFromFile(pd3dDevice, pd3dCommandList, 
+							pd3dGraphicsRootSignature, pGameObject, pInFile, pShader);
+					if (pChild) 
+						pGameObject->SetChild(pChild);
 #ifdef _WITH_DEBUG_FRAME_HIERARCHY
 					TCHAR pstrDebug[256] = { 0 };
 					_stprintf_s(pstrDebug, 256, _T("(Frame: %p) (Parent: %p)\n"), pChild, pGameObject);
@@ -535,7 +555,7 @@ CGameObject* CGameObject::LoadFrameHierarchyFromFile(ID3D12Device* pd3dDevice, I
 CGameObject* CGameObject::LoadGeometryFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, char* pstrFileName, CShader* pShader)
 {
 	FILE* pInFile = NULL;
-	::fopen_s(&pInFile, pstrFileName, "rb");
+	auto res = ::fopen_s(&pInFile, pstrFileName, "rb");
 	::rewind(pInFile);
 
 	CGameObject* pGameObject = CGameObject::LoadFrameHierarchyFromFile(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature, NULL, pInFile, pShader);

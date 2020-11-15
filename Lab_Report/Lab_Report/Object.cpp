@@ -751,8 +751,11 @@ CGameObject *CGameObject::LoadFrameHierarchyFromFile(ID3D12Device *pd3dDevice, I
 			{
 				for (int i = 0; i < nChilds; i++)
 				{
-					CGameObject *pChild = CGameObject::LoadFrameHierarchyFromFile(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature, pGameObject, pInFile, pShader);
-					if (pChild) pGameObject->SetChild(pChild);
+					CGameObject *pChild = 
+						CGameObject::LoadFrameHierarchyFromFile(pd3dDevice, pd3dCommandList, 
+							pd3dGraphicsRootSignature, pGameObject, pInFile, pShader);
+					if (pChild)
+						pGameObject->SetChild(pChild);
 #ifdef _WITH_DEBUG_FRAME_HIERARCHY
 					TCHAR pstrDebug[256] = { 0 };
 					_stprintf_s(pstrDebug, 256, _T("(Frame: %p) (Parent: %p)\n"), pChild, pGameObject);

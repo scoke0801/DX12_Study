@@ -87,10 +87,15 @@ void CScene::BuildObjects(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *p
 	m_nShaders = 1;
 	m_ppShaders = new CShader*[m_nShaders];
 
-	CBillboardObjectsShader *pObjectShader = new CBillboardObjectsShader();
-	pObjectShader->CreateShader(pd3dDevice, m_pd3dGraphicsRootSignature, D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT);
-	pObjectShader->BuildObjects(pd3dDevice, pd3dCommandList, m_pTerrain);
-	m_ppShaders[0] = pObjectShader;
+	CBillboardObjectsShader *pBillboardtShader = new CBillboardObjectsShader();
+	pBillboardtShader->CreateShader(pd3dDevice, m_pd3dGraphicsRootSignature, D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT);
+	pBillboardtShader->BuildObjects(pd3dDevice, pd3dCommandList, m_pd3dGraphicsRootSignature, m_pTerrain);
+	m_ppShaders[0] = pBillboardtShader;
+
+	// CObjectsShader* pObjectShader = new CObjectsShader();
+	// pObjectShader->CreateShader(pd3dDevice, m_pd3dGraphicsRootSignature, D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT);
+	// pObjectShader->BuildObjects(pd3dDevice, pd3dCommandList, m_pd3dGraphicsRootSignature, m_pTerrain);
+	// m_ppShaders[1] = pObjectShader;
 }
 
 void CScene::ReleaseObjects()

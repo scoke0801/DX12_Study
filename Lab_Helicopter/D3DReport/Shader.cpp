@@ -7,6 +7,8 @@
 #include "DDSTextureLoader12.h"
 #include "Texture.h"
 
+#include "HelicopterObject.h"
+
 CShader::CShader()
 {
 	m_d3dSrvCPUDescriptorStartHandle.ptr = NULL;
@@ -169,7 +171,7 @@ void CShader::CreateCbvSrvDescriptorHeaps(ID3D12Device *pd3dDevice, int nConstan
 	d3dDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	d3dDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	d3dDescriptorHeapDesc.NodeMask = 0;
-	pd3dDevice->CreateDescriptorHeap(&d3dDescriptorHeapDesc, __uuidof(ID3D12DescriptorHeap), (void **)&m_pd3dCbvSrvDescriptorHeap);
+	HRESULT hRes = pd3dDevice->CreateDescriptorHeap(&d3dDescriptorHeapDesc, __uuidof(ID3D12DescriptorHeap), (void **)&m_pd3dCbvSrvDescriptorHeap);
 
 	m_d3dCbvCPUDescriptorStartHandle = m_pd3dCbvSrvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	m_d3dCbvGPUDescriptorStartHandle = m_pd3dCbvSrvDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
@@ -370,8 +372,68 @@ void CObjectsShader::ReleaseShaderVariables()
 	CTexturedShader::ReleaseShaderVariables();
 }
 
-void CObjectsShader::BuildObjects(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, void *pContext)
+void CObjectsShader::BuildObjects(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, void *pContext)
 {
+	m_nObjects = 120;
+	m_ppObjects = new CGameObject * [m_nObjects];
+
+	CreateCbvSrvDescriptorHeaps(pd3dDevice, 0, 17 + 50); //SuperCobra(17), Gunship(2)
+	
+	CGameObject* pSuperCobraModel = 
+		CGameObject::LoadGeometryFromFile(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature, "Model/SuperCobra.bin", this);
+	CGameObject* pGunshipModel = 
+		CGameObject::LoadGeometryFromFile(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature, "Model/Gunship.bin", this);
+	//	CGameObject *pGunshipModel = CGameObject::LoadGeometryFromFile(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature, "Model/Player.bin", this);
+
+	int nColumnSpace = 5, nColumnSize = 30;
+	int nFirstPassColumnSize = (m_nObjects % nColumnSize) > 0 ? (nColumnSize - 1) : nColumnSize;
+
+	int nObjects = 0;
+	for (int h = 0; h < nFirstPassColumnSize; h++)
+	{
+		for (int i = 0; i < floor(float(m_nObjects) / float(nColumnSize)); i++)
+		{
+			if (nObjects % 2)
+			{
+				m_ppObjects[nObjects] = new CSuperCobraObject(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature);
+				m_ppObjects[nObjects]->SetChild(pSuperCobraModel);
+				pSuperCobraModel->AddRef();
+			}
+			else
+			{
+				m_ppObjects[nObjects] = new CGunshipObject(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature);
+				m_ppObjects[nObjects]->SetChild(pGunshipModel);
+				pGunshipModel->AddRef();
+			}
+			m_ppObjects[nObjects]->SetPosition(RandomPositionInSphere(XMFLOAT3(0.0f, 0.0f, 0.0f), Random(20.0f, 100.0f), h - int(floor(nColumnSize / 2.0f)), nColumnSpace));
+			m_ppObjects[nObjects]->Rotate(0.0f, 90.0f, 0.0f);
+			m_ppObjects[nObjects++]->PrepareAnimate();
+		}
+	}
+
+	if (nFirstPassColumnSize != nColumnSize)
+	{
+		for (int i = 0; i < m_nObjects - int(floor(float(m_nObjects) / float(nColumnSize)) * nFirstPassColumnSize); i++)
+		{
+			if (nObjects % 2)
+			{
+				m_ppObjects[nObjects] = new CSuperCobraObject(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature);
+				m_ppObjects[nObjects]->SetChild(pSuperCobraModel);
+				pSuperCobraModel->AddRef();
+			}
+			else
+			{
+				m_ppObjects[nObjects] = new CGunshipObject(pd3dDevice, pd3dCommandList, pd3dGraphicsRootSignature);
+				m_ppObjects[nObjects]->SetChild(pGunshipModel);
+				pGunshipModel->AddRef();
+			}
+			m_ppObjects[nObjects]->SetPosition(RandomPositionInSphere(XMFLOAT3(0.0f, 0.0f, 0.0f), Random(20.0f, 100.0f), nColumnSize - int(floor(nColumnSize / 2.0f)), nColumnSpace));
+			m_ppObjects[nObjects]->Rotate(0.0f, 90.0f, 0.0f);
+			m_ppObjects[nObjects++]->PrepareAnimate();
+		}
+	}
+
+	CreateShaderVariables(pd3dDevice, pd3dCommandList);
 }
 
 void CObjectsShader::ReleaseObjects()
@@ -473,7 +535,7 @@ D3D12_SHADER_BYTECODE CBillboardObjectsShader::CreateGeometryShader(ID3DBlob** p
 	return(CShader::CompileShaderFromFile(L"Shaders.hlsl", "GSBillboard", "gs_5_1", ppd3dShaderBlob));
 }
 
-void CBillboardObjectsShader::BuildObjects(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, void *pContext)
+void CBillboardObjectsShader::BuildObjects(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, void *pContext)
 {
 	m_pBillboardTexture = new CTexture(7, RESOURCE_TEXTURE2D, 0, 1);
 

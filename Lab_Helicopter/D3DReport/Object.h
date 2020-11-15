@@ -37,6 +37,7 @@ public:
 
 public:
 	CGameObject();
+	CGameObject(int nMeshes);
 	CGameObject(int nMaterials, int nMeshes);
     virtual ~CGameObject();
 
@@ -113,8 +114,12 @@ public:
 
 	int FindReplicatedTexture(_TCHAR* pstrTextureName, D3D12_GPU_DESCRIPTOR_HANDLE* pd3dSrvGpuDescriptorHandle);
 
-	UINT GetMeshType(int nIndex) { return((m_ppMeshes[nIndex]) ? m_ppMeshes[nIndex]->GetType() : 0x00); }
+	UINT GetMeshType(int nIndex)
+	{
+		auto type = (m_ppMeshes[nIndex]) ? m_ppMeshes[nIndex]->GetType() : 0x00;
 
+		return type;
+	}
 public:
 	void LoadMaterialsFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, CGameObject* pParent, FILE* pInFile, CShader* pShader);
 
