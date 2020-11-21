@@ -1,0 +1,704 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CCamera" Collapsed="true">
+    <Position X="12.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ARQAhoBIpKaFAngUhQEAAUEAkOAARggEBkAgABYQAAQ=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSpaceShipCamera" Collapsed="true">
+    <Position X="10.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAEAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFirstPersonCamera" Collapsed="true">
+    <Position X="12.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CThirdPersonCamera" Collapsed="true">
+    <Position X="15" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAAAAAAAIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameFramework" Collapsed="true">
+    <Position X="21.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BlSJAjAAAiQRgAiAAABABEUggSEgEqhIBAJQBIAAECc=</HashCode>
+      <FileName>GameFramework.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMesh" Collapsed="true">
+    <Position X="6.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ARAAAYQAAAAABAEABAIQICAoiBMACQMCABCEEBDBACg=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCubeMeshTextured" Collapsed="true">
+    <Position X="0.75" Y="9.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSkyBoxMesh" Collapsed="true">
+    <Position X="3" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAQAAAA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTexturedRectMesh" Collapsed="true">
+    <Position X="4.75" Y="9.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAIMAIAAAAAAAAAAAAAAAAACABAAAAAAAAQ=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CStandardMesh" Collapsed="true">
+    <Position X="7.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEEAIBAgAAAOCIQAAQQAAAAAAAAEAABCAjAAAAAQAkA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRawFormatImage" Collapsed="true">
+    <Position X="5.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAACAAAAAQAgAAAAAEAAAAAAAAAAAAAQABAAAAQQQ=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CHeightMapImage" Collapsed="true">
+    <Position X="5.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAQAAAAAABCAAAAAAAAICAAAAAAAAA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CHeightMapGridMesh" Collapsed="true">
+    <Position X="9.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAQDAAUAAAAAAAAAAAAIAAAAEAAAgQ=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGeometryBillboardMesh" Collapsed="true">
+    <Position X="12" Y="9.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTexture" Collapsed="true">
+    <Position X="28.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAIEAIAEIBItMgAEKACAIEAABUEAIAiTAAACRAAACQ=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMaterial" Collapsed="true">
+    <Position X="25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBgEAAAAAIAABAAAAACAAAEAAiEAAAAiBAAAgJABAAA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameObject" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAUEBkABgDEBVIURZA4kAFUgEQMEAkAGBBgFSpUAAEM=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSuperCobraObject" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAACAAAAAAAAQAAAAAAIAQAAAAAAAAAAE=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGunshipObject" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAQAAAAgAIAQAAAAAAAAAAE=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMi24Object" Collapsed="true">
+    <Position X="14.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAIACAIAQAAAAAAAAAAE=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSkyBox" Collapsed="true">
+    <Position X="16.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAIAA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBullet" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEBEIAAMABABAAAAAAAAQAAEAEAAQAAhSAAAAAYAA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CExplosion" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACAAhgCABAAAAEAAAAAAAAAAAAAABAABAAAAAA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPlayer" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QZQEAKAEALQCIEAQFQIGYVEQEQggQkAAJhggCAIQAAA=</HashCode>
+      <FileName>Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAirplanePlayer" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAIAYABgACAAAAAE=</HashCode>
+      <FileName>Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScene" Collapsed="true">
+    <Position X="26.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACQAoARIBCICAAAAEOBBACklEACBBAABAAAAQg=</HashCode>
+      <FileName>Scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CShader" Collapsed="true">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACCIYAAEQBECQBIAACEEAASMSlQADBBRAiVpQCAY=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSkyBoxShader" Collapsed="true">
+    <Position X="14.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAEAAAABAAAAAAAAAAAAAAAAAAUAACCA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CStandardShader" Collapsed="true">
+    <Position X="16.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAgEAAAAAAAAAAAAAAAAAAAAAAAQAAGAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CObjectsShader" Collapsed="true">
+    <Position X="16.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQQABCAAABAAQAAIAAAEAACARQAAABAAAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPlayerShader" Collapsed="true">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAEAAACAAAAAAAAAAAAAAAAAAAQgACAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTexturedShader" Collapsed="true">
+    <Position X="4.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAABAAACAAAAAAAAAAAQAACAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTerrainShader" Collapsed="true">
+    <Position X="3.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAEAAEAAAAAAAAAAAAAAAAAAQAAAAQAACAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTerrainWaterShader" Collapsed="true">
+    <Position X="5.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAEAAAAACAAAAACAAAAAAAAAAAQAACAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBillboardObjectsShader" Collapsed="true">
+    <Position X="7.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAESAESAAAAAAAAAACACAAACABAAAQAACAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBulletShader" Collapsed="true">
+    <Position X="10" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAMAAEAAAAAAAAAAAAAAAAAAAAAAAQAACAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CExplosionShader" Collapsed="true">
+    <Position X="12.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAEAAEAEAAAAAAAAACACAAAAAAAAAQAACAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CHeightMapTerrain" Collapsed="true">
+    <Position X="19" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAACiAAEAAQBAAEBAFAAAIAAAAIIRAAAEAAAAQ=</HashCode>
+      <FileName>Terrain.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTerrainWater" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAACgQAEAAQAAAEAAUAAAAAAAAABBgAAAAAAAQ=</HashCode>
+      <FileName>Terrain.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameTimer" Collapsed="true">
+    <Position X="23.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAgAAECIABCBAIAEAGAAAAggBAgAIJAAAQAAAQAA=</HashCode>
+      <FileName>Timer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CVertex" Collapsed="true">
+    <Position X="3.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAQACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Vertices.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDiffusedVertex" Collapsed="true">
+    <Position X="1.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Vertices.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTexturedVertex" Collapsed="true">
+    <Position X="5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAIAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Vertices.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDiffusedTexturedVertex" Collapsed="true">
+    <Position X="0.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACEAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Vertices.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDiffused2TexturedVertex" Collapsed="true">
+    <Position X="2.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAABAAAEAA=</HashCode>
+      <FileName>Vertices.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGeometryBillboardVertex" Collapsed="true">
+    <Position X="7.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAQAAAAAAAAAAAAAAAAAACAAAAAABAAAAA=</HashCode>
+      <FileName>Vertices.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="DDS_PIXELFORMAT" Collapsed="true">
+    <Position X="32" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAACAFIAQ=</HashCode>
+      <FileName>DDSTextureLoader12.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DDS_HEADER" Collapsed="true">
+    <Position X="28.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAASAAAAAAAgQIQIAAIAAEgAAAAAAAAAAQIAAAAAQ=</HashCode>
+      <FileName>DDSTextureLoader12.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DDS_HEADER_DXT10" Collapsed="true">
+    <Position X="30.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAgAAAAAAACAAAAAAAAAAAQAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DDSTextureLoader12.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="VS_CB_CAMERA_INFO" Collapsed="true">
+    <Position X="26.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CB_FRAMEWORK_INFO" Collapsed="true">
+    <Position X="21.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAI=</HashCode>
+      <FileName>GameFramework.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="LIGHT" Collapsed="true">
+    <Position X="23.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAAQAAAAAAAAAgAAQAAAAAIAAAgAQACAAAAAIADQAA=</HashCode>
+      <FileName>Scene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="LIGHTS" Collapsed="true">
+    <Position X="25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CB_TERRAIN_OBJECT_INFO" Collapsed="true">
+    <Position X="25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Terrain.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_DEFAULT" Collapsed="true">
+    <Position X="21.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_RECT" Collapsed="true">
+    <Position X="26.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAgAAAAAEAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_VIEWPORT" Collapsed="true">
+    <Position X="26.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAABAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_BOX" Collapsed="true">
+    <Position X="28.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_DEPTH_STENCIL_DESC" Collapsed="true">
+    <Position X="23.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABACAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_BLEND_DESC" Collapsed="true">
+    <Position X="26.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABAAAAIAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_RASTERIZER_DESC" Collapsed="true">
+    <Position X="25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAIAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_RESOURCE_ALLOCATION_INFO" Collapsed="true">
+    <Position X="28.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_HEAP_PROPERTIES" Collapsed="true">
+    <Position X="32" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_HEAP_DESC" Collapsed="true">
+    <Position X="30.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAQAAAAAIAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_CLEAR_VALUE" Collapsed="true">
+    <Position X="30.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_RANGE" Collapsed="true">
+    <Position X="23.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgBAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_SHADER_BYTECODE" Collapsed="true">
+    <Position X="23.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_TILED_RESOURCE_COORDINATE" Collapsed="true">
+    <Position X="23.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_TILE_REGION_SIZE" Collapsed="true">
+    <Position X="32" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_SUBRESOURCE_TILING" Collapsed="true">
+    <Position X="28.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_TILE_SHAPE" Collapsed="true">
+    <Position X="21.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_RESOURCE_BARRIER" Collapsed="true">
+    <Position X="30.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAQAIAAAAAAAABAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_PACKED_MIP_INFO" Collapsed="true">
+    <Position X="21.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_SUBRESOURCE_FOOTPRINT" Collapsed="true">
+    <Position X="26.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_TEXTURE_COPY_LOCATION" Collapsed="true">
+    <Position X="30.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_DESCRIPTOR_RANGE" Collapsed="true">
+    <Position X="25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_DESCRIPTOR_TABLE" Collapsed="true">
+    <Position X="25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_CONSTANTS" Collapsed="true">
+    <Position X="21.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_DESCRIPTOR" Collapsed="true">
+    <Position X="23.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_PARAMETER" Collapsed="true">
+    <Position X="30.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIQAAAAAAAACAAAAAAAAAAAECAAAAAAgAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_STATIC_SAMPLER_DESC" Collapsed="true">
+    <Position X="25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_SIGNATURE_DESC" Collapsed="true">
+    <Position X="21.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_DESCRIPTOR_RANGE1" Collapsed="true">
+    <Position X="26.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_DESCRIPTOR_TABLE1" Collapsed="true">
+    <Position X="26.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_DESCRIPTOR1" Collapsed="true">
+    <Position X="28.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_ROOT_PARAMETER1" Collapsed="true">
+    <Position X="32" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAABAAACAAAAAAAAAAAECAAAAAAgAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC" Collapsed="true">
+    <Position X="25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_CPU_DESCRIPTOR_HANDLE" Collapsed="true">
+    <Position X="32" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAARAAAAAAAAAAAAAgAAAAgAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_GPU_DESCRIPTOR_HANDLE" Collapsed="true">
+    <Position X="28.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAARAAAAAAAAAAAAAgAAAAgAA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CD3DX12_RESOURCE_DESC" Collapsed="true">
+    <Position X="32" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIA0AAAAAgACAAAAAgCAAAAAAAgAAAAAAAAQQA=</HashCode>
+      <FileName>d3dx12.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="`anonymous-namespace'::handle_closer" Collapsed="true">
+    <Position X="21.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DDSTextureLoader12.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="`anonymous-namespace'::WICTranslate" Collapsed="true">
+    <Position X="30.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WICTextureLoader12.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="`anonymous-namespace'::WICConvert" Collapsed="true">
+    <Position X="28.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WICTextureLoader12.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CB_GAMEOBJECT_INFO" Collapsed="true">
+    <Position X="23.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAABAAAAAAAgAgAAAAAAAAAABAABAAA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="DDS_MISC_FLAGS2" Collapsed="true">
+    <Position X="26.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>DDSTextureLoader12.cpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OBJECT_STATE" Collapsed="true">
+    <Position X="28.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAIIA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BULLET_STATE" Collapsed="true">
+    <Position X="21.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAQAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DirectX::DDS_ALPHA_MODE" Collapsed="true">
+    <Position X="23.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAACAAAAAQAAAQAAAAAAAAABA=</HashCode>
+      <FileName>DDSTextureLoader12.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DirectX::DDS_LOADER_FLAGS" Collapsed="true">
+    <Position X="25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>DDSTextureLoader12.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DirectX::WIC_LOADER_FLAGS" Collapsed="true">
+    <Position X="30.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAACAAAAAAAEAIAAAAAAAAAACA=</HashCode>
+      <FileName>WICTextureLoader12.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>
