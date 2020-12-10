@@ -23,7 +23,7 @@
 			<GlossyReflection>: 1
 			<AlbedoMap>: 1K_Mi24_TXTR
 			<MetallicMap>: null
-			<NormalMap>: null
+			<NormalMap>: 1K_Mi24_TXTR_Normal
 			<EmissionMap>: null
 			<DetailAlbedoMap>: null
 			<DetailNormalMap>: null
@@ -54,7 +54,7 @@
 					<GlossyReflection>: 1
 					<AlbedoMap>: @1K_Mi24_TXTR
 					<MetallicMap>: null
-					<NormalMap>: null
+					<NormalMap>: @1K_Mi24_TXTR_Normal
 					<EmissionMap>: null
 					<DetailAlbedoMap>: null
 					<DetailNormalMap>: null
@@ -86,7 +86,7 @@
 					<GlossyReflection>: 1
 					<AlbedoMap>: @1K_Mi24_TXTR
 					<MetallicMap>: null
-					<NormalMap>: null
+					<NormalMap>: @1K_Mi24_TXTR_Normal
 					<EmissionMap>: null
 					<DetailAlbedoMap>: null
 					<DetailNormalMap>: null
@@ -118,7 +118,7 @@
 					<GlossyReflection>: 1
 					<AlbedoMap>: @1K_Mi24_TXTR
 					<MetallicMap>: null
-					<NormalMap>: null
+					<NormalMap>: @1K_Mi24_TXTR_Normal
 					<EmissionMap>: null
 					<DetailAlbedoMap>: null
 					<DetailNormalMap>: null
@@ -150,7 +150,7 @@
 					<GlossyReflection>: 1
 					<AlbedoMap>: @1K_Mi24_TXTR
 					<MetallicMap>: null
-					<NormalMap>: null
+					<NormalMap>: @1K_Mi24_TXTR_Normal
 					<EmissionMap>: null
 					<DetailAlbedoMap>: null
 					<DetailNormalMap>: null
@@ -182,7 +182,7 @@
 					<GlossyReflection>: 1
 					<AlbedoMap>: @1K_Mi24_TXTR
 					<MetallicMap>: null
-					<NormalMap>: null
+					<NormalMap>: @1K_Mi24_TXTR_Normal
 					<EmissionMap>: null
 					<DetailAlbedoMap>: null
 					<DetailNormalMap>: null
@@ -214,7 +214,7 @@
 					<GlossyReflection>: 1
 					<AlbedoMap>: @1K_Mi24_TXTR
 					<MetallicMap>: null
-					<NormalMap>: null
+					<NormalMap>: @1K_Mi24_TXTR_Normal
 					<EmissionMap>: null
 					<DetailAlbedoMap>: null
 					<DetailNormalMap>: null
@@ -246,7 +246,7 @@
 					<GlossyReflection>: 1
 					<AlbedoMap>: @1K_Mi24_TXTR
 					<MetallicMap>: null
-					<NormalMap>: null
+					<NormalMap>: @1K_Mi24_TXTR_Normal
 					<EmissionMap>: null
 					<DetailAlbedoMap>: null
 					<DetailNormalMap>: null

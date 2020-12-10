@@ -577,8 +577,8 @@ void CObjectsShader::UpdatesObjects(float fTimeElapsed)
 	int idx = FindNextObject(); 
 	if (idx == -1) return; 
 
-	m_ppObjects[idx]->SetState(OBJECT_STATE::Moving);
-	m_ppObjects[idx]->SetTarget(m_xmf3WayPoints[0]);
+	//m_ppObjects[idx]->SetState(OBJECT_STATE::Moving);
+	//m_ppObjects[idx]->SetTarget(m_xmf3WayPoints[0]);
 }
 
 void CObjectsShader::ReleaseUploadBuffers()

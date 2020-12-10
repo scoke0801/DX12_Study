@@ -448,7 +448,7 @@ void CGameFramework::BuildObjects()
 	
 	pAirplanePlayer->SetPosition(XMFLOAT3(1700.f, 650.f, 1500.f));
 	//pAirplanePlayer->SetPosition(XMFLOAT3(150.f, 650.f, 800.f));
-
+	pAirplanePlayer->SetPosition(XMFLOAT3(131.f, 646.f, 768.f));
 	pAirplanePlayer->Rotate(230.f, 230.f, 0.f); 
 	m_pPlayer = pAirplanePlayer;
 	m_pScene->SetPlayer(m_pPlayer);

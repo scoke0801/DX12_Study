@@ -41,10 +41,7 @@ cbuffer cbFrameworkInfo : register(b3)
 #define MATERIAL_EMISSION_MAP		0x10
 #define MATERIAL_DETAIL_ALBEDO_MAP	0x20
 #define MATERIAL_DETAIL_NORMAL_MAP	0x40
-
-#define DYNAMIC_TESSELLATION		0x10
-#define DEBUG_TESSELLATION			0x20
-
+ 
 #define _WITH_STANDARD_TEXTURE_MULTIPLE_DESCRIPTORS
 
 #ifdef _WITH_STANDARD_TEXTURE_MULTIPLE_DESCRIPTORS
@@ -119,14 +116,29 @@ float4 PSStandard(VS_STANDARD_OUTPUT input) : SV_TARGET
 
 	float4 cIllumination = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	float4 cColor = cAlbedoColor + cSpecularColor + cEmissionColor;
+
 	if (gnTexturesMask & MATERIAL_NORMAL_MAP)
 	{
-		float3 normalW = input.normalW;
+		float4 cTexture; float4 cNormal;
+#ifdef _WITH_STANDARD_TEXTURE_MULTIPLE_DESCRIPTORS
+		cTexture = gtxtAlbedoTexture.SampleLevel(gssWrap, input.uv, 0);
+		cNormal = gtxtNormalTexture.SampleLevel(gssWrap, input.uv, 0);
+#else
+		cTexture = gtxtStandardTextures[0].SampleLevel(gssWrap, input.uv, 0);
+		cNormal = gtxtStandardTextures[2].SampleLevel(gssWrap, input.uv, 0);
+#endif
 		float3x3 TBN = float3x3(normalize(input.tangentW), normalize(input.bitangentW), normalize(input.normalW));
-		float3 vNormal = normalize(cNormalColor.rgb * 2.0f - 1.0f); //[0, 1] ¡æ [-1, 1]
-		normalW = normalize(mul(vNormal, TBN));
+		float3 vNormal = normalize(cNormal.rgb * 2.0f - 1.0f); //[0, 1] ¡æ [-1, 1]
+		float3 normalW = normalize(mul(vNormal, TBN));
 		cIllumination = Lighting(input.positionW, normalW);
-		cColor = lerp(cColor, cIllumination, 0.5f);
+		cColor = lerp(cTexture, cIllumination, 0.25f);
+
+		//float3 normalW = input.normalW;
+		//float3x3 TBN = float3x3(normalize(input.tangentW), normalize(input.bitangentW), normalize(input.normalW));
+		//float3 vNormal = normalize(cNormalColor.rgb * 2.0f - 1.0f); //[0, 1] ¡æ [-1, 1]
+		//normalW = normalize(mul(vNormal, TBN));
+		//cIllumination = Lighting(input.positionW, normalW);
+		//cColor = lerp(cColor, cIllumination, 0.5f);
 	}
 
 	return(cColor);
@@ -541,25 +553,6 @@ HS_TERRAIN_TESSELLATION_CONSTANT HSTerrainTessellationConstant(InputPatch<VS_TER
 {
 	HS_TERRAIN_TESSELLATION_CONSTANT output;
 
-	if (gnRenderMode & DYNAMIC_TESSELLATION)
-	{
-		float3 e0 = 0.5f * (input[0].positionW + input[4].positionW);
-		float3 e1 = 0.5f * (input[0].positionW + input[20].positionW);
-		float3 e2 = 0.5f * (input[4].positionW + input[24].positionW);
-		float3 e3 = 0.5f * (input[20].positionW + input[24].positionW);
-
-		output.fTessEdges[0] = CalculateTessFactor(e0);
-		output.fTessEdges[1] = CalculateTessFactor(e1);
-		output.fTessEdges[2] = CalculateTessFactor(e2);
-		output.fTessEdges[3] = CalculateTessFactor(e3);
-
-		float3 f3Sum = float3(0.0f, 0.0f, 0.0f);
-		for (int i = 0; i < 25; i++) f3Sum += input[i].positionW;
-		float3 f3Center = f3Sum / 25.0f;
-		output.fTessInsides[0] = output.fTessInsides[1] = CalculateTessFactor(f3Center);
-	}
-	else
-	{
 		output.fTessEdges[0] = 20.0f;
 		output.fTessEdges[1] = 20.0f;
 		output.fTessEdges[2] = 20.0f;
@@ -567,7 +560,7 @@ HS_TERRAIN_TESSELLATION_CONSTANT HSTerrainTessellationConstant(InputPatch<VS_TER
 
 		output.fTessInsides[0] = 20.0f;
 		output.fTessInsides[1] = 20.0f;
-	}
+
 
 	return(output);
 }
@@ -598,19 +591,6 @@ float4 PSTerrainTessellation(DS_TERRAIN_TESSELLATION_OUTPUT input) : SV_TARGET
 {
 	float4 cColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	if (gnRenderMode & (DEBUG_TESSELLATION | DYNAMIC_TESSELLATION))
-	{
-		if (input.tessellation.w <= 5.0f) cColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
-		else if (input.tessellation.w <= 10.0f) cColor = float4(0.0f, 1.0f, 0.0f, 1.0f);
-		else if (input.tessellation.w <= 20.0f) cColor = float4(0.0f, 0.0f, 1.0f, 1.0f);
-		else if (input.tessellation.w <= 30.0f) cColor = float4(1.0f, 0.0f, 1.0f, 1.0f);
-		else if (input.tessellation.w <= 40.0f) cColor = float4(1.0f, 1.0f, 0.0f, 1.0f);
-		else if (input.tessellation.w <= 50.0f) cColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-		else if (input.tessellation.w <= 55.0f) cColor = float4(0.2f, 0.2f, 0.72f, 1.0f);
-		else if (input.tessellation.w <= 60.0f) cColor = float4(0.5f, 0.75f, 0.75f, 1.0f);
-		else cColor = float4(0.87f, 0.17f, 1.0f, 1.0f);
-	}
-	else
 	{
 		float4 cBaseTexColor = gtxtTerrainBaseTexture.Sample(gssWrap, input.uv0);
 		float4 cDetailTexColor = gtxtTerrainDetailTexture.Sample(gssWrap, input.uv1);

@@ -136,7 +136,8 @@ void CTexture::LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsComma
 	m_ppd3dTextures[nIndex] = ::CreateTextureResourceFromDDSFile(pd3dDevice, pd3dCommandList, pszFileName, &m_ppd3dTextureUploadBuffers[nIndex], D3D12_RESOURCE_STATE_GENERIC_READ/*D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE*/);
 }
 
-int CTexture::LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, CGameObject* pParent, FILE* pInFile, CShader* pShader, UINT nIndex)
+int CTexture::LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, 
+	CGameObject* pParent, FILE* pInFile, CShader* pShader, UINT nIndex, char* saveBuf)
 {
 	char pstrTextureName[64] = { '\0' };
 
@@ -153,13 +154,25 @@ int CTexture::LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsComman
 		char pstrFilePath[64] = { '\0' };
 		strcpy_s(pstrFilePath, 64, "Model/Textures/");
 
+		if (saveBuf != nullptr) {
+			if (!strstr(saveBuf, "1K_GunshipTXTR"))
+				strcat_s(pstrFilePath, 64, "1K_GunshipTXTR_Normal");
+			else if (!strstr(saveBuf, "@1K_GunshipTXTR"))
+				strcat_s(pstrFilePath, 64, "@1K_GunshipTXTR_Normal");
+			else if (!strstr(saveBuf, "512K_HellfireTXTR"))
+				strcat_s(pstrFilePath, 64, "@512K_HellfireTXTR_Normal");
+			else if (!strstr(saveBuf, "@1K_GunshipTXTR"))
+				strcat_s(pstrFilePath, 64, "@1K_GunshipTXTR_Normal");
+		}
+		
 		bDuplicated = (pstrTextureName[0] == '@');
 		strcpy_s(pstrFilePath + 15, 64 - 15, (bDuplicated) ? (pstrTextureName + 1) : pstrTextureName);
 		strcpy_s(pstrFilePath + 15 + ((bDuplicated) ? (nStrLength - 1) : nStrLength), 64 - 15 - ((bDuplicated) ? (nStrLength - 1) : nStrLength), ".dds");
 
 		size_t nConverted = 0;
 		mbstowcs_s(&nConverted, m_ppstrTextureNames[nIndex], 64, pstrFilePath, _TRUNCATE);
-
+		
+		if (saveBuf != nullptr) strcpy_s(saveBuf, 64, pstrFilePath);
 #define _WITH_DISPLAY_TEXTURE_NAME
 
 #ifdef _WITH_DISPLAY_TEXTURE_NAME
@@ -172,6 +185,7 @@ int CTexture::LoadTextureFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsComman
 		{
 			LoadTextureFromDDSFile(pd3dDevice, pd3dCommandList, m_ppstrTextureNames[nIndex], RESOURCE_TEXTURE2D, nIndex);
 			pShader->CreateShaderResourceView(pd3dDevice, this, nIndex);
+			
 #ifdef _WITH_STANDARD_TEXTURE_MULTIPLE_DESCRIPTORS
 			m_pnRootParameterIndices[nIndex] = PARAMETER_STANDARD_TEXTURE;// +nIndex;
 #endif
@@ -658,6 +672,7 @@ void CGameObject::Attacked()
 void CGameObject::LoadMaterialsFromFile(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, CGameObject *pParent, FILE *pInFile, CShader *pShader)
 {
 	char pstrToken[64] = { '\0' };
+	char frameName[64] = {};
 
 	int nMaterial = 0;
 	BYTE nStrLength = 0;
@@ -672,6 +687,7 @@ void CGameObject::LoadMaterialsFromFile(ID3D12Device *pd3dDevice, ID3D12Graphics
 
 	for ( ; ; )
 	{
+		char albedoMapName[64] = "";
 		nReads = (UINT)::fread(&nStrLength, sizeof(BYTE), 1, pInFile);
 		nReads = (UINT)::fread(pstrToken, sizeof(char), nStrLength, pInFile); 
 		pstrToken[nStrLength] = '\0';
@@ -710,7 +726,7 @@ void CGameObject::LoadMaterialsFromFile(ID3D12Device *pd3dDevice, ID3D12Graphics
 		{
 			nReads = (UINT)::fread(&(pMaterial->m_fGlossiness), sizeof(float), 1, pInFile);
 		}
-		else if (!strcmp(pstrToken, "<Smoothness>:"))
+		else if (!strcmp(pstrToken, "<	>:"))
 		{
 			nReads = (UINT)::fread(&(pMaterial->m_fSmoothness), sizeof(float), 1, pInFile);
 		}
@@ -728,7 +744,7 @@ void CGameObject::LoadMaterialsFromFile(ID3D12Device *pd3dDevice, ID3D12Graphics
 		}
 		else if (!strcmp(pstrToken, "<AlbedoMap>:"))
 		{
-			if (pTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, pParent, pInFile, pShader, 0)) pMaterial->SetMaterialType(MATERIAL_ALBEDO_MAP);
+			if (pTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, pParent, pInFile, pShader, 0, albedoMapName)) pMaterial->SetMaterialType(MATERIAL_ALBEDO_MAP);
 		}
 		else if (!strcmp(pstrToken, "<SpecularMap>:"))
 		{
@@ -736,7 +752,7 @@ void CGameObject::LoadMaterialsFromFile(ID3D12Device *pd3dDevice, ID3D12Graphics
 		}
 		else if (!strcmp(pstrToken, "<NormalMap>:"))
 		{
-			if (pTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, pParent, pInFile, pShader, 2)) pMaterial->SetMaterialType(MATERIAL_NORMAL_MAP);
+			if (pTexture->LoadTextureFromFile(pd3dDevice, pd3dCommandList, pParent, pInFile, pShader, 2, albedoMapName)) pMaterial->SetMaterialType(MATERIAL_NORMAL_MAP);
 		}
 		else if (!strcmp(pstrToken, "<MetallicMap>:"))
 		{
