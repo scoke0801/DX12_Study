@@ -1,0 +1,113 @@
+DirectX ?
+GPU를 제어하고 프로그래밍하는데 쓰이는 저수준 그래픽 API
+
+
+Com(Component Object Model)
+DX의 프로그래밍 언어 독립성과 하위 호환성을 가능하게 하는 기술
+COM객체(COM 인터페이스)를 사용, 세부 사항은 우리한테는 숨겨짐
+ComPtr - COM객체를 다루는 일종의 스마트 포인터
+
+
+ D3D12 디버그층  활성화
+ - VC++ 출력창에 상세한 디버깅 메시지 출력
+ - riid : 디바이스의 COM ID
+ - ppDevice : 생성된 장치가 매개변수에 설정
+#ifdef _DEBUG
+	::D3D12GetDebugInterface(IID_PPV_ARGS(&_debugController));
+	_debugController->EnableDebugLayer();
+#endif
+
+
+ DXGI(DirectX Graphics Infrastructure)
+ Direct3D와 함께 쓰이는 API
+ - 전체화면 모드 전환
+ - 지원되는 디스플레이 모드 열거 등 
+ CreateDXGIFactory
+ - riid : 디바이스 COM ID
+ - ppDevice: 생성된 장치가 매개변수에 설정
+::CreateDXGIFactory(IID_PPV_ARGS(&_dxgi));
+
+
+CreateDevice
+- 디스플레이 어댑터(그래픽 카드)를 나타내는 객체
+- pAdapter : nullptr 지정하면 시스템 기본 디스플레이 어댑터
+- MinimumFeatureLevel : 응용 프로그램이 요구하는 최소 기능 수준(구닥다리 걸러낸다)
+- riid : 디바이스의 COM id
+- ppDevice : 생성된 장치가 매개변수에 설정
+::D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&_device));
+
+
+CommandQueue : DX12에 등장
+외주를 요청할 때, 하나씩 요청하면 비효율적
+[ 외주 목록 ]에 일감을 차곡차곡 기록했다가 한 방에 요청하는 것.
+ComPtr<ID3D12CommandQueue>			_cmdQueue;	
+ComPtr<ID3D12CommandAllocator>		_cmdAlloc;	// 메모리 공간
+ComPtr<ID3D12GraphicsCommandList>	_cmdList;	// 일감 리스트
+
+
+Fence : 울타리(?)
+CPU / GPU 동기화를 위한 간단한 도구
+ComPtr<ID3D12Fence>					_fence;
+uint32								_fenceValue = 0;
+HANDLE								_fenceEvent = INVALID_HANDLE_VALUE;
+
+
+D3D12_COMMAND_QUEUE_DESC queueDesc = {};
+queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+
+device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&_cmdQueue));
+
+- D3D12_COMMAND_LIST_TYPE_DIRECT : GPU가 직접 실행하는 명령 목록
+device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&_cmdAlloc));
+
+GPU가 하나인 시스템에서는 0으로
+Direct or Bundle
+Allocator
+초기상태 (그리기 명령은 nullptr로 지정)
+device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdAlloc.Get(), nullptr, IID_PPV_ARGS(&_cmdList));
+
+CommandList는 Close / Open상태가 있는데
+Open 상태에서는 Command를 넣다가 Close한 다음 제출하는 개념.
+_cmdList->Close();
+
+CreateFence
+- CPU와 GPU의 동기화 수단으로 사용
+device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&_fence));
+_fenceEvent = ::CreateEvent(nullptr, FALSE, FALSE, nullptr);
+
+
+교환 사슬
+[외주과정]
+- 현재 게임 세상에 있는 상황을 묘사
+- 어떤 공식으로 어떻게 계산할지를 던져줌
+- GPU가 열심히 계산(외주)
+- 결과물을 받아서 화면에 그려준다.
+
+[외주 결과물]을 어디에 받지?
+- 어떤 종이(Buffer)에 그려서 건내달라고 부탁해보자
+- 특수 종이를 만들어서 -> 처음에 건내주고 -> 결과물을 해당 종이에 받는다.
+- 우리 화면에 특수 종이(외주 결과물)를 출력해준다.
+
+[?]
+- 그런데 화면에 현재 결과물 출력는 와중에, 다음 화면도 외주를 맡겨야 함.
+- 현재 화면 결과물은 이미 화면 출력에 사용중.
+- 특수 종이를 2개 만들어서, 하나는 현재 화면을 그려주고 하나는 외주 맡기고
+- Double Buffering
+
+- [1] [2]
+현재화면 [1] <-> GPU작업 [2] BackBuffer
+SwapChain..
+
+[기안서]
+외주를 맡길 떄 이런 저런 정보들을 같이 넘겨줘야 하는데,
+아무 형태로나 요청하면 못 알아먹는다.
+- 각종 리소스를 어떤 용도로 사용하는지 꼼꼼하게 적어서 넘겨주는 용도
+DesciptorHeap..
+Desciptor ( Dx12에서의 호칭) ,,, View( ~Dx11까지의 호칭)
+[서술자 힙]으로 RTV생성
+DX11 의 RTV(RenderTargetView), DSV(DepthStencilView),
+CBV(ConstantBufferView), SRV(SharedResourceView), UAV(UnorderedAccessView )를 전부!
+같은 종류의 데이터끼리 배열로 관리.
+RTV 목록: [] [] []
+DSC목록 : [] [] []
