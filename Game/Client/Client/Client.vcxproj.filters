@@ -15,11 +15,11 @@
     <Filter Include="소스 파일\Game">
       <UniqueIdentifier>{31232910-d6c4-4df7-8a98-50760184dd18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Main">
+      <UniqueIdentifier>{d76bd463-302a-4533-95b7-6dd1c11aed08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Client.h">
-      <Filter>소스 파일\Uitls</Filter>
-    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>소스 파일\Uitls</Filter>
     </ClInclude>
@@ -31,6 +31,12 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>소스 파일\Uitls</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>소스 파일\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>소스 파일\Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -47,11 +53,14 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Client.cpp">
-      <Filter>소스 파일\Uitls</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일\Uitls</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>소스 파일\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>소스 파일\Main</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
