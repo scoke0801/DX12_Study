@@ -51,6 +51,12 @@ struct WindowInfo
 	bool	windowed;	// 창모드 or 전체화면
 }; 
 
+struct Vertex
+{
+	Vec3 pos;
+	Vec4 color;
+};
+
 enum
 {
 	SWAP_CHAIN_BUFFER_COUNT = 2, 
@@ -58,3 +64,7 @@ enum
 
 class Engine;
 extern unique_ptr<Engine> GEngine;
+ 
+#define DEVICE GEngine->GetDevice()->GetDevice()
+#define CMD_LIST GEngine->GetCommandQueue()->GetCommandList()
+#define ROOT_SIGNATURE GEngine->GetRootSignature()->GetSignature()

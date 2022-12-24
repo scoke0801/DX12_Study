@@ -7,13 +7,14 @@ class CommandQueue
 public:
 	~CommandQueue();
 
-	void Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain, shared_ptr<DescriptorHeap> descHeap);
+	void Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain);
 	void WaitSync();
 
 	void RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect);
 	void RenderEnd();
 
 	ComPtr<ID3D12CommandQueue> GetCommandQueue() { return _cmdQueue; }
+	ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return _cmdList; }
 private:
 	// CommandQueue : DX12에 등장
 	// 외주를 요청할 때, 하나씩 요청하면 비효율적
@@ -28,7 +29,6 @@ private:
 	uint32								_fenceValue = 0;
 	HANDLE								_fenceEvent = INVALID_HANDLE_VALUE;
 
-	shared_ptr<SwapChain>				_swapChain;
-	shared_ptr<DescriptorHeap>			_descHeap;
+	shared_ptr<SwapChain>				_swapChain; 
 };
 

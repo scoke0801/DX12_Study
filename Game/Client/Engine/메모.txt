@@ -111,3 +111,18 @@ CBV(ConstantBufferView), SRV(SharedResourceView), UAV(UnorderedAccessView )를 전
 같은 종류의 데이터끼리 배열로 관리.
 RTV 목록: [] [] []
 DSC목록 : [] [] []
+
+
+// [ 계약서 / 결재 ] 
+// 재료			-->외주		가공
+// CPU [	]	-->외주		GPU [	]
+// 한국	[	]	-->외주		베트남 [	]
+RootSignature
+
+
+// 같이 정점으로 이루어진 물체의 정보
+Mesh
+
+
+// [일감 기술서] 외주 인력들이 뭘 해야할지를 기술
+Shader
