@@ -17,6 +17,7 @@ void Mesh::Init(vector<Vertex>& vec)
 		, nullptr
 		, IID_PPV_ARGS(&_vertexBuffer));
 
+	// device를 통해서 복사( CommandList를 통한 작업과 다르게 즉시? 처리)
 	// Copy the triangle data to the vertex buffer.
 	void* vertexDataBuffer = nullptr;
 	CD3DX12_RANGE readRange(0, 0);	// We do not intend to read from this resource on the CPU.
@@ -34,5 +35,12 @@ void Mesh::Render()
 {
 	CMD_LIST->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	CMD_LIST->IASetVertexBuffers(0, 1, &_vertexBufferView); // Slot: (0~15)
+
+	// TODO
+	// 1) buffer에다가 데이터 세팅
+	// 2) buffer의 주소를 register에다가  전송 
+	GEngine->GetConstantBuffer()->PushData(0, &_transform, sizeof(_transform));
+	GEngine->GetConstantBuffer()->PushData(1, &_transform, sizeof(_transform));
+
 	CMD_LIST->DrawInstanced(_vertexCount, 1, 0, 0);
 }

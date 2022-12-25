@@ -30,7 +30,20 @@ void Game::Update()
 	GEngine->RenderBegin();
 
 	shader->Update();
-	mesh->Render();
 
+	{
+		Transform t;
+		t.offset = Vec4(0.75f, 0.0f, 0.0f, 0.0f);
+		mesh->SetTransform(t);
+		mesh->Render();
+	}
+
+	{
+		Transform t;
+		t.offset = Vec4(0.0f, 0.75f, 0.0f, 0.0f);
+		mesh->SetTransform(t);
+		mesh->Render();
+	} 
+	 
 	GEngine->RenderEnd();
 }
