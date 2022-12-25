@@ -42,7 +42,7 @@ using Vec2 = XMFLOAT2;
 using Vec3 = XMFLOAT3;
 using Vec4 = XMFLOAT4;
 using Matrix = XMMATRIX;
-
+ 
 struct WindowInfo
 {
 	HWND	hwnd;		// 출력 윈도우
@@ -61,11 +61,24 @@ struct Transform
 	Vec4 offset;
 };
 
-enum
+enum class CBV_REGISTER
 {
-	SWAP_CHAIN_BUFFER_COUNT = 2, 
+	b0,
+	b1,
+	b2,
+	b3,
+	b4,
+
+	END
 };
 
+enum
+{
+	SWAP_CHAIN_BUFFER_COUNT = 2,
+	CBV_REGISTER_COUNT = CBV_REGISTER::END,
+	REGISTER_COUNT = CBV_REGISTER::END,
+};
+ 
 class Engine;
 extern unique_ptr<Engine> GEngine;
  

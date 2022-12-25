@@ -9,16 +9,15 @@ void Game::Init(const WindowInfo& window)
 {
 	GEngine->Init(window);
 
-
 	vector<Vertex> vec(3);
-	vec[0].pos = { 0.f, 0.5f, 0.5f };
-	vec[0].color = {1.0f, 0.0f, 0.0f, 1.0f };
-	vec[1].pos = { 0.5f, -0.5f, 0.5f };
-	vec[1].color = { 0.0f, 1.0f, 0.0f, 1.0f };
-	vec[2].pos = { -0.5f, -0.5f, 0.5f };
-	vec[2].color = { 0.0f, 0.0f, 1.0f, 1.0f };
+	vec[0].pos = Vec3(0.f, 0.5f, 0.5f);
+	vec[0].color = Vec4(1.f, 0.f, 0.f, 1.f);
+	vec[1].pos = Vec3(0.5f, -0.5f, 0.5f);
+	vec[1].color = Vec4(0.f, 1.0f, 0.f, 1.f);
+	vec[2].pos = Vec3(-0.5f, -0.5f, 0.5f);
+	vec[2].color = Vec4(0.f, 0.f, 1.f, 1.f);
 	mesh->Init(vec);
-
+	 
 	shader->Init(L"..\\Resources\\Shader\\default.hlsli");
 
 	GEngine->GetCommandQueue()->WaitSync();
