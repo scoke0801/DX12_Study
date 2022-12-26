@@ -87,7 +87,7 @@ void ConstantBuffer::CreateView()
 	_cbvHandleBegin = _cbvHeap->GetCPUDescriptorHandleForHeapStart();
 	_handleIncrementSize = DEVICE->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	for (int i = 0; i < _elementCount; ++i)
+	for (int i = 0; i < static_cast<int>(_elementCount); ++i)
 	{
 		D3D12_CPU_DESCRIPTOR_HANDLE cbvHandle = GetCPUHandle(i);
 

@@ -8,6 +8,8 @@
 #include "Shader.h"
 #include "ConstantBuffer.h"
 #include "TableDescriptorHeap.h"
+#include "Texture.h"
+#include "DepthStencilBuffer.h"
 
 class Engine
 {
@@ -27,6 +29,7 @@ public:
 	shared_ptr<RootSignature> GetRootSignature() { return _rootSignature; }
 	shared_ptr<ConstantBuffer> GetConstantBuffer() { return _constantBuffer; }
 	shared_ptr<TableDescriptorHeap> GetTableDescriptorHeap() { return _tableDescHeap; }
+	shared_ptr<DepthStencilBuffer> GetDepthStencilBuffer() { return _depthStencilBuffer; }
 
 private:
 	// 그려질 화면 크기 관련
@@ -40,5 +43,6 @@ private:
 	shared_ptr<RootSignature> _rootSignature;
 	shared_ptr<ConstantBuffer> _constantBuffer;
 	shared_ptr<TableDescriptorHeap> _tableDescHeap;
+	shared_ptr<DepthStencilBuffer> _depthStencilBuffer;
 };
 
