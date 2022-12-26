@@ -117,3 +117,6 @@ extern unique_ptr<Engine> GEngine;
 #define CMD_LIST GEngine->GetCommandQueue()->GetCommandList()
 #define RESOURCE_CMD_LIST GEngine->GetCommandQueue()->GetResourceCommandList()
 #define ROOT_SIGNATURE GEngine->GetRootSignature()->GetSignature() 
+
+#define INPUT GEngine->GetInput()
+#define DELTA_TIME GEngine->GetTimer()->GetDeltaTime();

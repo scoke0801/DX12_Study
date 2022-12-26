@@ -47,26 +47,48 @@ void Game::Init(const WindowInfo& window)
 
 void Game::Update()
 {
-	//GEngine->Render(); 
+	GEngine->Update();
+
 	GEngine->RenderBegin();
 
 	shader->Update();
-	 
+	
+
 	{
-		Transform t;
-		t.offset = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
+		static Transform t = {};
+
+		float deltaTime = DELTA_TIME;
+		float speed = 1.0f;
+		if (INPUT->GetButton(KEY_TYPE::W)) 
+		{
+			t.offset.y += speed * deltaTime;
+		}
+		if (INPUT->GetButton(KEY_TYPE::S)) 
+		{
+			t.offset.y -= speed * deltaTime;
+		}
+		if (INPUT->GetButton(KEY_TYPE::A))
+		{
+			t.offset.x -= speed * deltaTime;
+		}
+		if (INPUT->GetButton(KEY_TYPE::D))
+		{
+			t.offset.x += speed * deltaTime;
+		}
+
+		//t.offset = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
 		mesh->SetTransform(t);
 		mesh->SetTextrue(texture);
 		mesh->Render();
 	}
-
+	/*
 	{
 		Transform t;
 		t.offset = Vec4(0.25f, 0.25f, 0.1f, 0.0f);
 		mesh->SetTransform(t);
 		mesh->SetTextrue(texture);
 		mesh->Render();
-	}	
+	}*/	
 	
 	GEngine->RenderEnd();
 }
