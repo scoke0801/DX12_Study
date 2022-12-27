@@ -9,18 +9,13 @@
 #include "ConstantBuffer.h"
 #include "TableDescriptorHeap.h"
 #include "Texture.h"
-#include "DepthStencilBuffer.h"
-#include "Input.h"
-#include "Timer.h"
+#include "DepthStencilBuffer.h" 
 
 class Engine
 {
 public:
 	void Init(const WindowInfo& window);
 
-	void ResizeWindow(int32 width, int32 height);
-
-public:
 	void Update();
 	void LateUpdate();
 	 
@@ -39,10 +34,9 @@ public:
 	shared_ptr<DepthStencilBuffer> GetDepthStencilBuffer() { return _depthStencilBuffer; }
 
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
-
+	 
 public:
-	shared_ptr<Input> GetInput() { return _input; }
-	shared_ptr<Timer> GetTimer() { return _timer; }
+	void ResizeWindow(int32 width, int32 height);
 
 private:
 	void ShowFPS();
@@ -61,9 +55,6 @@ private:
 	shared_ptr<RootSignature> _rootSignature;
 	std::vector<shared_ptr<ConstantBuffer>> _constantBuffers;
 	shared_ptr<TableDescriptorHeap> _tableDescHeap;
-	shared_ptr<DepthStencilBuffer> _depthStencilBuffer;
-
-	shared_ptr<Input> _input;
-	shared_ptr<Timer> _timer;
+	shared_ptr<DepthStencilBuffer> _depthStencilBuffer; 
 };
 

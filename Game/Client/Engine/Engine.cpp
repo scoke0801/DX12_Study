@@ -2,6 +2,9 @@
 #include "Engine.h" 
 #include "Material.h"
 #include "Transform.h"
+#include "Input.h"
+#include "Timer.h"
+#include "SceneManager.h"
 
 void Engine::Init(const WindowInfo& window)
 {
@@ -17,10 +20,7 @@ void Engine::Init(const WindowInfo& window)
 	_rootSignature = make_shared<RootSignature>();
 
 	_tableDescHeap = make_shared<TableDescriptorHeap>();
-	_depthStencilBuffer = make_shared<DepthStencilBuffer>();
-	
-	_input = make_shared<Input>();
-	_timer = make_shared<Timer>();
+	_depthStencilBuffer = make_shared<DepthStencilBuffer>(); 
 
 	_device->Init();
 	_cmdQueue->Init(_device->GetDevice(), _swapChain);
@@ -33,17 +33,32 @@ void Engine::Init(const WindowInfo& window)
 	_tableDescHeap->Init(1); 
 	_depthStencilBuffer->Init(_window);
 
-	_input->Init(_window.hwnd);
-	_timer->Init();
-
 	ResizeWindow(window.width, window.height);
+	 
+	GET_SINGLETON(Input)->Init(_window.hwnd);
+	GET_SINGLETON(Timer)->Init(); 
+}
+
+void Engine::Update()
+{
+	INPUT->Update();
+	TIMER->Update();
+
+	Render();
+
+	ShowFPS();
+}
+
+void Engine::LateUpdate()
+{
+	// TODO
 }
 
 void Engine::Render()
 {
 	RenderBegin();
 
-	// TODO : 나머지 물체를 그려준다.
+	GET_SINGLETON(SceneManager)->Updaet();
 
 	RenderEnd();
 }
@@ -58,24 +73,11 @@ void Engine::ResizeWindow(int32 width, int32 height)
 	::SetWindowPos(_window.hwnd, 0, 100, 100, width, height, 0);
 	 
 	_depthStencilBuffer->Init(_window);
-}
-
-void Engine::Update()
-{
-	_input->Update();
-	_timer->Update();
-
-	ShowFPS();
-}
-
-void Engine::LateUpdate()
-{
-	// TODO
-}
+} 
 
 void Engine::ShowFPS()
 {
-	uint32 fps = _timer->GetFPS();
+	uint32 fps = TIMER->GetFPS();
 
 	WCHAR text[100] = L"";
 	::wsprintf(text, L"FPS : %d", fps);

@@ -30,6 +30,8 @@ enum
 
 class Input
 {
+	DECLARE_SINGLETON(Input);
+
 public:
 	void Init(HWND hWnd);
 	void Update();

@@ -1,6 +1,8 @@
 #pragma once
 class Timer
 {
+	DECLARE_SINGLETON(Timer);
+
 public:
 	void Init();
 	void Update();

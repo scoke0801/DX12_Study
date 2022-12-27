@@ -108,14 +108,30 @@ enum
  
 class Engine;
 extern unique_ptr<Engine> GEngine;
- 
+
+#define DECLARE_SINGLETON(type)					\
+private:										\
+	type() {}									\
+	~type() {}									\
+	type(const type& other) = delete;			\
+	type& operator=(const type& other) = delete;\
+public:											\
+	static type* GetInstance()					\
+	{											\
+		static type instance;					\
+		return &instance;						\
+	}											\
+
+#define GET_SINGLETON(type)	type::GetInstance()
+
 #define DEVICE GEngine->GetDevice()->GetDevice()
 #define CMD_LIST GEngine->GetCommandQueue()->GetCommandList()
 #define RESOURCE_CMD_LIST GEngine->GetCommandQueue()->GetResourceCommandList()
 #define ROOT_SIGNATURE GEngine->GetRootSignature()->GetSignature() 
 
-#define INPUT GEngine->GetInput()
-#define DELTA_TIME GEngine->GetTimer()->GetDeltaTime();
+#define INPUT GET_SINGLETON(Input)
+#define TIMER GET_SINGLETON(Timer)
+#define DELTA_TIME GET_SINGLETON(Timer)->GetDeltaTime();
 
 #define CONSTANT_BUFFER(type) GEngine->GetConstantBuffer(type)
 
