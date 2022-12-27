@@ -72,10 +72,6 @@ struct Vertex
 	Vec4 color;
 	Vec2 uv;
 };
-struct Transform
-{
-	Vec4 offset;
-};
 
 enum class CBV_REGISTER : uint8
 {

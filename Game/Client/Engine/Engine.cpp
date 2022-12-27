@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Engine.h" 
 #include "Material.h"
+#include "Transform.h"
 
 void Engine::Init(const WindowInfo& window)
 {
@@ -26,7 +27,7 @@ void Engine::Init(const WindowInfo& window)
 	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _cmdQueue->GetCommandQueue());
 	_rootSignature->Init();
 
-	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(Transform), 1);
+	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(TransformMatrix), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(MaterialParams), 1);
 
 	_tableDescHeap->Init(1); 
@@ -65,6 +66,11 @@ void Engine::Update()
 	_timer->Update();
 
 	ShowFPS();
+}
+
+void Engine::LateUpdate()
+{
+	// TODO
 }
 
 void Engine::ShowFPS()

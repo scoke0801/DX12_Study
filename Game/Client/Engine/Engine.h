@@ -17,15 +17,18 @@ class Engine
 {
 public:
 	void Init(const WindowInfo& window);
-	void Render();
-
-	void RenderBegin();
-	void RenderEnd();
 
 	void ResizeWindow(int32 width, int32 height);
 
 public:
 	void Update();
+	void LateUpdate();
+	 
+public:
+	void Render();
+
+	void RenderBegin();
+	void RenderEnd();
 
 public:
 	shared_ptr<Device> GetDevice() { return _device; }
@@ -36,6 +39,7 @@ public:
 	shared_ptr<DepthStencilBuffer> GetDepthStencilBuffer() { return _depthStencilBuffer; }
 
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
+
 public:
 	shared_ptr<Input> GetInput() { return _input; }
 	shared_ptr<Timer> GetTimer() { return _timer; }
