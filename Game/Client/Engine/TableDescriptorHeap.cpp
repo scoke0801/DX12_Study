@@ -4,10 +4,12 @@
 
 void TableDescriptorHeap::Init(uint32 count)
 {
+	assert(count > 0);
+
 	_groupCount = count;
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
-	desc.NumDescriptors = count + REGISTER_COUNT;
+	desc.NumDescriptors = count * REGISTER_COUNT;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 

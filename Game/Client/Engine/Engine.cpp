@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Engine.h" 
- 
+#include "Material.h"
+
 void Engine::Init(const WindowInfo& window)
 {
 	_window = window;
@@ -13,7 +14,7 @@ void Engine::Init(const WindowInfo& window)
 	_cmdQueue = make_shared<CommandQueue>();
 	_swapChain = make_shared<SwapChain>(); 
 	_rootSignature = make_shared<RootSignature>();
-	_constantBuffer = make_shared<ConstantBuffer>();
+
 	_tableDescHeap = make_shared<TableDescriptorHeap>();
 	_depthStencilBuffer = make_shared<DepthStencilBuffer>();
 	
@@ -24,8 +25,11 @@ void Engine::Init(const WindowInfo& window)
 	_cmdQueue->Init(_device->GetDevice(), _swapChain);
 	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _cmdQueue->GetCommandQueue());
 	_rootSignature->Init();
-	_constantBuffer->Init(sizeof(Transform), 256);
-	_tableDescHeap->Init(256); 
+
+	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(Transform), 1);
+	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(MaterialParams), 1);
+
+	_tableDescHeap->Init(1); 
 	_depthStencilBuffer->Init(_window);
 
 	_input->Init(_window.hwnd);
@@ -71,6 +75,16 @@ void Engine::ShowFPS()
 	::wsprintf(text, L"FPS : %d", fps);
 
 	::SetWindowText(_window.hwnd, text);
+}
+
+void Engine::CreateConstantBuffer(CBV_REGISTER reg, uint32 bufferSize, uint32 count)
+{
+	uint8 typeInt = static_cast<uint8>(reg);
+	assert(_constantBuffers.size() == typeInt);
+
+	shared_ptr<ConstantBuffer> buffer = make_shared<ConstantBuffer>();
+	buffer->Init(reg, bufferSize, count);
+	_constantBuffers.push_back(buffer);
 }
 
 void Engine::RenderBegin()

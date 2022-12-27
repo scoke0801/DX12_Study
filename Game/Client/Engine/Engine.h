@@ -31,17 +31,19 @@ public:
 	shared_ptr<Device> GetDevice() { return _device; }
 	shared_ptr<CommandQueue> GetCommandQueue() { return _cmdQueue; }
 	shared_ptr<SwapChain> GetSwapChain() { return _swapChain; }
-	shared_ptr<RootSignature> GetRootSignature() { return _rootSignature; }
-	shared_ptr<ConstantBuffer> GetConstantBuffer() { return _constantBuffer; }
+	shared_ptr<RootSignature> GetRootSignature() { return _rootSignature; } 
 	shared_ptr<TableDescriptorHeap> GetTableDescriptorHeap() { return _tableDescHeap; }
 	shared_ptr<DepthStencilBuffer> GetDepthStencilBuffer() { return _depthStencilBuffer; }
 
+	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
 public:
 	shared_ptr<Input> GetInput() { return _input; }
 	shared_ptr<Timer> GetTimer() { return _timer; }
 
 private:
 	void ShowFPS();
+
+	void CreateConstantBuffer(CBV_REGISTER reg, uint32 bufferSize, uint32 count);
 
 private:
 	// 그려질 화면 크기 관련
@@ -53,7 +55,7 @@ private:
 	shared_ptr<CommandQueue> _cmdQueue;
 	shared_ptr<SwapChain> _swapChain; 
 	shared_ptr<RootSignature> _rootSignature;
-	shared_ptr<ConstantBuffer> _constantBuffer;
+	std::vector<shared_ptr<ConstantBuffer>> _constantBuffers;
 	shared_ptr<TableDescriptorHeap> _tableDescHeap;
 	shared_ptr<DepthStencilBuffer> _depthStencilBuffer;
 

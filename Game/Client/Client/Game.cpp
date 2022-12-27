@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Engine.h"
+#include "Material.h"
 
 shared_ptr<Mesh> mesh = make_shared<Mesh>();
-shared_ptr<Shader> shader = make_shared<Shader>();
-shared_ptr<Texture> texture = make_shared<Texture>();
 
 void Game::Init(const WindowInfo& window)
 {
@@ -37,10 +36,20 @@ void Game::Init(const WindowInfo& window)
 	}
 
 	mesh->Init(vec, indexVec);
-	 
-	shader->Init(L"..\\Resources\\Shader\\default.hlsli");
 
+	shared_ptr<Shader> shader = make_shared<Shader>();
+	shared_ptr<Texture> texture = make_shared<Texture>();
+	shader->Init(L"..\\Resources\\Shader\\default.hlsli");
 	texture->Init(L"..\\Resources\\Texture\\test.jpg");
+
+	shared_ptr<Material> material = make_shared<Material>();
+	material->SetShader(shader);
+	material->SetFloat(0, 0.3f);
+	material->SetFloat(1, 0.1f);
+	material->SetFloat(2, 0.3f);
+	material->SetTexture(0, texture);
+
+	mesh->SetMaterial(material);
 
 	GEngine->GetCommandQueue()->WaitSync();
 }
@@ -49,9 +58,7 @@ void Game::Update()
 {
 	GEngine->Update();
 
-	GEngine->RenderBegin();
-
-	shader->Update();
+	GEngine->RenderBegin(); 
 	
 
 	{
@@ -77,8 +84,7 @@ void Game::Update()
 		}
 
 		//t.offset = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
-		mesh->SetTransform(t);
-		mesh->SetTextrue(texture);
+		mesh->SetTransform(t); 
 		mesh->Render();
 	}
 	/*

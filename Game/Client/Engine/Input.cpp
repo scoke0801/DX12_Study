@@ -19,11 +19,18 @@ void Input::Update()
 		return;
 	}
 
+
+	BYTE asciiKeys[KEY_TYPE_COUNT] = {};
+	if (::GetKeyboardState(asciiKeys) == false)
+	{
+		return;
+	}
+
 	for (uint32 key = 0; key < KEY_TYPE_COUNT; ++key)
 	{
 		KEY_STATE& state = _states[key];
 		// 키가 눌려있으면 true
-		if(::GetAsyncKeyState(key) & 0x8000) 
+		if( asciiKeys[key] & 0x80)
 		{ 
 			// 이전 프레임 마우스 누른 상태라면 PRESS
 			if (state == KEY_STATE::PRESS || state == KEY_STATE::DOWN) 

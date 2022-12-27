@@ -120,3 +120,7 @@ extern unique_ptr<Engine> GEngine;
 
 #define INPUT GEngine->GetInput()
 #define DELTA_TIME GEngine->GetTimer()->GetDeltaTime();
+
+#define CONSTANT_BUFFER(type) GEngine->GetConstantBuffer(type)
+
+#define __USE_VSYNC__
