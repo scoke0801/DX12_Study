@@ -6,6 +6,13 @@ void DepthStencilBuffer::Init(const WindowInfo& window, DXGI_FORMAT dsvForamt)
 {
 	_dsvFormat = dsvForamt;
 
+	CreateBuffer(window);
+
+	CreateView();
+}
+
+void DepthStencilBuffer::CreateBuffer(const WindowInfo& window)
+{
 	D3D12_HEAP_PROPERTIES heapProperty = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 
 	D3D12_RESOURCE_DESC desc = CD3DX12_RESOURCE_DESC::Tex2D(_dsvFormat, window.width, window.height);
@@ -22,7 +29,10 @@ void DepthStencilBuffer::Init(const WindowInfo& window, DXGI_FORMAT dsvForamt)
 		, D3D12_RESOURCE_STATE_DEPTH_WRITE
 		, &optimizedClearValue
 		, IID_PPV_ARGS(&_dsvBuffer));
+}
 
+void DepthStencilBuffer::CreateView()
+{
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
 	heapDesc.NumDescriptors = 1;
 	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -32,5 +42,4 @@ void DepthStencilBuffer::Init(const WindowInfo& window, DXGI_FORMAT dsvForamt)
 
 	_dsvHandle = _dsvHeap->GetCPUDescriptorHandleForHeapStart();
 	DEVICE->CreateDepthStencilView(_dsvBuffer.Get(), nullptr, _dsvHandle);
-	
 }

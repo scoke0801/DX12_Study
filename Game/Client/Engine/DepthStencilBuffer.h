@@ -12,6 +12,10 @@ public:
 	DXGI_FORMAT GetDSVFormat() { return _dsvFormat; }
 
 private:
+	void CreateBuffer(const WindowInfo& window);
+	void CreateView();
+
+private:
 	// Depth Stencil View
 	ComPtr< ID3D12Resource>			_dsvBuffer;
 	ComPtr<ID3D12DescriptorHeap>	_dsvHeap;
