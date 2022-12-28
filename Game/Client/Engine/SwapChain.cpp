@@ -61,6 +61,11 @@ void SwapChain::CreateSwapChain(const WindowInfo& window, ComPtr<IDXGIFactory> d
 	{
 		_swapChain->GetBuffer(i, IID_PPV_ARGS(&_rtvBuffer[i]));
 	}
+
+#if !defined(__USE_SWAPCHAIN_FULLSCREEN_STATAE__)
+	// ALT + Enter키로 전체화면으로 전환하는 것을 막음.
+	dxgi->MakeWindowAssociation(window.hwnd, DXGI_MWA_NO_ALT_ENTER);
+#endif
 }
 
 void SwapChain::CreateRTV(ComPtr<ID3D12Device> device)
