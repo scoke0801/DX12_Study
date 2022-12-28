@@ -44,6 +44,7 @@ void CommandQueue::WaitSync()
 { 
 	++_fenceValue;
 
+	// Fence값이 원하는 값이 도달될 때 통지를 받는 함수.
 	_cmdQueue->Signal(_fence.Get(), _fenceValue);
 
 	// GPU 작업 완료까지 대기

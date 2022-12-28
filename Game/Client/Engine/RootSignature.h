@@ -11,6 +11,9 @@
 // root constant or root descriptor(view용도, 포인터 처럼 다른 리소스를 가리키는) or root table을 전달할 수 있음
 // https ://learn.microsoft.com/ko-kr/windows/win32/direct3d12/example-root-signatures
 
+// RootSignature(루트 서명)
+// 그리기 호출 전에 응용 프로그램이 반드시 렌더링 파이프라인에
+// 묶어야 하는 자원들이 무엇이고 그 자원들이 셰이더 입력 레지스터들에 어떻게 대응되는지를 정의한다.
 class RootSignature
 {
 public:
