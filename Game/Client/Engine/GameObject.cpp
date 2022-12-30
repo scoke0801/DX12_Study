@@ -6,6 +6,7 @@
 #include "MeshRenderer.h"
 
 GameObject::GameObject()
+	:Object(OBJECT_TYPE::GAMEOBJECT)
 {
 }
 

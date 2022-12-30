@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Component.h"
- 
+#include "Object.h"
+
 class MeshRenderer;
 class MonoBehaviour;
 
 // 같은 raw pointer를 포인팅하는
 // shared_ptr를 만들기 위해 enable_shared_from_this를 사용한다
-class GameObject : public enable_shared_from_this<GameObject>
+class GameObject : public Object, public enable_shared_from_this<GameObject>
 {
 public:
 	GameObject();

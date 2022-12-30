@@ -2,6 +2,15 @@
 #include "Material.h"
 #include "Engine.h" 
 
+Material::Material()
+	:Object(OBJECT_TYPE::MATERIAL)
+{
+}
+
+Material::~Material()
+{
+}
+
 void Material::PushData()
 {
 	// CBV ¾÷·Îµå

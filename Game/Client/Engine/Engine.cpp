@@ -27,10 +27,10 @@ void Engine::Init(const WindowInfo& window)
 	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _cmdQueue->GetCommandQueue());
 	_rootSignature->Init();
 
-	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(TransformParams), 1);
-	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(MaterialParams), 1);
+	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(TransformParams), 5);
+	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(MaterialParams), 5);
 
-	_tableDescHeap->Init(1); 
+	_tableDescHeap->Init(5); 
 	_depthStencilBuffer->Init(_window);
 
 	ResizeWindow(window.width, window.height);
