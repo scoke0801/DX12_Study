@@ -35,6 +35,8 @@ public:
 
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
 	 
+	const WindowInfo& GetWindow() { return _window; }
+
 public:
 	void ResizeWindow(int32 width, int32 height);
 

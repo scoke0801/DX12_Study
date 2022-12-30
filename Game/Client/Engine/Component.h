@@ -4,7 +4,10 @@ enum class COMPONENT_TYPE : uint8
 {
 	TRANSFORM,
 	MESH_RENDERER,
-	/// ... 
+	CAMERA,
+	
+	/// ...
+
 	MONO_BEHAVIOUR,
 	END,
 };
@@ -28,7 +31,8 @@ public:
 	virtual void Awake() {}
 	virtual void Start() {}
 	virtual void Update() {}
-	virtual void LastUpdate() {}
+	virtual void LateUpdate() {}
+	virtual void FinalUpdate() {}
 
 public:
 	COMPONENT_TYPE GetType() { return _type; }
@@ -41,7 +45,7 @@ private:
 	friend class GameObject;
 	void SetGameObject(shared_ptr<GameObject> gameObject) { _gameObject = gameObject; }
 
-private:
+protected:
 	COMPONENT_TYPE				_type;
 
 	// gameObject에서도 컴포넌트를 가리킬 것이기 때문에, 순환참조 문제를 해결하기 위해 weak_ptr로 사용

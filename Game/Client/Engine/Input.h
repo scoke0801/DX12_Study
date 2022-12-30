@@ -10,7 +10,9 @@ enum class KEY_TYPE
 	W = 'W',
 	A = 'A',
 	S = 'S',
-	D = 'D'
+	D = 'D',
+	Q = 'Q',
+	E = 'E',
 };
 
 enum class KEY_STATE

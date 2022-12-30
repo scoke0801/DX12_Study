@@ -1,6 +1,8 @@
-cbuffer TEST_BO : register(b0)
+cbuffer TRANSFORM_PARAMS : register(b0)
 {
-	float4 offset0;
+	// 쉐이더에서는 column기준
+	// 다렉에서는 row기준이므로, 다렉에 맞춰주도록 row_major키워드 사용
+	row_major matrix matWorldViewProj;
 };
 
 cbuffer MATERIAL_PARAMS : register(b1)
@@ -44,12 +46,7 @@ VS_OUT VS_Main(VS_IN input)
 {
 	VS_OUT output = (VS_OUT)0;
 
-	output.pos = float4(input.pos, 1.f); 
-	// output.pos += offset0;
-	output.pos.x += fParam_0;
-	output.pos.y += fParam_1;
-	output.pos.z += fParam_2;
-	
+	output.pos = mul( float4(input.pos, 1.f), matWorldViewProj);
 	output.color = input.color; 
 	output.uv = input.uv;
 

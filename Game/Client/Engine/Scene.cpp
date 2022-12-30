@@ -24,10 +24,17 @@ void Scene::Update()
 	}
 }
 
-void Scene::LastUpdate()
+void Scene::LateUpdate()
 {
 	for (shared_ptr<GameObject>& gameObject : _gameObjects) {
-		gameObject->LastUpdate();
+		gameObject->LateUpdate();
+	}
+}
+
+void Scene::FinalUpdate()
+{
+	for (shared_ptr<GameObject>& gameObject : _gameObjects) {
+		gameObject->FinalUpdate();
 	}
 }
 

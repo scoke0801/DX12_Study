@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Component.h"
-
-class Transform;
+ 
 class MeshRenderer;
 class MonoBehaviour;
 
@@ -19,9 +18,14 @@ public:
 	void Awake();
 	void Start();
 	void Update();
-	void LastUpdate();
+	void LateUpdate();
+	void FinalUpdate();
 
-	shared_ptr<Transform> GetTransform();
+	shared_ptr<class Transform> GetTransform();
+	shared_ptr<class MeshRenderer> GetMeshRenderer();
+	shared_ptr<class Camera> GetCamera();
+
+	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
 
 	void AddComponent(shared_ptr<Component> component);
 private:

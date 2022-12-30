@@ -10,9 +10,7 @@ class MeshRenderer : public Component
 public:
 	MeshRenderer();
 	virtual ~MeshRenderer();
-
-	virtual void Update() override { Render(); }
-
+	  
 	void Render();
 
 public:

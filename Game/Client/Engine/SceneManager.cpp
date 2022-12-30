@@ -5,15 +5,34 @@
 #include "Material.h"
 #include "GameObject.h"
 #include "MeshRenderer.h"
+#include "Camera.h"
+#include "Transform.h"
+#include "TestCameraScript.h"
 
-void SceneManager::Updaet()
+void SceneManager::Update()
 {
 	if (_activeScene == nullptr) {
 		return;
 	}
 
 	_activeScene->Update();
-	_activeScene->LastUpdate();
+	_activeScene->LateUpdate();
+	_activeScene->FinalUpdate();
+}
+
+// 임시 코드!!!
+void SceneManager::Render()
+{
+	if (!_activeScene) { return; }
+
+	// 무식한 방법으로 카메라를 찾는식으로 일단 테스트..
+	const vector<shared_ptr<GameObject>>& gameObjects = _activeScene->GetGameObjects();
+	for (auto gameObejct : gameObjects)
+	{
+		if (!gameObejct->GetCamera()) { continue; }
+		
+		gameObejct->GetCamera()->Render();
+	}
 }
 
 void SceneManager::LoadScene(wstring sceneName)
@@ -29,8 +48,8 @@ void SceneManager::LoadScene(wstring sceneName)
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 	shared_ptr<Scene> scene = make_shared<Scene>();
-
-	// TestObejct
+	 
+#pragma region TestObject
 	shared_ptr<GameObject> gameObject = make_shared<GameObject>();
 
 	vector<Vertex> vec(4);
@@ -58,10 +77,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		indexVec.push_back(2);
 		indexVec.push_back(3);
 	}
-	gameObject->Init();
+	// gameObject->Init();
+	gameObject->AddComponent(make_shared<Transform>());
+	shared_ptr<Transform> transform = gameObject->GetTransform();
+	transform->SetLocalPosition(Vec3(0.0f, 100.0f, 200.0f));
+	transform->SetLocalScale(Vec3(100.0f, 100.0f, 1.0f));
 
 	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-
 	{
 		shared_ptr<Mesh> mesh = make_shared<Mesh>();
 		mesh->Init(vec, indexVec);
@@ -83,10 +105,19 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 		meshRenderer->SetMaterial(material);
 	}
-
 	gameObject->AddComponent(meshRenderer);
-
 	scene->AddGameObject(gameObject);
+
+#pragma region Camera
+	shared_ptr<GameObject> camera = make_shared<GameObject>();
+	camera->AddComponent(make_shared<Transform>());
+	camera->AddComponent(make_shared<Camera>());
+	camera->AddComponent(make_shared<TestCameraScript>());
+	camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 100.f, 0.f));
+	scene->AddGameObject(camera);
+#pragma endregion
+
+#pragma endregion
 
 	return scene;
 }

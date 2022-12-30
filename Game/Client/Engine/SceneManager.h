@@ -7,7 +7,9 @@ class SceneManager
 	DECLARE_SINGLETON(SceneManager);
 
 public:
-	void Updaet();
+	void Update();
+
+	void Render();
 
 	void LoadScene(wstring sceneName);
 
