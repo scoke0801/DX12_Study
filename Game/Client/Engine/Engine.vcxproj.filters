@@ -120,6 +120,9 @@
     <ClCompile Include="Light.cpp">
       <Filter>Object\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -212,9 +215,13 @@
     <ClInclude Include="Light.h">
       <Filter>Object\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="메모.txt" />
+    <Text Include="수정 필요 사항.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shader\default.hlsli">

@@ -172,6 +172,7 @@
     <ClInclude Include="Device.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EnginePch.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Light.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EnginePch.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -232,6 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="메모.txt" />
+    <Text Include="수정 필요 사항.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shader\default.hlsli" />

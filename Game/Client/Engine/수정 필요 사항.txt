@@ -5,3 +5,9 @@
 
 3. Skybox, Sphere를 통한 방법에서
 6면 주사위 방식을 이용한 방식도 가능하도록 수정해볼 것
+
+4. Transfrom GetBoundingSphereRadius
+
+5. Frustum을 DX에서 지원하는 기능을 사용하도록 수정
+
+6. 객체 관리 Layer두도록
