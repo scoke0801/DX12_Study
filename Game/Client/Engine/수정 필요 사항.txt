@@ -1,0 +1,7 @@
+1. Shader 파이프라인 설정 부분
+각 Shader마다가 아니라 별도로 저장해서 적은 횟수를 등록하도록 하면 좋을듯
+
+2. Upload Buffer / Deafult Buffer 분리
+
+3. Skybox, Sphere를 통한 방법에서
+6면 주사위 방식을 이용한 방식도 가능하도록 수정해볼 것

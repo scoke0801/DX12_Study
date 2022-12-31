@@ -44,5 +44,19 @@ void TestCameraScript::LateUpdate()
 		GetTransform()->SetLocalRotation(rotation);
 	}
 
+	if (INPUT->GetButton(KEY_TYPE::Z))
+	{
+		Vec3 rotation = GetTransform()->GetLocalRotation();
+		rotation.y += 0.5f * DELTA_TIME;
+		GetTransform()->SetLocalRotation(rotation); 
+	}
+	
+	if (INPUT->GetButton(KEY_TYPE::C))
+	{
+		Vec3 rotation = GetTransform()->GetLocalRotation();
+		rotation.y -= 0.5f * DELTA_TIME;
+		GetTransform()->SetLocalRotation(rotation); 
+	}
+
 	GetTransform()->SetLocalPosition(pos);
 }
