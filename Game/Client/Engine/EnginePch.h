@@ -145,8 +145,12 @@ public:											\
 
 struct TransformParams
 {
+	Matrix matWorld;
+	Matrix matView;
+	Matrix matProjection;
+	Matrix matMV;
 	Matrix matWorldViewProj;
 };
 
 
-#define __USE_VSYNC__
+// #define __USE_VSYNC__

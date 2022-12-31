@@ -7,7 +7,7 @@ enum class COMPONENT_TYPE : uint8
 	TRANSFORM,
 	MESH_RENDERER,
 	CAMERA,
-	
+	LIGHT,	
 	/// ...
 
 	MONO_BEHAVIOUR,
@@ -42,7 +42,7 @@ public:
 
 	shared_ptr<GameObject> GetGameObject();
 	shared_ptr<Transform> GetTransform();
-
+	
 private:
 	friend class GameObject;
 	void SetGameObject(shared_ptr<GameObject> gameObject) { _gameObject = gameObject; }

@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Timer.h"
 #include "SceneManager.h"
+#include "Light.h"
 
 void Engine::Init(const WindowInfo& window)
 {
@@ -27,11 +28,12 @@ void Engine::Init(const WindowInfo& window)
 	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _cmdQueue->GetCommandQueue());
 	_rootSignature->Init();
 
-	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(TransformParams), 5);
-	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(MaterialParams), 5);
-
-	_tableDescHeap->Init(5); 
+	_tableDescHeap->Init(2); 
 	_depthStencilBuffer->Init(_window);
+
+	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
+	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 2);
+	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 2);
 
 	ResizeWindow(window.width, window.height);
 	 

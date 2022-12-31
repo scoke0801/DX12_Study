@@ -117,6 +117,9 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Object\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -206,6 +209,9 @@
     <ClInclude Include="Transform.h">
       <Filter>Object\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="메모.txt" />
@@ -219,6 +225,12 @@
     </None>
     <None Include="Resources.inl">
       <Filter>Manager</Filter>
+    </None>
+    <None Include="..\Resources\Shader\Params.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\Resources\Shader\Utils.hlsli">
+      <Filter>Shader</Filter>
     </None>
   </ItemGroup>
 </Project>

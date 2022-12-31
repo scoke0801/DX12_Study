@@ -2,6 +2,7 @@
 
 enum class CONSTANT_BUFFER_TYPE : uint8
 {
+	GLOBAL,
 	TRANSFORM,
 	MATERIAL,
 	END,
@@ -22,6 +23,8 @@ public:
 
 	void Clear();
 	void PushData(void* buffer, uint32 size);
+
+	void PushGlobalData(void* buffer, uint32 size);
 
 	D3D12_GPU_VIRTUAL_ADDRESS GetGpuVirtualAddress(uint32 index);
 

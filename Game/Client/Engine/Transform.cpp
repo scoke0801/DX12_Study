@@ -37,12 +37,15 @@ void Transform::FinalUpdate()
 }
 
 void Transform::PushData()
-{
-	// World View Projection...
-	// 현재는 WorldTransform만 계산되어있음.
-	Matrix matWorldViewProj = _matWorld * Camera::S_MatView * Camera::S_MatProjection;
+{ 
+	TransformParams transformParams = {};
+	transformParams.matWorld = _matWorld;
+	transformParams.matView = Camera::S_MatView;
+	transformParams.matProjection = Camera::S_MatProjection;
+	transformParams.matMV = _matWorld * Camera::S_MatView;
+	transformParams.matWorldViewProj = _matWorld * Camera::S_MatView * Camera::S_MatProjection; 
 
-	CONSTANT_BUFFER(CONSTANT_BUFFER_TYPE::TRANSFORM)->PushData(&matWorldViewProj, sizeof(matWorldViewProj));
+	CONSTANT_BUFFER(CONSTANT_BUFFER_TYPE::TRANSFORM)->PushData(&transformParams, sizeof(transformParams));
 } 
 
 // CBV 사용

@@ -59,6 +59,13 @@ void ConstantBuffer::PushData(void* buffer, uint32 size)
 	++_currentIndex;  
 }
 
+void ConstantBuffer::PushGlobalData(void* buffer, uint32 size)
+{
+	assert(_elementSize == ((size + 255) & ~255));
+	::memcpy(&_mappedBuffer[0], buffer, size);
+	CMD_LIST->SetGraphicsRootConstantBufferView(0, GetGpuVirtualAddress(0));
+}
+
 void ConstantBuffer::CreateBuffer()
 {
 	uint32 bufferSize = _elementSize * _elementCount;

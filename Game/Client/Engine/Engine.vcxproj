@@ -174,6 +174,7 @@
     <ClInclude Include="EnginePch.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="EnginePch.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
@@ -233,6 +235,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shader\default.hlsli" />
+    <None Include="..\Resources\Shader\Params.hlsli" />
+    <None Include="..\Resources\Shader\Utils.hlsli" />
     <None Include="Resources.inl" />
     <None Include="SimpleMath.inl" />
   </ItemGroup>

@@ -25,6 +25,7 @@ public:
 	shared_ptr<class Transform> GetTransform();
 	shared_ptr<class MeshRenderer> GetMeshRenderer();
 	shared_ptr<class Camera> GetCamera();
+	shared_ptr<class Light> GetLight();
 
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
 
