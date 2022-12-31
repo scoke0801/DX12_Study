@@ -16,9 +16,11 @@ struct MaterialParams
 {
 	void SetInt(uint8 index, int32 value) { intParams[index] = value; }
 	void SetFloat(uint8 index, float value) { floatParams[index] = value; }
+	void SetTextureOn(uint8 index, int32 value) { intParams[index] = value; }
 
 	array<int32, MATERIAL_INT_COUNT> intParams;
-	array<float, MATERIAL_FLOAT_COUNT> floatParams;
+	array<float, MATERIAL_FLOAT_COUNT> floatParams; 
+	array<int32, MATERIAL_TEXTURE_COUNT> texOnParams;
 };
 
 class Material : public Object
@@ -29,10 +31,14 @@ public:
 public:
 	shared_ptr<Shader> GetShader() { return _shader; }
 
-	void SetShader(shared_ptr<Shader> shader) { _shader = shader; }
-	void SetInt(uint8 index, int32 value) { _params.SetInt(index, value); }
-	void SetFloat(uint8 index, float value) { _params.SetFloat(index, value); }
-	void SetTexture(uint8 index, shared_ptr<Texture> texture) { _textures[index] = texture; }
+	inline void SetShader(shared_ptr<Shader> shader) { _shader = shader; }
+	inline void SetInt(uint8 index, int32 value) { _params.SetInt(index, value); }
+	inline void SetFloat(uint8 index, float value) { _params.SetFloat(index, value); }
+	inline void SetTexture(uint8 index, shared_ptr<Texture> texture)
+	{ 
+		_textures[index] = texture;
+		_params.SetTextureOn(index, texture == nullptr ? 0 : 1 );
+	}
 
 	void PushData();
 
