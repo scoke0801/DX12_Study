@@ -11,6 +11,8 @@ class Resources
 	DECLARE_SINGLETON(Resources);
 
 public:
+	void Init();
+
 	template<typename T>
 	shared_ptr<T> Load(const wstring& key, const wstring& path);
 
@@ -25,6 +27,11 @@ public:
 
 	shared_ptr<Mesh> LoadCubeMesh();
 	shared_ptr<Mesh> LoadSphereMesh();
+	shared_ptr<Mesh> LoadRectangleMesh();
+
+private:
+	void CreateDefaultShader();
+
 private:
 	using KeyObjMap = std::map<wstring, shared_ptr<Object>>;
 	array<KeyObjMap, OBJECT_TYPE_COUNT > _resources;

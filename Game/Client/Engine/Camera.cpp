@@ -30,17 +30,16 @@ void Camera::FinalUpdate()
 		_matProjection = ::XMMatrixPerspectiveFovLH(_fov, width / height, _near, _far);
 	}
 	else{
-		_matProjection = ::XMMatrixOrthographicLH(width, height, _near, _far);
+		_matProjection = ::XMMatrixOrthographicLH(width * _scale, height * _scale, _near, _far);
 	}
-
-	S_MatView = _matView;
-	S_MatProjection = _matProjection;
-
 	_frustum.FinalUpdate();
 }
 
 void Camera::Render()
-{
+{ 
+	S_MatView = _matView;
+	S_MatProjection = _matProjection;
+
 	shared_ptr<Scene> scene = GET_SINGLETON(SceneManager)->GetActiveScene();
 
 	// TODO : Layer ±¸ºÐ
@@ -49,6 +48,10 @@ void Camera::Render()
 	for (auto& gameObject : gameObjects)
 	{
 		if (!gameObject->GetMeshRenderer()) {
+			continue;
+		}
+
+		if (IsCulled(gameObject->GetlayerIndex())) {
 			continue;
 		}
 
@@ -61,5 +64,16 @@ void Camera::Render()
 		}
 
 		gameObject->GetMeshRenderer()->Render();
+	}
+}
+
+void Camera::SetCullingMaskLayerLayerOff(uint8 layer, bool on)
+{
+	if (on) {
+		_cullingMask |= (1 << layer);
+	}
+	else
+	{
+		_cullingMask &= ~(1 << layer);
 	}
 }

@@ -9,7 +9,7 @@ inline shared_ptr<T> Resources::Load(const wstring& key, const wstring& path)
 	// 이미 존재하는 객체면 대상을 반환
 	auto res = keyObjMap.find(key);
 	if (res != keyObjMap.end()) {
-		return static_cast<T>(res->second);
+		return static_pointer_cast<T>(res->second);
 	}
 	
 	// TODO : Load처리는 없음

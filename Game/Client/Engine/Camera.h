@@ -18,9 +18,18 @@ public:
 
 	void Render();
 
+	void SetProjectionType(PROJECTION_TYPE type) { _projType = type; }
+	PROJECTION_TYPE GetProjectionType() { return _projType; }
+
 	const Matrix& GetView() { return _matView; }
 	const Matrix& GetProjection() { return _matProjection; }
 
+	// 컬링마스크 값이 1이면 안그림, 0이면 그림
+	void SetCullingMaskLayerLayerOff(uint8 layer, bool on);
+
+	void SetCullingMaskAll() { SetCullingMask(UINT32_MAX); }
+	void SetCullingMask(uint32 mask) { _cullingMask = mask; }
+	bool IsCulled(uint8 layer) { return (_cullingMask & (1 << layer)) != 0; }
 private:
 	PROJECTION_TYPE _projType = PROJECTION_TYPE::PERSPECTIVE;
 
@@ -33,6 +42,8 @@ private:
 	Matrix _matProjection = {}; 
 
 	Frustum	_frustum;
+	uint32 _cullingMask = 0;
+
 public:
 	// TEMP
 	static Matrix S_MatView;

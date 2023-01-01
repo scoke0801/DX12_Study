@@ -40,17 +40,64 @@ void SceneManager::LoadScene(wstring sceneName)
 	_activeScene->Start();
 }
 
+void SceneManager::SetLayerName(uint8 index, const wstring& name)
+{
+	// 기존 데이터는 삭제
+	const wstring& prevName = _layerNames[index];
+	_layerIndex.erase(prevName);
+
+	_layerNames[index] = name;
+	_layerIndex[name] = index;
+} 
+
+uint8 SceneManager::LayerNameToIndex(const wstring& name)
+{
+	auto res = _layerIndex.find(name);
+	if (res == _layerIndex.end()) {
+		return 0;
+	}
+	return res->second;
+}
+
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
+#pragma region LayerMask
+	SetLayerName(0, L"Default");
+	SetLayerName(1, L"UI");
+#pragma endregion
 	shared_ptr<Scene> scene = make_shared<Scene>();
 	 
 #pragma region Camera
-	shared_ptr<GameObject> camera = make_shared<GameObject>();
-	camera->AddComponent(make_shared<Transform>());
-	camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
-	camera->AddComponent(make_shared<TestCameraScript>());
-	camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
-	scene->AddGameObject(camera);
+	{
+		// 원근 투영
+		shared_ptr<GameObject> camera = make_shared<GameObject>();
+		camera->SetName(L"Main_Camera");
+		camera->AddComponent(make_shared<Transform>());
+		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
+		camera->AddComponent(make_shared<TestCameraScript>());
+		camera->GetCamera()->SetProjectionType(PROJECTION_TYPE::PERSPECTIVE);
+		camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		uint8 layerIndex = GET_SINGLETON(SceneManager)->LayerNameToIndex(L"UI");
+		camera->GetCamera()->SetCullingMaskLayerLayerOff(layerIndex, true);
+		scene->AddGameObject(camera);
+	}
+#pragma endregion
+
+#pragma region UI Camera
+	{
+		// 직교 투영
+		shared_ptr<GameObject> camera = make_shared<GameObject>(); 
+		camera->SetName(L"UI_Camera");
+		camera->AddComponent(make_shared<Transform>());
+		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
+		camera->AddComponent(make_shared<TestCameraScript>());
+		camera->GetCamera()->SetProjectionType(PROJECTION_TYPE::ORTHOGRAPHIC);
+		camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		uint8 layerIndex = GET_SINGLETON(SceneManager)->LayerNameToIndex(L"UI");
+		camera->GetCamera()->SetCullingMaskAll();
+		camera->GetCamera()->SetCullingMaskLayerLayerOff(layerIndex, false);
+		scene->AddGameObject(camera);
+	}
 #pragma endregion
 	 
 #pragma region Skybox
@@ -63,14 +110,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			shared_ptr<Mesh> mesh = GET_SINGLETON(Resources)->LoadSphereMesh();
 			meshRenderer->SetMesh(mesh);
 		}
-		{
-			shared_ptr<Shader> shader = make_shared<Shader>();
-			shared_ptr<Texture> texture = make_shared<Texture>();
-			shader->Init(L"..\\Resources\\Shader\\skybox.hlsli",
-				{ RASTERIZER_TYPE::CULL_NONE, DEPTH_STENCIL_TYPE::LESS_EQAUL });
-			texture->Init(L"..\\Resources\\Texture\\Sky01.jpg");
-			shared_ptr<Material> material = make_shared<Material>();
-			material->SetShader(shader);
+		{ 
+			shared_ptr<Texture> texture = GET_SINGLETON(Resources)->Load<Texture>(L"Sky01", L"..\\Resources\\Texture\\Sky01.jpg");
+		 	shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(GET_SINGLETON(Resources)->Get<Shader>(L"Skybox"));
 			material->SetTexture(0, texture);
 			meshRenderer->SetMaterial(material);
 		}
@@ -90,13 +133,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //			meshRenderer->SetMesh(sphereMesh);
 //		}
 //		{
-//			shared_ptr<Shader> shader = make_shared<Shader>();
-//			shared_ptr<Texture> texture = make_shared<Texture>();
-//			shader->Init(L"..\\Resources\\Shader\\default.hlsli");
 //			texture->Init(L"..\\Resources\\Texture\\Stone_Floor.jpg"); 
 //
 //			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
+//			material->SetShader(GET_SINGLETON(Resources)->Get<Shader>(L"Forward"));
 //			material->SetTexture(0, texture);
 //
 //			meshRenderer->SetMaterial(material);
@@ -122,17 +162,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			meshRenderer->SetMesh(mesh);
 		}
 		{
-			shared_ptr<Shader> shader = make_shared<Shader>();
-			shader->Init(L"..\\Resources\\Shader\\default.hlsli");
-
-			shared_ptr<Texture> texture = make_shared<Texture>();
-			texture->Init(L"..\\Resources\\Texture\\Stone_Floor.jpg");
-
-			shared_ptr<Texture> textureNormal = make_shared<Texture>();
-			textureNormal->Init(L"..\\Resources\\Texture\\Stone_Floor_Normal.jpg");
-
+			shared_ptr<Texture> texture = GET_SINGLETON(Resources)->Load<Texture>(L"Stone_Floor", L"..\\Resources\\Texture\\Stone_Floor.jpg");
+			shared_ptr<Texture> textureNormal = GET_SINGLETON(Resources)->Load<Texture>(L"Stone_Floor_Normal", L"..\\Resources\\Texture\\Stone_Floor_Normal.jpg");
+			 
 			shared_ptr<Material> material = make_shared<Material>();
-			material->SetShader(shader);
+			material->SetShader(GET_SINGLETON(Resources)->Get<Shader>(L"Forward")); 
 			material->SetTexture(0, texture);
 			material->SetTexture(1, textureNormal);
 
@@ -141,6 +175,31 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 		cube->AddComponent(meshRenderer);
 		scene->AddGameObject(cube);
+	}
+#pragma endregion
+
+#pragma region UI_Test
+	{
+		shared_ptr<GameObject> sphere = make_shared<GameObject>();
+		sphere->SetLayerIndex(GET_SINGLETON(SceneManager)->LayerNameToIndex(L"UI")); // UI
+		sphere->AddComponent(make_shared<Transform>());
+		sphere->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		sphere->GetTransform()->SetLocalPosition(Vec3(0, 0, 500.f));
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLETON(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLETON(Resources)->Get<Shader>(L"Forward");
+			shared_ptr<Texture> texture = GET_SINGLETON(Resources)->Load<Texture>(L"Stone_Floor", L"..\\Resources\\Texture\\Stone_Floor.jpg");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		sphere->AddComponent(meshRenderer);
+		scene->AddGameObject(sphere);
 	}
 #pragma endregion
 

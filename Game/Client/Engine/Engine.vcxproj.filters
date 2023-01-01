@@ -224,23 +224,25 @@
     <Text Include="수정 필요 사항.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shader\default.hlsli">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="SimpleMath.inl">
       <Filter>Utils</Filter>
     </None>
     <None Include="Resources.inl">
       <Filter>Manager</Filter>
     </None>
-    <None Include="..\Resources\Shader\Params.hlsli">
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resources\Shader\skybox.fx">
       <Filter>Shader</Filter>
-    </None>
-    <None Include="..\Resources\Shader\Utils.hlsli">
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\Utils.fx">
       <Filter>Shader</Filter>
-    </None>
-    <None Include="..\Resources\Shader\skybox.hlsli">
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\Forward.fx">
       <Filter>Shader</Filter>
-    </None>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\Params.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
