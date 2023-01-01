@@ -29,6 +29,12 @@ public:
 	shared_ptr<Mesh> LoadSphereMesh();
 	shared_ptr<Mesh> LoadRectangleMesh();
 
+	shared_ptr<Texture> CreateTexture(const wstring& name, DXGI_FORMAT format, uint32 width, uint32 height,
+		const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
+		D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor = Vec4());
+
+	// 이미 있는 정보에서 텍스쳐를 생성할 때. ex) 스왑체인getbuffer
+	shared_ptr<Texture> CreateTextureFromResource(const wstring& name, ComPtr<ID3D12Resource> tex2D);
 private:
 	void CreateDefaultShader();
 

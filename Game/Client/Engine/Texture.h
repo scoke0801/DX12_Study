@@ -9,20 +9,35 @@ public:
 	virtual ~Texture();
 
 public:
+	// 경로에서 리소스를 읽어서 텍스쳐를 생성.
 	virtual void Load(const wstring& path) override;
+
+public:
+	void Create(DXGI_FORMAT format, uint32 width, uint32 height,
+		const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
+		D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor = Vec4());
+
+	// 이미 있는 정보에서 텍스쳐를 생성할 때. ex) 스왑체인getbuffer
+	void CreateFromResource(ComPtr<ID3D12Resource> tex2D);
+
+public:
+	ComPtr<ID3D12Resource> GetTex2D() { return _tex2D; }
+	ComPtr<ID3D12DescriptorHeap> GetSRV() { return _srvHeap; }
+	ComPtr<ID3D12DescriptorHeap> GetRTV() { return _rtvHeap; }
+	ComPtr<ID3D12DescriptorHeap> GetDSV() { return _dsvHeap;  }
 	
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandle() { return _srvHandle; }
-
-private:
-	void CreateTexture(const wstring& path);
-	void CreateView();
-
+	D3D12_CPU_DESCRIPTOR_HANDLE GetSRVHandle() { return _srvHeapBegin; }
+	  
 private:
 
 	ScratchImage					_image;
 	ComPtr<ID3D12Resource>			_tex2D;
 
 	ComPtr<ID3D12DescriptorHeap>	_srvHeap;
-	D3D12_CPU_DESCRIPTOR_HANDLE		_srvHandle;
+	ComPtr<ID3D12DescriptorHeap>	_rtvHeap;
+	ComPtr<ID3D12DescriptorHeap>	_dsvHeap;
+
+private:
+	D3D12_CPU_DESCRIPTOR_HANDLE		_srvHeapBegin = {};
 };
 

@@ -6,6 +6,8 @@
 #include "GameObject.h"
 #include "MeshRenderer.h"
 #include "Engine.h"
+#include "Shader.h"
+#include "Material.h"
 
 Matrix Camera::S_MatView = {};
 Matrix Camera::S_MatProjection = {};
@@ -33,36 +35,65 @@ void Camera::FinalUpdate()
 		_matProjection = ::XMMatrixOrthographicLH(width * _scale, height * _scale, _near, _far);
 	}
 	_frustum.FinalUpdate();
-}
+} 
 
-void Camera::Render()
-{ 
-	S_MatView = _matView;
-	S_MatProjection = _matProjection;
-
+void Camera::SortGameObject()
+{
 	shared_ptr<Scene> scene = GET_SINGLETON(SceneManager)->GetActiveScene();
-
-	// TODO : Layer ±¸ºÐ
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	_vecForward.clear();
+	_vecDeferred.clear();
 
 	for (auto& gameObject : gameObjects)
 	{
-		if (!gameObject->GetMeshRenderer()) {
+		if (gameObject->GetMeshRenderer() == nullptr)
 			continue;
-		}
 
-		if (IsCulled(gameObject->GetlayerIndex())) {
+		if (IsCulled(gameObject->GetLayerIndex()))
 			continue;
-		}
 
-		if (gameObject->GetCheckFrustum()) {
-			if (!_frustum.ContainSphere(gameObject->GetTransform()->GetWorldPosition(),
-				gameObject->GetTransform()->GetBoundingSphereRadius()))
+		if (gameObject->GetCheckFrustum())
+		{
+			if (_frustum.ContainsSphere(
+				gameObject->GetTransform()->GetWorldPosition(),
+				gameObject->GetTransform()->GetBoundingSphereRadius()) == false)
 			{
 				continue;
 			}
 		}
 
+		SHADER_TYPE shaderType = gameObject->GetMeshRenderer()->GetMaterial()->GetShader()->GetShaderType();
+		switch (shaderType)
+		{
+		case SHADER_TYPE::DEFERRED:
+			_vecDeferred.push_back(gameObject);
+			break;
+		case SHADER_TYPE::FORWARD:
+			_vecForward.push_back(gameObject);
+			break;
+		}
+	}
+}
+
+void Camera::Render_Deferred()
+{
+	S_MatView = _matView;
+	S_MatProjection = _matProjection;
+
+	for (auto& gameObject : _vecDeferred)
+	{
+		gameObject->GetMeshRenderer()->Render();
+	}
+}
+
+void Camera::Render_Forward()
+{
+	S_MatView = _matView;
+	S_MatProjection = _matProjection;
+
+	for (auto& gameObject : _vecForward)
+	{
 		gameObject->GetMeshRenderer()->Render();
 	}
 }

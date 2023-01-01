@@ -166,7 +166,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			shared_ptr<Texture> textureNormal = GET_SINGLETON(Resources)->Load<Texture>(L"Stone_Floor_Normal", L"..\\Resources\\Texture\\Stone_Floor_Normal.jpg");
 			 
 			shared_ptr<Material> material = make_shared<Material>();
-			material->SetShader(GET_SINGLETON(Resources)->Get<Shader>(L"Forward")); 
+			material->SetShader(GET_SINGLETON(Resources)->Get<Shader>(L"Deferred")); 
 			material->SetTexture(0, texture);
 			material->SetTexture(1, textureNormal);
 
@@ -179,12 +179,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region UI_Test
+	for(int i = 0; i < 3; ++i)
 	{
 		shared_ptr<GameObject> sphere = make_shared<GameObject>();
 		sphere->SetLayerIndex(GET_SINGLETON(SceneManager)->LayerNameToIndex(L"UI")); // UI
 		sphere->AddComponent(make_shared<Transform>());
 		sphere->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-		sphere->GetTransform()->SetLocalPosition(Vec3(0, 0, 500.f));
+		sphere->GetTransform()->SetLocalPosition(Vec3(-350.f + (i * 160), 250.f, 500.f));
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
 			shared_ptr<Mesh> mesh = GET_SINGLETON(Resources)->LoadRectangleMesh();
@@ -192,7 +193,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLETON(Resources)->Get<Shader>(L"Forward");
-			shared_ptr<Texture> texture = GET_SINGLETON(Resources)->Load<Texture>(L"Stone_Floor", L"..\\Resources\\Texture\\Stone_Floor.jpg");
+			shared_ptr<Texture> texture = GEngine->GetRenderTargetGroup(RENDER_TARGET_GROUP_TYPE::G_BUFFER)->GetRTTexture(i);
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);

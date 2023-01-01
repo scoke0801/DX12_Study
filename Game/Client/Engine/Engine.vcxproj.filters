@@ -72,9 +72,6 @@
     <ClCompile Include="ConstantBuffer.cpp">
       <Filter>Engine\Device</Filter>
     </ClCompile>
-    <ClCompile Include="DepthStencilBuffer.cpp">
-      <Filter>Engine\Device</Filter>
-    </ClCompile>
     <ClCompile Include="Device.cpp">
       <Filter>Engine\Device</Filter>
     </ClCompile>
@@ -123,6 +120,7 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>Object\Component</Filter>
     </ClCompile>
+    <ClCompile Include="RenderTargetGroup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -165,9 +163,6 @@
       <Filter>Engine\Device</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
-      <Filter>Engine\Device</Filter>
-    </ClInclude>
-    <ClInclude Include="DepthStencilBuffer.h">
       <Filter>Engine\Device</Filter>
     </ClInclude>
     <ClInclude Include="Device.h">
@@ -218,6 +213,7 @@
     <ClInclude Include="Frustum.h">
       <Filter>Object\Component</Filter>
     </ClInclude>
+    <ClInclude Include="RenderTargetGroup.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="메모.txt" />
@@ -242,6 +238,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\Params.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\Deferred.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

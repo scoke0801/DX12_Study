@@ -7,9 +7,8 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "ConstantBuffer.h"
-#include "TableDescriptorHeap.h"
-#include "Texture.h"
-#include "DepthStencilBuffer.h" 
+#include "TableDescriptorHeap.h" 
+#include "RenderTargetGroup.h"
 
 class Engine
 {
@@ -31,10 +30,10 @@ public:
 	shared_ptr<SwapChain> GetSwapChain() { return _swapChain; }
 	shared_ptr<RootSignature> GetRootSignature() { return _rootSignature; } 
 	shared_ptr<TableDescriptorHeap> GetTableDescriptorHeap() { return _tableDescHeap; }
-	shared_ptr<DepthStencilBuffer> GetDepthStencilBuffer() { return _depthStencilBuffer; }
-
+	
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
-	 
+	shared_ptr<RenderTargetGroup> GetRenderTargetGroup(RENDER_TARGET_GROUP_TYPE type) { return _renderTargetGroup[static_cast<uint8>(type)]; }
+
 	const WindowInfo& GetWindow() { return _window; }
 
 public:
@@ -44,6 +43,8 @@ private:
 	void ShowFPS();
 
 	void CreateConstantBuffer(CBV_REGISTER reg, uint32 bufferSize, uint32 count);
+
+	void CreateRenderTargetGroups();
 
 private:
 	// 그려질 화면 크기 관련
@@ -57,6 +58,7 @@ private:
 	shared_ptr<RootSignature> _rootSignature;
 	std::vector<shared_ptr<ConstantBuffer>> _constantBuffers;
 	shared_ptr<TableDescriptorHeap> _tableDescHeap;
-	shared_ptr<DepthStencilBuffer> _depthStencilBuffer; 
+	
+	array< shared_ptr<RenderTargetGroup>, RENDER_TARGET_GROUP_COUNT> _renderTargetGroup;
 };
 

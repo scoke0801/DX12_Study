@@ -29,7 +29,7 @@ void Frustum::FinalUpdate()
 	_planes[static_cast<uint8>(PLANE_TYPE::PLANE_RIGHT)] = ::XMPlaneFromPoints(worldPos[5], worldPos[6], worldPos[1]); // CCW
 }
 
-bool Frustum::ContainSphere(const Vec3& pos, float radius)
+bool Frustum::ContainsSphere(const Vec3& pos, float radius)
 {
 	// DX의 BoundingFrustum을 사용해도 됨.
 	for (const Vec4& plane : _planes)

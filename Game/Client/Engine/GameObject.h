@@ -35,7 +35,7 @@ public:
 	bool GetCheckFrustum() { return _checkFrustum; }
 
 	void SetLayerIndex(uint8 layer) { _layerIndex = layer; }
-	uint8 GetlayerIndex() { return _layerIndex; }
+	uint8 GetLayerIndex() { return _layerIndex; }
 private:
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;
 

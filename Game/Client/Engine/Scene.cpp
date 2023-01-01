@@ -46,11 +46,28 @@ void Scene::Render()
 {  
 	PushLightData();
 
-	for (auto gameObejct : _gameObjects)
-	{
-		if (!gameObejct->GetCamera()) { continue; }
+	// SwapChain group 초기화
+	uint8 backIndex = GEngine->GetSwapChain()->GetBackBufferIndex();
+	GEngine->GetRenderTargetGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->ClearRenderTagetView(backIndex);
 
-		gameObejct->GetCamera()->Render();
+	// Deferred Group 초기화
+	GEngine->GetRenderTargetGroup(RENDER_TARGET_GROUP_TYPE::G_BUFFER)->ClearRenderTargetView();
+
+	for (auto gameObject : _gameObjects)
+	{
+		if (!gameObject->GetCamera()) { continue; }
+
+		gameObject->GetCamera()->SortGameObject();
+
+		// Deferred OMSet
+		GEngine->GetRenderTargetGroup(RENDER_TARGET_GROUP_TYPE::G_BUFFER)->OMSetRenderTargets();
+		gameObject->GetCamera()->Render_Deferred();
+
+		// Light OMSet
+
+		// Swapchain OMSet
+		GEngine->GetRenderTargetGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->OMSetRenderTargets(1, backIndex);
+		gameObject->GetCamera()->Render_Forward();
 	}
 }
 
