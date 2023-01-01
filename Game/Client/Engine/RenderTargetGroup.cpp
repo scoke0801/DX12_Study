@@ -35,6 +35,15 @@ void RenderTargetGroup::Create(RENDER_TARGET_GROUP_TYPE groupType, vector<Render
 			1, &srcHandle, &srcSize,
 			D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	}
+
+	for (uint32 i = 0; i < _rtCount; ++i)
+	{
+		_targetToResource[i] = CD3DX12_RESOURCE_BARRIER::Transition(_rtVec[i].target->GetTex2D().Get(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_COMMON);
+
+		_resourceToTarget[i] = CD3DX12_RESOURCE_BARRIER::Transition(_rtVec[i].target->GetTex2D().Get(),
+			D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	}
 }
 
 void RenderTargetGroup::OMSetRenderTargets(uint32 count, uint32 offset)
@@ -48,7 +57,7 @@ void RenderTargetGroup::OMSetRenderTargets()
 	CMD_LIST->OMSetRenderTargets(_rtCount, &_rtvHeapBegin, TRUE/*´ÙÁß*/, &_dsvHeapBegin);
 }
 
-void RenderTargetGroup::ClearRenderTagetView(uint32 index)
+void RenderTargetGroup::ClearRenderTargetView(uint32 index)
 {
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(_rtvHeapBegin, index * _rtvHeapSize);
 	CMD_LIST->ClearRenderTargetView(rtvHandle, _rtVec[index].clearColor, 0, nullptr);
@@ -58,9 +67,21 @@ void RenderTargetGroup::ClearRenderTagetView(uint32 index)
 
 void RenderTargetGroup::ClearRenderTargetView()
 {
+	WaitResourceToTarget();
+
 	for (uint32 i = 0; i < _rtCount; ++i) {
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(_rtvHeapBegin, i * _rtvHeapSize);
 		CMD_LIST->ClearRenderTargetView(rtvHandle, _rtVec[i].clearColor, 0, nullptr);
 	}
 	CMD_LIST->ClearDepthStencilView(_dsvHeapBegin, D3D12_CLEAR_FLAG_DEPTH, 1, 0, 0, nullptr);
+}
+
+void RenderTargetGroup::WaitTargetToResource()
+{
+	CMD_LIST->ResourceBarrier(_rtCount, _targetToResource);
+}
+
+void RenderTargetGroup::WaitResourceToTarget()
+{
+	CMD_LIST->ResourceBarrier(_rtCount, _resourceToTarget);
 }

@@ -259,6 +259,7 @@
   <ItemGroup>
     <FxCompile Include="..\Resources\Shader\Deferred.fx" />
     <FxCompile Include="..\Resources\Shader\Forward.fx" />
+    <FxCompile Include="..\Resources\Shader\Lighting.fx" />
     <FxCompile Include="..\Resources\Shader\Params.fx" />
     <FxCompile Include="..\Resources\Shader\skybox.fx" />
     <FxCompile Include="..\Resources\Shader\Utils.fx" />

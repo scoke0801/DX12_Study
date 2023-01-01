@@ -37,6 +37,7 @@ public:
 	shared_ptr<Texture> CreateTextureFromResource(const wstring& name, ComPtr<ID3D12Resource> tex2D);
 private:
 	void CreateDefaultShader();
+	void CreateDefaultMaterial();
 
 private:
 	using KeyObjMap = std::map<wstring, shared_ptr<Object>>;

@@ -10,12 +10,12 @@ Shader::~Shader()
 {
 }
 
-void Shader::Init(const wstring& path, const ShaderInfo& info)
+void Shader::Init(const wstring& path, ShaderInfo info, const string& vs, const string& ps)
 {
 	_shaderInfo = info;
 
-	CreateVertexShader(path, "VS_Main", "vs_5_0");
-	CreatePixelShader(path, "PS_Main", "ps_5_0");
+	CreateVertexShader(path, vs, "vs_5_0");
+	CreatePixelShader(path, ps, "ps_5_0");
 
 	// InputLayout, 셰이더 입력값으로 들어갈 구조체 정보를 정의
 	D3D12_INPUT_ELEMENT_DESC desc[] =
@@ -50,6 +50,11 @@ void Shader::Init(const wstring& path, const ShaderInfo& info)
 		_pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;	// position
 		_pipelineDesc.RTVFormats[1] = DXGI_FORMAT_R32G32B32A32_FLOAT;	// normal
 		_pipelineDesc.RTVFormats[2] = DXGI_FORMAT_R8G8B8A8_UNORM;		// color
+		break;
+	case SHADER_TYPE::LIGHTING:
+		_pipelineDesc.NumRenderTargets = 2;
+		_pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		_pipelineDesc.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
 		break;
 	}
 
@@ -86,6 +91,45 @@ void Shader::Init(const wstring& path, const ShaderInfo& info)
 		break;
 	case DEPTH_STENCIL_TYPE::GREATER_EQUAL:
 		_pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_GREATER_EQUAL;
+		break;
+	case DEPTH_STENCIL_TYPE::NO_DEPTH_TEST:
+		_pipelineDesc.DepthStencilState.DepthEnable = FALSE;
+		_pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+		break;
+	case DEPTH_STENCIL_TYPE::NO_DEPTH_TEST_NO_WRITE:
+		_pipelineDesc.DepthStencilState.DepthEnable = FALSE;
+		_pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+		break;
+	case DEPTH_STENCIL_TYPE::LESS_NO_WRITE:
+		_pipelineDesc.DepthStencilState.DepthEnable = TRUE;
+		_pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+		_pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+		break;
+	}
+
+	D3D12_RENDER_TARGET_BLEND_DESC& rt = _pipelineDesc.BlendState.RenderTarget[0];
+
+	// SrcBlend = Pixel Shader
+	// DestBlend = Render Target
+	switch (info.blendType)
+	{
+	case BLEND_TYPE::DEFAULT:
+		rt.BlendEnable = FALSE;
+		rt.LogicOpEnable = FALSE;
+		rt.SrcBlend = D3D12_BLEND_ONE;	// 1,1,1,1
+		rt.DestBlend = D3D12_BLEND_ZERO;	// 0,0,0,0
+		break;
+	case BLEND_TYPE::ALPHA_BLEND:
+		rt.BlendEnable = TRUE;
+		rt.LogicOpEnable = FALSE;
+		rt.SrcBlend = D3D12_BLEND_SRC_ALPHA;	// A, A, A, A
+		rt.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1-A, 1-A, 1-A, 1-A
+		break;
+	case BLEND_TYPE::ONE_TO_ONE_BLEND:	// 1:1
+		rt.BlendEnable = TRUE;
+		rt.LogicOpEnable = FALSE;
+		rt.SrcBlend = D3D12_BLEND_ONE;
+		rt.DestBlend = D3D12_BLEND_ONE;
 		break;
 	}
 	DEVICE->CreateGraphicsPipelineState(&_pipelineDesc, IID_PPV_ARGS(&_pipelineState));

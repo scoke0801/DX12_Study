@@ -28,11 +28,11 @@ void Engine::Init(const WindowInfo& window)
 	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _cmdQueue->GetCommandQueue());
 	_rootSignature->Init();
 
-	_tableDescHeap->Init(5); 
+	_tableDescHeap->Init(30); 
 
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
-	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 5);
-	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 5);
+	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 30);
+	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 30);
 
 	CreateRenderTargetGroups();
 
@@ -144,6 +144,24 @@ void Engine::CreateRenderTargetGroups()
 
 		_renderTargetGroup[static_cast<uint8>(RENDER_TARGET_GROUP_TYPE::G_BUFFER)] = make_shared<RenderTargetGroup>();
 		_renderTargetGroup[static_cast<uint8>(RENDER_TARGET_GROUP_TYPE::G_BUFFER)]->Create(RENDER_TARGET_GROUP_TYPE::G_BUFFER, rtVec, dsTexture);
+	}
+
+	// Lighting Group
+	{
+		vector<RenderTarget> rtVec(RENDER_TARGET_LIGHTING_GROUP_MEMBER_COUNT);
+
+		rtVec[0].target = GET_SINGLETON(Resources)->CreateTexture(L"DiffuseLightTarget",
+			DXGI_FORMAT_R8G8B8A8_UNORM, _window.width, _window.height,
+			CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+			D3D12_HEAP_FLAG_NONE, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
+
+		rtVec[1].target = GET_SINGLETON(Resources)->CreateTexture(L"SpecularLightTarget",
+			DXGI_FORMAT_R8G8B8A8_UNORM, _window.width, _window.height,
+			CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+			D3D12_HEAP_FLAG_NONE, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
+
+		_renderTargetGroup[static_cast<uint8>(RENDER_TARGET_GROUP_TYPE::LIGHTING)] = make_shared<RenderTargetGroup>();
+		_renderTargetGroup[static_cast<uint8>(RENDER_TARGET_GROUP_TYPE::LIGHTING)]->Create(RENDER_TARGET_GROUP_TYPE::LIGHTING, rtVec, dsTexture);
 	}
 }
 
