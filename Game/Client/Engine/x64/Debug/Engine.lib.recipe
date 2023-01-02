@@ -3,6 +3,9 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
+      <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\Compute.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\Deferred.cso</FullPath>
     </ContentFile>
     <ContentFile>

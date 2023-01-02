@@ -45,7 +45,7 @@ void Transform::PushData()
 	transformParams.matMV = _matWorld * Camera::S_MatView;
 	transformParams.matWorldViewProj = _matWorld * Camera::S_MatView * Camera::S_MatProjection; 
 
-	CONSTANT_BUFFER(CONSTANT_BUFFER_TYPE::TRANSFORM)->PushData(&transformParams, sizeof(transformParams));
+	CONSTANT_BUFFER(CONSTANT_BUFFER_TYPE::TRANSFORM)->PushGraphicsData(&transformParams, sizeof(transformParams));
 } 
 
 // CBV »ç¿ë

@@ -102,8 +102,24 @@ enum class SRV_REGISTER : uint8
 	t2,
 	t3,
 	t4,
+	t5,
+	t6,
+	t7,
+	t8,
+	t9,
 
 	END
+};
+
+enum class UAV_REGISTER : uint8
+{
+	u0 = static_cast<uint8>(SRV_REGISTER::END),
+	u1,
+	u2,
+	u3,
+	u4,
+
+	END,
 };
 
 enum
@@ -111,7 +127,9 @@ enum
 	SWAP_CHAIN_BUFFER_COUNT = 2,
 	CBV_REGISTER_COUNT = CBV_REGISTER::END,
 	SRV_REGISTER_COUNT = static_cast<uint8>(SRV_REGISTER::END) - CBV_REGISTER_COUNT,
-	REGISTER_COUNT = CBV_REGISTER_COUNT + SRV_REGISTER_COUNT,
+	CBV_SRV_REGISTER_COUNT = CBV_REGISTER_COUNT + SRV_REGISTER_COUNT,
+	UAV_REGISTER_COUNT = static_cast<uint8>(UAV_REGISTER::END) - CBV_SRV_REGISTER_COUNT,
+	TOTAL_REGISTER_COUNT = CBV_SRV_REGISTER_COUNT + UAV_REGISTER_COUNT,
 };
  
 class Engine;
@@ -133,9 +151,12 @@ public:											\
 #define GET_SINGLETON(type)	type::GetInstance()
 
 #define DEVICE GEngine->GetDevice()->GetDevice()
-#define CMD_LIST GEngine->GetCommandQueue()->GetCommandList()
-#define RESOURCE_CMD_LIST GEngine->GetCommandQueue()->GetResourceCommandList()
-#define ROOT_SIGNATURE GEngine->GetRootSignature()->GetSignature() 
+#define GRAPHICS_CMD_LIST GEngine->GetGraphicsCommandQueue()->GetCommandList()
+#define COMPUTE_CMD_LIST GEngine->GetComputeCommandQueue()->GetCommandList()
+#define RESOURCE_CMD_LIST GEngine->GetGraphicsCommandQueue()->GetResourceCommandList()
+
+#define GRAPHICS_ROOT_SIGNATURE GEngine->GetRootSignature()->GetGraphicsRootSignature() 
+#define COMPUTE_ROOT_SIGNATURE GEngine->GetRootSignature()->GetComputeRootSignature() 
 
 #define INPUT GET_SINGLETON(Input)
 #define TIMER GET_SINGLETON(Timer)

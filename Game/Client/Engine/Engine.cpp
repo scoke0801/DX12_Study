@@ -17,18 +17,22 @@ void Engine::Init(const WindowInfo& window)
 	_scissorRect = CD3DX12_RECT(0, 0, window.width, window.height);
 
 	_device = make_shared<Device>();
-	_cmdQueue = make_shared<CommandQueue>();
+	_graphicsCmdQueue = make_shared<GraphicsCommandQueue>();
+	_computeCmdQueue = make_shared<ComputeCommandQueue>();
 	_swapChain = make_shared<SwapChain>(); 
 	_rootSignature = make_shared<RootSignature>();
 
-	_tableDescHeap = make_shared<TableDescriptorHeap>();
+	_graphicsDescHeap = make_shared<GraphicsDescriptorHeap>();
+	_computeDescHeap = make_shared<ComputeDescriptorHeap>();
 
 	_device->Init();
-	_cmdQueue->Init(_device->GetDevice(), _swapChain);
-	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _cmdQueue->GetCommandQueue());
+	_graphicsCmdQueue->Init(_device->GetDevice(), _swapChain);
+	_computeCmdQueue->Init(_device->GetDevice());
+	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _graphicsCmdQueue->GetCommandQueue());
 	_rootSignature->Init();
 
-	_tableDescHeap->Init(30); 
+	_graphicsDescHeap->Init(30); 
+	_computeDescHeap->Init();
 
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 30);
@@ -167,10 +171,10 @@ void Engine::CreateRenderTargetGroups()
 
 void Engine::RenderBegin()
 {
-	_cmdQueue->RenderBegin(&_viewport, &_scissorRect);
+	_graphicsCmdQueue->RenderBegin(&_viewport, &_scissorRect);
 }
 
 void Engine::RenderEnd()
 {
-	_cmdQueue->RenderEnd();
+	_graphicsCmdQueue->RenderEnd();
 }

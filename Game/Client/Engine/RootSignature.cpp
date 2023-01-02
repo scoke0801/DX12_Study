@@ -3,18 +3,13 @@
 #include "Engine.h"
 
 void RootSignature::Init()
-{
-	CreateSamplerDesc();
-	CreateRootSignature();
-}
-
-void RootSignature::CreateSamplerDesc()
+{ 
+	CreateGraphicsRootSignature();
+	CreateComputeRootSignature();
+} 
+void RootSignature::CreateGraphicsRootSignature()
 {
 	_samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
-}
-
-void RootSignature::CreateRootSignature()
-{
 	//CD3DX12_ROOT_PARAMETER param[2];
 	//param[0].InitAsConstantBufferView(0); // 0¹ø -> b0
 	//param[1].InitAsConstantBufferView(1); // 1¹ø -> b1
@@ -34,5 +29,30 @@ void RootSignature::CreateRootSignature()
 	ComPtr<ID3DBlob> blobSignature;
 	ComPtr<ID3DBlob> blobError;
 	::D3D12SerializeRootSignature(&desc, D3D_ROOT_SIGNATURE_VERSION_1, &blobSignature, &blobError);
-	DEVICE->CreateRootSignature(0, blobSignature->GetBufferPointer(), blobSignature->GetBufferSize(), IID_PPV_ARGS(&_signature));
+	DEVICE->CreateRootSignature(0, blobSignature->GetBufferPointer(), blobSignature->GetBufferSize(), IID_PPV_ARGS(&_graphicsRootSignature));
+}
+
+void RootSignature::CreateComputeRootSignature()
+{
+	CD3DX12_DESCRIPTOR_RANGE ranges[] =
+	{
+		CD3DX12_DESCRIPTOR_RANGE(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, CBV_REGISTER_COUNT, 0),	// b0 ~ b4
+		CD3DX12_DESCRIPTOR_RANGE(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, SRV_REGISTER_COUNT, 0),	// t0 ~ t9
+		CD3DX12_DESCRIPTOR_RANGE(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, UAV_REGISTER_COUNT, 0),	// u0 ~ u4
+	};
+
+	CD3DX12_ROOT_PARAMETER param[1];
+	param[0].InitAsDescriptorTable(_countof(ranges), ranges);
+
+	D3D12_ROOT_SIGNATURE_DESC desc = CD3DX12_ROOT_SIGNATURE_DESC(_countof(param), param);
+	desc.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE;
+
+	ComPtr<ID3DBlob> blobSignature;
+	ComPtr<ID3DBlob> blobError;
+
+	::D3D12SerializeRootSignature(&desc, D3D_ROOT_SIGNATURE_VERSION_1, &blobSignature, &blobError);
+	DEVICE->CreateRootSignature(0, blobSignature->GetBufferPointer(), blobSignature->GetBufferSize(),
+		IID_PPV_ARGS(&_computeRootSignature));
+
+	COMPUTE_CMD_LIST->SetComputeRootSignature(_computeRootSignature.Get());
 }

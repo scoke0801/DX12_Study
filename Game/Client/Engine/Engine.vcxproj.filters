@@ -250,5 +250,8 @@
     <FxCompile Include="..\Resources\Shader\Lighting.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Resources\Shader\Compute.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -18,7 +18,7 @@ void MeshRenderer::Render()
 	GetTransform()->PushData();
 
 	if (_material) {
-		_material->PushData();
+		_material->PushGraphicsData();
 	}
 
 	if (_mesh) {
