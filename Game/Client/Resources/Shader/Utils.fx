@@ -114,4 +114,8 @@ LightColor CalculateLightColor(int lightIndex, float3 viewNormal, float3 viewPos
     return color;
 } 
 
+float Rand(float2 seed)
+{
+    return 0.5 + (frac(sin(dot(seed.xy, float2(12.9898, 78.233))) * 43758.5453)) * 0.5;
+}
 #endif

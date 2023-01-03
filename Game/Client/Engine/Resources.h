@@ -25,6 +25,7 @@ public:
 	template<typename T>
 	OBJECT_TYPE GetObjectType();
 
+	shared_ptr<Mesh> LoadPointMesh();
 	shared_ptr<Mesh> LoadCubeMesh();
 	shared_ptr<Mesh> LoadSphereMesh();
 	shared_ptr<Mesh> LoadRectangleMesh();

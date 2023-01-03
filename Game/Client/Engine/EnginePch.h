@@ -160,7 +160,7 @@ public:											\
 
 #define INPUT GET_SINGLETON(Input)
 #define TIMER GET_SINGLETON(Timer)
-#define DELTA_TIME GET_SINGLETON(Timer)->GetDeltaTime();
+#define DELTA_TIME GET_SINGLETON(Timer)->GetDeltaTime()
 
 #define CONSTANT_BUFFER(type) GEngine->GetConstantBuffer(type)
 
