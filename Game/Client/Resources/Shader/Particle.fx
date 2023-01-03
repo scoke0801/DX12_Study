@@ -38,9 +38,9 @@ struct VS_OUT
 // g_tex_0      : Particle Texture
 VS_OUT VS_Main(VS_IN input)
 {
-	VS_OUT output = (VS_OUT)0;
+	VS_OUT output = (VS_OUT)0.f;
 
-	float3 worldPos = mul(float4(input.pos, 1.0f), g_matWorld).xyz;
+	float3 worldPos = mul(float4(input.pos, 1.f), g_matWorld).xyz;
 	worldPos += g_data[input.id].worldPos;
 
 	output.viewPos = mul(float4(worldPos, 1.f), g_matView);
@@ -50,13 +50,14 @@ VS_OUT VS_Main(VS_IN input)
 	return output;
 }
 
+
 struct GS_OUT
 {
 	float4 position : SV_Position;
 	float2 uv		: TEXCOORD;
 	uint id			: SV_InstanceID;
 };
-
+  
 [maxvertexcount(6)]
 void GS_Main(point VS_OUT input[1], inout TriangleStream<GS_OUT> outputStream)
 {
@@ -66,7 +67,7 @@ void GS_Main(point VS_OUT input[1], inout TriangleStream<GS_OUT> outputStream)
 	};
 
 	VS_OUT vertex = input[0];
-	uint id = (uint)vertex;    
+	uint id = (uint)vertex.id;    
 	if (0 == g_data[id].alive) {
 		return;
 	}

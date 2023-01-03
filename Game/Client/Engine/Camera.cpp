@@ -64,6 +64,7 @@ void Camera::SortGameObject()
 				continue;
 			}
 		}
+
 		if (gameObject->GetMeshRenderer())
 		{
 			SHADER_TYPE shaderType = gameObject->GetMeshRenderer()->GetMaterial()->GetShader()->GetShaderType();

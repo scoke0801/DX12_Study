@@ -89,5 +89,5 @@ void StructuredBuffer::PushComputeSRVData(SRV_REGISTER reg)
 
 void StructuredBuffer::PushComputeUAVData(UAV_REGISTER reg)
 {
-	GEngine->GetComputeDescriptorHeap()->SetUAV(_srvHeapBegin, reg);
+	GEngine->GetComputeDescriptorHeap()->SetUAV(_uavHeapBegin, reg);
 }

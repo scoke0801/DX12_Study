@@ -66,7 +66,7 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, const st
 		break;
 	}
 
-	switch (info.resterizerType)
+	switch (info.rasterizerType)
 	{
 		case RASTERIZER_TYPE::CULL_NONE:
 			_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
@@ -91,7 +91,7 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, const st
 	case DEPTH_STENCIL_TYPE::LESS:
 		_graphicsPipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 		break;
-	case DEPTH_STENCIL_TYPE::LESS_EQAUL:
+	case DEPTH_STENCIL_TYPE::LESS_EQUAL:
 		_graphicsPipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 		break;
 	case DEPTH_STENCIL_TYPE::GREATER:
