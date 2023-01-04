@@ -27,6 +27,7 @@ public:
 	void SetName(const wstring& name) { _name = name; }
 	const wstring& GetName() { return _name; }
 
+	uint32 GetID() { return _id; }
 protected:
 	friend class Resources;
 	virtual void Load(const wstring& path) {}
@@ -36,5 +37,6 @@ protected:
 	OBJECT_TYPE _objectType = OBJECT_TYPE::NONE;
 	wstring _name;
 
+	uint32 _id = 0;
 };
 

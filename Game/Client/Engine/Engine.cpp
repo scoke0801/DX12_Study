@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 #include "Light.h"
 #include "Resources.h"
+#include "InstancingManager.h"
 
 void Engine::Init(const WindowInfo& window)
 {
@@ -31,12 +32,12 @@ void Engine::Init(const WindowInfo& window)
 	_swapChain->Init(window, _device->GetDevice(), _device->GetDXGI(), _graphicsCmdQueue->GetCommandQueue());
 	_rootSignature->Init();
 
-	_graphicsDescHeap->Init(30); 
+	_graphicsDescHeap->Init(100);
 	_computeDescHeap->Init();
 
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
-	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 30);
-	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 30);
+	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 100);
+	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 100);
 
 	CreateRenderTargetGroups();
 
@@ -52,6 +53,7 @@ void Engine::Update()
 	INPUT->Update();
 	TIMER->Update(); 
 	GET_SINGLETON(SceneManager)->Update();
+	GET_SINGLETON(InstancingManager)->ClearBuffer();
 
 	Render();
 

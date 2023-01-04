@@ -145,31 +145,30 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion 
 #pragma region Object
 	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->AddComponent(make_shared<Transform>()); 
-		obj->GetTransform()->SetLocalScale(Vec3(100.0f, 100.0f, 100.0f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0.f, 0.0f, 150.0f)); 
-		
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		for (int32 i = 0; i < 50; i++)
 		{
-			shared_ptr<Mesh> mesh = make_shared<Mesh>();
-			mesh = GET_SINGLETON(Resources)->LoadSphereMesh();
-			meshRenderer->SetMesh(mesh);
-		}
-		{
-			shared_ptr<Texture> texture = GET_SINGLETON(Resources)->Load<Texture>(L"Stone_Floor", L"..\\Resources\\Texture\\Stone_Floor.jpg");
-			shared_ptr<Texture> textureNormal = GET_SINGLETON(Resources)->Load<Texture>(L"Stone_Floor_Normal", L"..\\Resources\\Texture\\Stone_Floor_Normal.jpg");
-			 
-			shared_ptr<Material> material = make_shared<Material>();
-			material->SetShader(GET_SINGLETON(Resources)->Get<Shader>(L"Deferred")); 
-			material->SetTexture(0, texture);
-			material->SetTexture(1, textureNormal);
+			shared_ptr<GameObject> obj = make_shared<GameObject>();
+			obj->AddComponent(make_shared<Transform>());
+			obj->GetTransform()->SetLocalScale(Vec3(25.f, 25.f, 25.f));
+			obj->GetTransform()->SetLocalPosition(Vec3(-300.f + i * 10.f, 0.f, 500.f));
 
-			meshRenderer->SetMaterial(material);
-		}
+			shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+			{
+				shared_ptr<Mesh> mesh = make_shared<Mesh>();
+				mesh = GET_SINGLETON(Resources)->LoadSphereMesh();
+				meshRenderer->SetMesh(mesh);
+			}
+			{
+				shared_ptr<Material> material = GET_SINGLETON(Resources)->Get<Material>(L"GameObject");
+				material->SetInt(0, 1);
+				meshRenderer->SetMaterial(material);
+				//material->SetInt(0, 0);
+				//meshRenderer->SetMaterial(material->Clone());
+			}
 
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
+			obj->AddComponent(meshRenderer);
+			scene->AddGameObject(obj);
+		}
 	}
 #pragma endregion
 
