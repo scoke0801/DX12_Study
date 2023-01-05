@@ -27,6 +27,9 @@
       <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\skybox.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\Tessellation.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\Utils.cso</FullPath>
     </ContentFile>
   </ContentFiles>
