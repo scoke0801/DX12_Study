@@ -171,6 +171,7 @@ struct TransformParams
 	Matrix matProjection;
 	Matrix matMV;
 	Matrix matWorldViewProj;
+	Matrix matViewInv;
 };
 
 

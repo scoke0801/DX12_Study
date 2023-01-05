@@ -21,6 +21,9 @@
       <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\Particle.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\Shadow.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\UsingProject\DX12_Study\Game\Client\Output\skybox.cso</FullPath>
     </ContentFile>
     <ContentFile>

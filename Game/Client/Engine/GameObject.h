@@ -37,6 +37,10 @@ public:
 
 	void SetLayerIndex(uint8 layer) { _layerIndex = layer; }
 	uint8 GetLayerIndex() { return _layerIndex; }
+
+	void SetStatic(bool flag) { _static = flag; }
+	bool IsStatic() { return _static; }
+
 private:
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;
 
@@ -45,5 +49,7 @@ private:
 	bool _checkFrustum = true;
 
 	uint8 _layerIndex = 0;
+
+	bool	_static = true;
 };
 

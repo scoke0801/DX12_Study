@@ -1,5 +1,5 @@
-#ifndef _DEFAULT_FX_
-#define _DEFAULT_FX_
+#ifndef _FORWARD_FX_
+#define _FORWARD_FX_
 
 #include "Params.fx"
 #include "Utils.fx"

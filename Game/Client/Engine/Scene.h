@@ -12,8 +12,15 @@ public:
 	void FinalUpdate();
 
 	void Render();	
+
+	void ClearRTV();
+
+	void RenderShadow();
+	void RenderDeferred();
 	void RenderLights();
 	void RenderFinal();
+
+	void RenderForward();
 
 public:
 	void AddGameObject(shared_ptr<GameObject> gameObject);

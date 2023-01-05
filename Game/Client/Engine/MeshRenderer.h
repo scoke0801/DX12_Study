@@ -25,6 +25,8 @@ public:
 	void Render();
 	void Render(shared_ptr<class InstancingBuffer>& buffer);
 
+	void RenderShadow();
+
 public:
 	shared_ptr<Material> GetMaterial() { return _material; }
 

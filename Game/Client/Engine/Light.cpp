@@ -2,9 +2,18 @@
 #include "Light.h"
 #include "Transform.h"
 #include "Resources.h"
+#include "Camera.h"
+#include "Transform.h"
+#include "Texture.h"
+#include "SceneManager.h"
 
 Light::Light() : Component(COMPONENT_TYPE::LIGHT)
 {
+	_shadowCamera = make_shared<GameObject>();
+	_shadowCamera->AddComponent(make_shared<Transform>());
+	_shadowCamera->AddComponent(make_shared<Camera>());
+	uint8 layerIndex = GET_SINGLETON(SceneManager)->LayerNameToIndex(L"UI");
+	_shadowCamera->GetCamera()->SetCullingMaskLayerOff(layerIndex, true); // UI는 안 찍음
 }
 
 Light::~Light()
@@ -14,6 +23,13 @@ Light::~Light()
 void Light::FinalUpdate()
 {
 	_lightInfo.position = GetTransform()->GetWorldPosition();
+
+	// 조명의 위치에서 그림자용 카메라가 위치하도록 설정해줌
+	_shadowCamera->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+	_shadowCamera->GetTransform()->SetLocalRotation(GetTransform()->GetLocalRotation());
+	_shadowCamera->GetTransform()->SetLocalScale(GetTransform()->GetLocalScale());
+
+	_shadowCamera->FinalUpdate();
 }
 
 void Light::Render()
@@ -23,19 +39,41 @@ void Light::Render()
 	// 볼륨 메쉬 정보 푸쉬
 	GetTransform()->PushData();
 
-	_lightMaterial->SetInt(0, _lightIndex);
-	_lightMaterial->PushGraphicsData();
-
-	switch (static_cast<LIGHT_TYPE>(_lightInfo.lightType))
+	if (static_cast<LIGHT_TYPE>(_lightInfo.lightType) == LIGHT_TYPE::DIRECTIONAL_LIGHT)
 	{
-	case LIGHT_TYPE::POINT_LIGHT:
-	case LIGHT_TYPE::SPOT_LIGHT:
+		shared_ptr<Texture> shadowTex = GET_SINGLETON(Resources)->Get<Texture>(L"ShadowTarget");
+		_lightMaterial->SetTexture(2, shadowTex);
+
+		Matrix matVP = _shadowCamera->GetCamera()->GetViewMatrix() * _shadowCamera->GetCamera()->GetProjectionMatrix();
+		_lightMaterial->SetMatrix(0, matVP);
+	}
+	else
+	{
 		float scale = 2 * _lightInfo.range;
 		GetTransform()->SetLocalScale(Vec3(scale, scale, scale));
-		break;
 	}
 
+	_lightMaterial->SetInt(0, _lightIndex);
+	_lightMaterial->PushGraphicsData();
+	 
+
 	_volumeMesh->Render();
+}
+
+void Light::RenderShadow()
+{
+	//그림자의 영향을 받을 물체들을 렌더링.
+	_shadowCamera->GetCamera()->SortShadowObject();
+	_shadowCamera->GetCamera()->Render_Shadow();
+} 
+
+void Light::SetLightDirection(Vec3 direction)
+{
+	direction.Normalize();
+
+	_lightInfo.direction = direction;
+
+	GetTransform()->LookAt(direction);
 }
 
 void Light::SetLightType(LIGHT_TYPE type)
@@ -47,6 +85,11 @@ void Light::SetLightType(LIGHT_TYPE type)
 	case LIGHT_TYPE::DIRECTIONAL_LIGHT:
 		_volumeMesh = GET_SINGLETON(Resources)->Get<Mesh>(L"Rectangle");
 		_lightMaterial = GET_SINGLETON(Resources)->Get<Material>(L"DirLight");
+
+		_shadowCamera->GetCamera()->SetScale(1.f);
+		_shadowCamera->GetCamera()->SetFar(10000.f);
+		_shadowCamera->GetCamera()->SetWidth(4096);
+		_shadowCamera->GetCamera()->SetHeight(4096);
 		break;
 	case LIGHT_TYPE::POINT_LIGHT:
 		_volumeMesh = GET_SINGLETON(Resources)->Get<Mesh>(L"Sphere");

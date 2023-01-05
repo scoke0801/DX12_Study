@@ -58,7 +58,7 @@ void GraphicsCommandQueue::WaitSync()
 	}
 }
 
-void GraphicsCommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
+void GraphicsCommandQueue::RenderBegin()
 {
 	_cmdAlloc->Reset();
 	_cmdList->Reset(_cmdAlloc.Get(), nullptr);
@@ -81,11 +81,7 @@ void GraphicsCommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_REC
 	ID3D12DescriptorHeap* descHeap = GEngine->GetGraphicsDescriptorHeap()->GetDescriptorHeap().Get();
 	_cmdList->SetDescriptorHeaps(1, &descHeap);
 
-	_cmdList->ResourceBarrier(1, &barrier);
-
-	// viewport, scissor rect 설정, 커멘드리스트가 리셋되었으면 다시 설정해줘야함.
-	_cmdList->RSSetViewports(1, vp);
-	_cmdList->RSSetScissorRects(1, rect);  
+	_cmdList->ResourceBarrier(1, &barrier); 
 }
 
 void GraphicsCommandQueue::RenderEnd()

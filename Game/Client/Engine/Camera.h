@@ -18,8 +18,12 @@ public:
 
 public:
 	void SortGameObject();
+	void SortShadowObject();
+
+public:
 	void Render_Deferred();
 	void Render_Forward();
+	void Render_Shadow();
 	
 public:
 	void SetProjectionType(PROJECTION_TYPE type) { _projType = type; }
@@ -29,11 +33,22 @@ public:
 	const Matrix& GetProjection() { return _matProjection; }
 
 	// 컬링마스크 값이 1이면 안그림, 0이면 그림
-	void SetCullingMaskLayerLayerOff(uint8 layer, bool on);
+	void SetCullingMaskLayerOff(uint8 layer, bool on);
 
 	void SetCullingMaskAll() { SetCullingMask(UINT32_MAX); }
 	void SetCullingMask(uint32 mask) { _cullingMask = mask; }
 	bool IsCulled(uint8 layer) { return (_cullingMask & (1 << layer)) != 0; }
+
+	void SetNear(float value) { _near = value; }
+	void SetFar(float value) { _far = value; }
+	void SetFOV(float value) { _fov = value; }
+	void SetScale(float value) { _scale = value; }
+	void SetWidth(float value) { _width = value; }
+	void SetHeight(float value) { _height = value; }
+
+	Matrix& GetViewMatrix() { return _matView; }
+	Matrix& GetProjectionMatrix() { return _matProjection; }
+
 private:
 	PROJECTION_TYPE _projType = PROJECTION_TYPE::PERSPECTIVE;
 
@@ -41,6 +56,10 @@ private:
 	float _far = 1000.0f;		// 먼 평면
 	float _fov = XM_PI / 4.f;	// 시야각, 45도
 	float _scale = 1.0f;
+
+	// 쉐도우 카메라에서 해상도 조절을 위한 변수.
+	float _width = 0.f;
+	float _height = 0.f;
 
 	Matrix _matView = {};
 	Matrix _matProjection = {}; 
@@ -52,7 +71,7 @@ private:
 	vector<shared_ptr<GameObject>>	_vecDeferred;
 	vector<shared_ptr<GameObject>>	_vecForward;
 	vector<shared_ptr<GameObject>>	_vecParticle;
-
+	vector<shared_ptr<GameObject>>	_vecShadow;
 public:
 	// TEMP
 	static Matrix S_MatView;
