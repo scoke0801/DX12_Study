@@ -47,10 +47,10 @@ PatchTess ConstantHS(InputPatch<VS_OUT, 3> input, int patchID : SV_PrimitiveID)
 {
     PatchTess output = (PatchTess)0.f;
 
-    output.edgeTess[0] = 1;
-    output.edgeTess[1] = 1;
-    output.edgeTess[2] = 1;
-    output.insideTess = 3;
+    output.edgeTess[0] = 1; // 1번 변을 몇개로 나눌지
+    output.edgeTess[1] = 1; // 2번 변을 몇개로 나눌지
+    output.edgeTess[2] = 1; // 3번 변을 몇개로 나눌지
+    output.insideTess = 2;
 
     return output;
 }

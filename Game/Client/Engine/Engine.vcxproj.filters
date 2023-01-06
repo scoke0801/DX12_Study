@@ -96,9 +96,6 @@
     <ClCompile Include="Resources.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Object\Component</Filter>
     </ClCompile>
@@ -134,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="InstancingManager.cpp">
       <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +245,9 @@
     <ClInclude Include="InstancingManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="메모.txt" />
@@ -284,6 +290,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\Tessellation.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\Terrain.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

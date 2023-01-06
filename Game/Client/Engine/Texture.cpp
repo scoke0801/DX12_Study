@@ -41,16 +41,18 @@ void Texture::Load(const wstring& path)
 		assert(false);
 	}
 
+	_desc = _tex2D->GetDesc();
+
 	const uint64 bufferSize = ::GetRequiredIntermediateSize(_tex2D.Get(), 0, static_cast<uint32>(subResources.size()));
 
 	D3D12_HEAP_PROPERTIES heapProperty = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	_desc = CD3DX12_RESOURCE_DESC::Buffer(bufferSize);
+	D3D12_RESOURCE_DESC desc = CD3DX12_RESOURCE_DESC::Buffer(bufferSize);
 
 	ComPtr<ID3D12Resource> textureUploadHeap;
 	hr = DEVICE->CreateCommittedResource(
 		&heapProperty
 		, D3D12_HEAP_FLAG_NONE
-		, &_desc
+		, &desc
 		, D3D12_RESOURCE_STATE_GENERIC_READ
 		, nullptr
 		, IID_PPV_ARGS(textureUploadHeap.GetAddressOf()));

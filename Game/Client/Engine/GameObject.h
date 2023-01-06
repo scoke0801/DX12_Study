@@ -27,6 +27,7 @@ public:
 	shared_ptr<class Camera> GetCamera();
 	shared_ptr<class Light> GetLight();
 	shared_ptr<class ParticleSystem> GetParticleSystem();
+	shared_ptr<class Terrain> GetTerrain();
 
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
 	

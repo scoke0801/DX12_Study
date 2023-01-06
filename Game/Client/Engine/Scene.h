@@ -23,6 +23,9 @@ public:
 	void RenderForward();
 
 public:
+	shared_ptr<class Camera> GetMainCamera();
+
+public:
 	void AddGameObject(shared_ptr<GameObject> gameObject);
 	void RemoveGameObject(shared_ptr<GameObject> gameObject);
 

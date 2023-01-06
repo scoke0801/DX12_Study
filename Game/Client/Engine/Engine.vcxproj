@@ -210,6 +210,7 @@
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="TableDescriptorHeap.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestCameraScript.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="TableDescriptorHeap.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestCameraScript.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -273,6 +275,7 @@
     <FxCompile Include="..\Resources\Shader\Particle.fx" />
     <FxCompile Include="..\Resources\Shader\Shadow.fx" />
     <FxCompile Include="..\Resources\Shader\skybox.fx" />
+    <FxCompile Include="..\Resources\Shader\Terrain.fx" />
     <FxCompile Include="..\Resources\Shader\Tessellation.fx" />
     <FxCompile Include="..\Resources\Shader\Utils.fx" />
   </ItemGroup>
