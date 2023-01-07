@@ -1,7 +1,7 @@
 #pragma once
+#include "BaseCollider.h"
 
-#include "Collider.h"
-class SphereCollider : public Collider
+class SphereCollider : public BaseCollider
 {
 public:
 	SphereCollider();
@@ -12,6 +12,7 @@ public:
 
 	void SetRadius(float radius) { _radius = radius; }
 	void SetCenter(Vec3 center) { _center = center; }
+
 private:
 	// Local ±‚¡ÿ
 	float		_radius = 1.f;

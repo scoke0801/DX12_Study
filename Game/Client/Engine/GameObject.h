@@ -1,20 +1,22 @@
 #pragma once
-
 #include "Component.h"
 #include "Object.h"
 
+class Transform;
 class MeshRenderer;
+class Camera;
+class Light;
 class MonoBehaviour;
+class ParticleSystem;
+class Terrain;
+class BaseCollider;
+class Animator;
 
-// 같은 raw pointer를 포인팅하는
-// shared_ptr를 만들기 위해 enable_shared_from_this를 사용한다
 class GameObject : public Object, public enable_shared_from_this<GameObject>
 {
 public:
 	GameObject();
 	virtual ~GameObject();
-
-	void Init();
 
 	void Awake();
 	void Start();
@@ -22,16 +24,17 @@ public:
 	void LateUpdate();
 	void FinalUpdate();
 
-	shared_ptr<class Transform> GetTransform();
-	shared_ptr<class MeshRenderer> GetMeshRenderer();
-	shared_ptr<class Camera> GetCamera();
-	shared_ptr<class Light> GetLight();
-	shared_ptr<class ParticleSystem> GetParticleSystem();
-	shared_ptr<class Terrain> GetTerrain();
-	shared_ptr<class Collider> GetCollider();
-
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
-	
+
+	shared_ptr<Transform> GetTransform();
+	shared_ptr<MeshRenderer> GetMeshRenderer();
+	shared_ptr<Camera> GetCamera();
+	shared_ptr<Light> GetLight();
+	shared_ptr<ParticleSystem> GetParticleSystem();
+	shared_ptr<Terrain> GetTerrain();
+	shared_ptr<BaseCollider> GetCollider();
+	shared_ptr<Animator> GetAnimator();
+
 	void AddComponent(shared_ptr<Component> component);
 
 	void SetCheckFrustum(bool checkFrustum) { _checkFrustum = checkFrustum; }
@@ -45,13 +48,10 @@ public:
 
 private:
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;
-
 	vector<shared_ptr<MonoBehaviour>> _scripts;
 
 	bool _checkFrustum = true;
-
 	uint8 _layerIndex = 0;
-
-	bool	_static = true;
+	bool _static = true;
 };
 

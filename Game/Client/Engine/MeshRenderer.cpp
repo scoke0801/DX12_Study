@@ -1,18 +1,28 @@
 #include "pch.h"
 #include "MeshRenderer.h"
-#include "Material.h"
 #include "Mesh.h"
+#include "Material.h"
 #include "Transform.h"
 #include "InstancingBuffer.h"
 #include "Resources.h"
+#include "Animator.h"
 
-MeshRenderer::MeshRenderer()
-	: Component(COMPONENT_TYPE::MESH_RENDERER)
+MeshRenderer::MeshRenderer() : Component(COMPONENT_TYPE::MESH_RENDERER)
 {
+
 }
 
 MeshRenderer::~MeshRenderer()
 {
+
+}
+
+void MeshRenderer::SetMaterial(shared_ptr<Material> material, uint32 idx)
+{
+	if (_materials.size() <= static_cast<size_t>(idx))
+		_materials.resize(static_cast<size_t>(idx + 1));
+
+	_materials[idx] = material;
 }
 
 void MeshRenderer::Render()
@@ -25,9 +35,16 @@ void MeshRenderer::Render()
 			continue;
 
 		GetTransform()->PushData();
+
+		if (GetAnimator())
+		{
+			GetAnimator()->PushData();
+			material->SetInt(1, 1);
+		}
+
 		material->PushGraphicsData();
 		_mesh->Render(1, i);
-	} 
+	}
 }
 
 void MeshRenderer::Render(shared_ptr<InstancingBuffer>& buffer)
@@ -40,6 +57,13 @@ void MeshRenderer::Render(shared_ptr<InstancingBuffer>& buffer)
 			continue;
 
 		buffer->PushData();
+
+		if (GetAnimator())
+		{
+			GetAnimator()->PushData();
+			material->SetInt(1, 1);
+		}
+
 		material->PushGraphicsData();
 		_mesh->Render(buffer, i);
 	}
@@ -48,17 +72,8 @@ void MeshRenderer::Render(shared_ptr<InstancingBuffer>& buffer)
 void MeshRenderer::RenderShadow()
 {
 	GetTransform()->PushData();
-	GET_SINGLETON(Resources)->Get<Material>(L"Shadow")->PushGraphicsData();
+	GET_SINGLE(Resources)->Get<Material>(L"Shadow")->PushGraphicsData();
 	_mesh->Render();
-}
-
-void MeshRenderer::SetMaterial(shared_ptr<Material> material, uint32 index)
-{
-	if (_materials.size() <= static_cast<size_t>(index)) {
-		_materials.resize(static_cast<size_t>(index + 1));
-	}
-
-	_materials[index] = material;
 }
 
 uint64 MeshRenderer::GetInstanceID()

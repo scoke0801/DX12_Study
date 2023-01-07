@@ -1,7 +1,7 @@
 #ifndef _TESSELLATION_FX_
 #define _TESSELLATION_FX_
 
-#include "Params.fx" 
+#include "params.fx"
 
 // --------------
 // Vertex Shader
@@ -47,10 +47,10 @@ PatchTess ConstantHS(InputPatch<VS_OUT, 3> input, int patchID : SV_PrimitiveID)
 {
     PatchTess output = (PatchTess)0.f;
 
-    output.edgeTess[0] = 1; // 1번 변을 몇개로 나눌지
-    output.edgeTess[1] = 1; // 2번 변을 몇개로 나눌지
-    output.edgeTess[2] = 1; // 3번 변을 몇개로 나눌지
-    output.insideTess = 2;
+    output.edgeTess[0] = 1;
+    output.edgeTess[1] = 2;
+    output.edgeTess[2] = 3;
+    output.insideTess = 1;
 
     return output;
 }
@@ -89,7 +89,7 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, 3> input, float3 location : SV_DomainLo
     float3 localPos = input[0].pos * location[0] + input[1].pos * location[1] + input[2].pos * location[2];
     float2 uv = input[0].uv * location[0] + input[1].uv * location[1] + input[2].uv * location[2];
 
-    output.pos = mul(float4(localPos, 1.f), g_matWorldViewProj);
+    output.pos = mul(float4(localPos, 1.f), g_matWVP);
     output.uv = uv;
 
     return output;
@@ -103,5 +103,5 @@ float4 PS_Main(DS_OUT input) : SV_Target
 {
     return float4(1.f, 0.f, 0.f, 1.f);
 }
-    
+
 #endif

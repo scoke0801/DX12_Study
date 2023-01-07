@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Object.h"
 
 class Shader;
@@ -18,13 +17,13 @@ struct MaterialParams
 		{
 			SetInt(i, 0);
 			SetFloat(i, 0.f);
-			SetTextureOn(i, 0);
+			SetTexOn(i, 0);
 		}
 	}
 
 	void SetInt(uint8 index, int32 value) { intParams[index] = value; }
 	void SetFloat(uint8 index, float value) { floatParams[index] = value; }
-	void SetTextureOn(uint8 index, int32 value) { texOnParams[index] = value; }
+	void SetTexOn(uint8 index, int32 value) { texOnParams[index] = value; }
 	void SetVec2(uint8 index, Vec2 value) { vec2Params[index] = value; }
 	void SetVec4(uint8 index, Vec4 value) { vec4Params[index] = value; }
 	void SetMatrix(uint8 index, Matrix& value) { matrixParams[index] = value; }
@@ -42,33 +41,31 @@ class Material : public Object
 public:
 	Material();
 	virtual ~Material();
-public:
+
 	shared_ptr<Shader> GetShader() { return _shader; }
 
-	inline void SetShader(shared_ptr<Shader> shader) { _shader = shader; }
-	inline void SetInt(uint8 index, int32 value) { _params.SetInt(index, value); }
-	inline void SetFloat(uint8 index, float value) { _params.SetFloat(index, value); }
-	inline void SetTexture(uint8 index, shared_ptr<Texture> texture)
+	void SetShader(shared_ptr<Shader> shader) { _shader = shader; }
+	void SetInt(uint8 index, int32 value) { _params.SetInt(index, value); }
+	void SetFloat(uint8 index, float value) { _params.SetFloat(index, value); }
+	void SetTexture(uint8 index, shared_ptr<Texture> texture) 
 	{ 
 		_textures[index] = texture;
-		_params.SetTextureOn(index, texture == nullptr ? 0 : 1 );
+		_params.SetTexOn(index, (texture == nullptr ? 0 : 1));
 	}
 
 	void SetVec2(uint8 index, Vec2 value) { _params.SetVec2(index, value); }
 	void SetVec4(uint8 index, Vec4 value) { _params.SetVec4(index, value); }
 	void SetMatrix(uint8 index, Matrix& value) { _params.SetMatrix(index, value); }
-	
+
 	void PushGraphicsData();
 	void PushComputeData();
+	void Dispatch(uint32 x, uint32 y, uint32 z);
 
-	void Dispatch(uint32 x, uint32 y, uint32 z);	
-	
 	shared_ptr<Material> Clone();
+
 private:
-	shared_ptr<Shader>		_shader;
-
-	MaterialParams			_params;
-
-	array<shared_ptr<Texture>, MATERIAL_ARG_COUNT > _textures;
+	shared_ptr<Shader>	_shader;
+	MaterialParams		_params;
+	array<shared_ptr<Texture>, MATERIAL_ARG_COUNT> _textures;
 };
 

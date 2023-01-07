@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Object.h"
 
 enum class COMPONENT_TYPE : uint8
@@ -7,37 +6,38 @@ enum class COMPONENT_TYPE : uint8
 	TRANSFORM,
 	MESH_RENDERER,
 	CAMERA,
-	LIGHT,	
+	LIGHT,
 	PARTICLE_SYSTEM,
 	TERRAIN,
 	COLLIDER,
-	/// ...
-
+	ANIMATOR,
+	// ...
 	MONO_BEHAVIOUR,
 	END,
 };
 
 enum
 {
-	FIXED_COMPONENT_COUNT = static_cast<uint8>(COMPONENT_TYPE::END) - 1,
+	FIXED_COMPONENT_COUNT = static_cast<uint8>(COMPONENT_TYPE::END) - 1
 };
 
 class GameObject;
 class Transform;
+class MeshRenderer;
+class Animator;
 
-class Component :public Object
+class Component : public Object
 {
 public:
 	Component(COMPONENT_TYPE type);
-	~Component();
+	virtual ~Component();
 
 public:
-	// 컴포넌트 생명주기 관련 함수들
-	virtual void Awake() {}
-	virtual void Start() {}
-	virtual void Update() {}
-	virtual void LateUpdate() {}
-	virtual void FinalUpdate() {}
+	virtual void Awake() { }
+	virtual void Start() { }
+	virtual void Update() { }
+	virtual void LateUpdate() { }
+	virtual void FinalUpdate() { }
 
 public:
 	COMPONENT_TYPE GetType() { return _type; }
@@ -45,15 +45,15 @@ public:
 
 	shared_ptr<GameObject> GetGameObject();
 	shared_ptr<Transform> GetTransform();
-	
+	shared_ptr<MeshRenderer> GetMeshRenderer();
+	shared_ptr<Animator> GetAnimator();
+
 private:
 	friend class GameObject;
 	void SetGameObject(shared_ptr<GameObject> gameObject) { _gameObject = gameObject; }
 
 protected:
-	COMPONENT_TYPE				_type;
-
-	// gameObject에서도 컴포넌트를 가리킬 것이기 때문에, 순환참조 문제를 해결하기 위해 weak_ptr로 사용
-	weak_ptr<GameObject>		_gameObject;
+	COMPONENT_TYPE _type;
+	weak_ptr<GameObject> _gameObject;
 };
 

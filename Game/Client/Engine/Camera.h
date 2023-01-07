@@ -1,12 +1,11 @@
 #pragma once
-
 #include "Component.h"
 #include "Frustum.h"
 
-enum class PROJECTION_TYPE : uint8
-{ 
-	PERSPECTIVE,		// 원근 투영
-	ORTHOGRAPHIC,		// 직교 투영
+enum class PROJECTION_TYPE
+{
+	PERSPECTIVE, // 원근 투영
+	ORTHOGRAPHIC, // 직교 투영
 };
 
 class Camera : public Component
@@ -14,26 +13,26 @@ class Camera : public Component
 public:
 	Camera();
 	virtual ~Camera();
+
 	virtual void FinalUpdate() override;
 
-public:
+	void SetProjectionType(PROJECTION_TYPE type) { _type = type; }
+	PROJECTION_TYPE GetProjectionType() { return _type; }
+
 	void SortGameObject();
 	void SortShadowObject();
 
-public:
 	void Render_Deferred();
 	void Render_Forward();
 	void Render_Shadow();
-	
-public:
-	void SetProjectionType(PROJECTION_TYPE type) { _projType = type; }
-	PROJECTION_TYPE GetProjectionType() { return _projType; }
 
-	const Matrix& GetView() { return _matView; }
-	const Matrix& GetProjection() { return _matProjection; }
-
-	// 컬링마스크 값이 1이면 안그림, 0이면 그림
-	void SetCullingMaskLayerOff(uint8 layer, bool on);
+	void SetCullingMaskLayerOnOff(uint8 layer, bool on)
+	{
+		if (on)
+			_cullingMask |= (1 << layer);
+		else
+			_cullingMask &= ~(1 << layer);
+	}
 
 	void SetCullingMaskAll() { SetCullingMask(UINT32_MAX); }
 	void SetCullingMask(uint32 mask) { _cullingMask = mask; }
@@ -50,21 +49,19 @@ public:
 	Matrix& GetProjectionMatrix() { return _matProjection; }
 
 private:
-	PROJECTION_TYPE _projType = PROJECTION_TYPE::PERSPECTIVE;
+	PROJECTION_TYPE _type = PROJECTION_TYPE::PERSPECTIVE;
 
-	float _near = 1.0f;			// 근 평면
-	float _far = 1000.0f;		// 먼 평면
-	float _fov = XM_PI / 4.f;	// 시야각, 45도
-	float _scale = 1.0f;
-
-	// 쉐도우 카메라에서 해상도 조절을 위한 변수.
+	float _near = 1.f;
+	float _far = 1000.f;
+	float _fov = XM_PI / 4.f;
+	float _scale = 1.f;
 	float _width = 0.f;
 	float _height = 0.f;
 
 	Matrix _matView = {};
-	Matrix _matProjection = {}; 
+	Matrix _matProjection = {};
 
-	Frustum	_frustum;
+	Frustum _frustum;
 	uint32 _cullingMask = 0;
 
 private:
@@ -72,6 +69,7 @@ private:
 	vector<shared_ptr<GameObject>>	_vecForward;
 	vector<shared_ptr<GameObject>>	_vecParticle;
 	vector<shared_ptr<GameObject>>	_vecShadow;
+
 public:
 	// TEMP
 	static Matrix S_MatView;

@@ -5,7 +5,7 @@ class GameObject;
 
 class InstancingManager
 {
-	DECLARE_SINGLETON(InstancingManager);
+	DECLARE_SINGLE(InstancingManager);
 
 public:
 	void Render(vector<shared_ptr<GameObject>>& gameObjects);

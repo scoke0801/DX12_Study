@@ -18,3 +18,5 @@ private:
 
 	shared_ptr<class Material> _material;
 };
+
+

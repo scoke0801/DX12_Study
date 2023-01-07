@@ -2,14 +2,16 @@
 #include "TableDescriptorHeap.h"
 #include "Engine.h"
 
+// ************************
+// GraphicsDescriptorHeap
+// ************************
+
 void GraphicsDescriptorHeap::Init(uint32 count)
 {
-	assert(count > 0);
-
 	_groupCount = count;
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
-	desc.NumDescriptors = count * ( CBV_SRV_REGISTER_COUNT - 1); // b0는 전역
+	desc.NumDescriptors = count * (CBV_SRV_REGISTER_COUNT - 1); // b0는 전역
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
@@ -30,12 +32,7 @@ void GraphicsDescriptorHeap::SetCBV(D3D12_CPU_DESCRIPTOR_HANDLE srcHandle, CBV_R
 
 	uint32 destRange = 1;
 	uint32 srcRange = 1;
-
-	// CPU 핸들 2개를 받아서, src에서 dest로 복사
-	DEVICE->CopyDescriptors(1,
-		&destHandle, &destRange, 1,
-		&srcHandle, &srcRange,
-		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	DEVICE->CopyDescriptors(1, &destHandle, &destRange, 1, &srcHandle, &srcRange, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
 void GraphicsDescriptorHeap::SetSRV(D3D12_CPU_DESCRIPTOR_HANDLE srcHandle, SRV_REGISTER reg)
@@ -44,12 +41,7 @@ void GraphicsDescriptorHeap::SetSRV(D3D12_CPU_DESCRIPTOR_HANDLE srcHandle, SRV_R
 
 	uint32 destRange = 1;
 	uint32 srcRange = 1;
-
-	// CPU 핸들 2개를 받아서, src에서 dest로 복사
-	DEVICE->CopyDescriptors(1,
-		&destHandle, &destRange, 1,
-		&srcHandle, &srcRange,
-		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	DEVICE->CopyDescriptors(1, &destHandle, &destRange, 1, &srcHandle, &srcRange, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
 void GraphicsDescriptorHeap::CommitTable()
@@ -58,7 +50,7 @@ void GraphicsDescriptorHeap::CommitTable()
 	handle.ptr += _currentGroupIndex * _groupSize;
 	GRAPHICS_CMD_LIST->SetGraphicsRootDescriptorTable(1, handle);
 
-	++_currentGroupIndex;
+	_currentGroupIndex++;
 }
 
 D3D12_CPU_DESCRIPTOR_HANDLE GraphicsDescriptorHeap::GetCPUHandle(CBV_REGISTER reg)
@@ -76,14 +68,13 @@ D3D12_CPU_DESCRIPTOR_HANDLE GraphicsDescriptorHeap::GetCPUHandle(uint8 reg)
 	assert(reg > 0);
 	D3D12_CPU_DESCRIPTOR_HANDLE handle = _descHeap->GetCPUDescriptorHandleForHeapStart();
 	handle.ptr += _currentGroupIndex * _groupSize;
-	handle.ptr += (reg-1) * _handleSize;
+	handle.ptr += (reg - 1) * _handleSize;
 	return handle;
-
 }
 
-//------------------------------------------------------------------
-//ComputeDescriptorHeap
-//------------------------------------------------------------------
+// ************************
+// ComputeDescriptorHeap
+// ************************
 
 void ComputeDescriptorHeap::Init()
 {

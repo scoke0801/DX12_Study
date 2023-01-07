@@ -72,22 +72,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Output\</OutDir>
-    <IncludePath>$(SolutionDir)Library\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Library\include\;$(SolutionDir)Library\include\FBX\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Library\lib\;$(SolutionDir)Output\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Output\</OutDir>
-    <IncludePath>$(SolutionDir)Library\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Library\include\;$(SolutionDir)Library\include\FBX\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Library\lib\;$(SolutionDir)Output\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Output\</OutDir>
-    <IncludePath>$(SolutionDir)Library\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Library\include\;$(SolutionDir)Library\include\FBX\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Library\lib\;$(SolutionDir)Output\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Output\</OutDir>
-    <IncludePath>$(SolutionDir)Library\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Library\include\;$(SolutionDir)Library\include\FBX\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Library\lib\;$(SolutionDir)Output\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -179,8 +179,9 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="BaseCollider.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collider.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
@@ -216,13 +217,15 @@
     <ClInclude Include="TableDescriptorHeap.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestCameraScript.h" />
+    <ClInclude Include="TestDragon.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="BaseCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
@@ -262,6 +265,7 @@
     <ClCompile Include="TableDescriptorHeap.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestCameraScript.cpp" />
+    <ClCompile Include="TestDragon.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -275,10 +279,12 @@
     <None Include="SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Resources\Shader\animation.fx" />
     <FxCompile Include="..\Resources\Shader\Compute.fx" />
     <FxCompile Include="..\Resources\Shader\Deferred.fx" />
     <FxCompile Include="..\Resources\Shader\Forward.fx" />
     <FxCompile Include="..\Resources\Shader\Lighting.fx" />
+    <FxCompile Include="..\Resources\Shader\math.fx" />
     <FxCompile Include="..\Resources\Shader\Params.fx" />
     <FxCompile Include="..\Resources\Shader\Particle.fx" />
     <FxCompile Include="..\Resources\Shader\Shadow.fx" />

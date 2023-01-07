@@ -1,7 +1,6 @@
 #ifndef _PARAMS_FX_
 #define _PARAMS_FX_
 
-
 struct LightColor
 {
     float4      diffuse;
@@ -13,7 +12,7 @@ struct LightInfo
 {
     LightColor  color;
     float4	    position;
-    float4	    direction;
+    float4	    direction; 
     int		    lightType;
     float	    range;
     float	    angle;
@@ -29,13 +28,11 @@ cbuffer GLOBAL_PARAMS : register(b0)
 
 cbuffer TRANSFORM_PARAMS : register(b1)
 {
-    // 쉐이더에서는 column기준
-    // 다렉에서는 row기준이므로, 다렉에 맞춰주도록 row_major키워드 사용
     row_major matrix g_matWorld;
     row_major matrix g_matView;
-    row_major matrix g_matProj;
-    row_major matrix g_matWorldView;
-    row_major matrix g_matWorldViewProj;    
+    row_major matrix g_matProjection;
+    row_major matrix g_matWV;
+    row_major matrix g_matWVP;
     row_major matrix g_matViewInv;
 };
 
@@ -44,19 +41,19 @@ cbuffer MATERIAL_PARAMS : register(b2)
     int     g_int_0;
     int     g_int_1;
     int     g_int_2;
-    int     g_int_3; 
+    int     g_int_3;
     float   g_float_0;
     float   g_float_1;
     float   g_float_2;
-    float   g_float_3;  
+    float   g_float_3;
     int     g_tex_on_0;
     int     g_tex_on_1;
     int     g_tex_on_2;
-    int     g_tex_on_3; 
-    float2  g_vec_0;
-    float2  g_vec_1;
-    float2  g_vec_2;
-    float2  g_vec_3;
+    int     g_tex_on_3;
+    float2  g_vec2_0;
+    float2  g_vec2_1;
+    float2  g_vec2_2;
+    float2  g_vec2_3;
     float4  g_vec4_0;
     float4  g_vec4_1;
     float4  g_vec4_2;
@@ -72,6 +69,8 @@ Texture2D g_tex_1 : register(t1);
 Texture2D g_tex_2 : register(t2);
 Texture2D g_tex_3 : register(t3);
 Texture2D g_tex_4 : register(t4);
+
+StructuredBuffer<Matrix> g_mat_bone : register(t7);
 
 SamplerState g_sam_0 : register(s0);
 

@@ -144,17 +144,23 @@
     <ClCompile Include="Object.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Object\Component\Colider</Filter>
-    </ClCompile>
     <ClCompile Include="SphereCollider.cpp">
       <Filter>Object\Component\Colider</Filter>
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
+    <ClCompile Include="TestDragon.cpp">
+      <Filter>Object\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
     <ClCompile Include="MeshData.cpp">
-      <Filter>Object</Filter>
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCollider.cpp">
+      <Filter>Object\Component\Colider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,17 +272,23 @@
     <ClInclude Include="Terrain.h">
       <Filter>Object\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Object\Component\Colider</Filter>
-    </ClInclude>
     <ClInclude Include="SphereCollider.h">
       <Filter>Object\Component\Colider</Filter>
     </ClInclude>
     <ClInclude Include="FBXLoader.h">
       <Filter>FBX</Filter>
     </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TestDragon.h">
+      <Filter>Object\Test</Filter>
+    </ClInclude>
     <ClInclude Include="MeshData.h">
-      <Filter>Object</Filter>
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCollider.h">
+      <Filter>Object\Component\Colider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +335,12 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\Terrain.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\math.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\animation.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

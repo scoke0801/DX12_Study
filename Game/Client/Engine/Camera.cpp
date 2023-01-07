@@ -6,16 +6,16 @@
 #include "GameObject.h"
 #include "MeshRenderer.h"
 #include "Engine.h"
-#include "Shader.h"
 #include "Material.h"
+#include "Shader.h"
 #include "ParticleSystem.h"
 #include "InstancingManager.h"
 
-Matrix Camera::S_MatView = {};
-Matrix Camera::S_MatProjection = {};
+Matrix Camera::S_MatView;
+Matrix Camera::S_MatProjection;
 
 Camera::Camera() : Component(COMPONENT_TYPE::CAMERA)
-{ 
+{
 	_width = static_cast<float>(GEngine->GetWindow().width);
 	_height = static_cast<float>(GEngine->GetWindow().height);
 }
@@ -26,21 +26,19 @@ Camera::~Camera()
 
 void Camera::FinalUpdate()
 {
-	// 카메라 변환행렬 : 카메라 월드 변환 행렬 -> 역행렬 
 	_matView = GetTransform()->GetLocalToWorldMatrix().Invert();
 
-	if (_projType == PROJECTION_TYPE::PERSPECTIVE) {
+	if (_type == PROJECTION_TYPE::PERSPECTIVE)
 		_matProjection = ::XMMatrixPerspectiveFovLH(_fov, _width / _height, _near, _far);
-	}
-	else{
+	else
 		_matProjection = ::XMMatrixOrthographicLH(_width * _scale, _height * _scale, _near, _far);
-	}
+
 	_frustum.FinalUpdate();
-} 
+}
 
 void Camera::SortGameObject()
 {
-	shared_ptr<Scene> scene = GET_SINGLETON(SceneManager)->GetActiveScene();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	_vecForward.clear();
@@ -87,7 +85,7 @@ void Camera::SortGameObject()
 
 void Camera::SortShadowObject()
 {
-	shared_ptr<Scene> scene = GET_SINGLETON(SceneManager)->GetActiveScene();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	_vecShadow.clear();
@@ -122,7 +120,7 @@ void Camera::Render_Deferred()
 	S_MatView = _matView;
 	S_MatProjection = _matProjection;
 
-	GET_SINGLETON(InstancingManager)->Render(_vecDeferred);
+	GET_SINGLE(InstancingManager)->Render(_vecDeferred);
 }
 
 void Camera::Render_Forward()
@@ -130,7 +128,7 @@ void Camera::Render_Forward()
 	S_MatView = _matView;
 	S_MatProjection = _matProjection;
 
-	GET_SINGLETON(InstancingManager)->Render(_vecForward);
+	GET_SINGLE(InstancingManager)->Render(_vecForward);
 
 	for (auto& gameObject : _vecParticle)
 	{
@@ -146,16 +144,5 @@ void Camera::Render_Shadow()
 	for (auto& gameObject : _vecShadow)
 	{
 		gameObject->GetMeshRenderer()->RenderShadow();
-	}
-}
-
-void Camera::SetCullingMaskLayerOff(uint8 layer, bool on)
-{
-	if (on) {
-		_cullingMask |= (1 << layer);
-	}
-	else
-	{
-		_cullingMask &= ~(1 << layer);
 	}
 }

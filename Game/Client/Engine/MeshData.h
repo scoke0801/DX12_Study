@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Object.h"
 
 class Mesh;
@@ -29,7 +28,6 @@ public:
 private:
 	shared_ptr<Mesh>				_mesh;
 	vector<shared_ptr<Material>>	_materials;
-	
-	vector<MeshRenderInfo>			_meshRenders;
-};
 
+	vector<MeshRenderInfo> _meshRenders;
+};

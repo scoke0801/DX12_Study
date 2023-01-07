@@ -1,6 +1,6 @@
 #pragma once
 
-enum class PLANE_TYPE : uint8
+enum PLANE_TYPE : uint8
 {
 	PLANE_FRONT,
 	PLANE_BACK,
@@ -8,8 +8,8 @@ enum class PLANE_TYPE : uint8
 	PLANE_DOWN,
 	PLANE_LEFT,
 	PLANE_RIGHT,
-	
-	END
+
+	PLANE_END
 };
 
 class Frustum
@@ -19,6 +19,6 @@ public:
 	bool ContainsSphere(const Vec3& pos, float radius);
 
 private:
-	array<Vec4, static_cast<uint8>(PLANE_TYPE::END)> _planes;
+	array<Vec4, PLANE_END> _planes;
 };
 

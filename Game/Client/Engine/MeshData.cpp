@@ -6,6 +6,7 @@
 #include "Resources.h"
 #include "Transform.h"
 #include "MeshRenderer.h"
+#include "Animator.h"
 
 MeshData::MeshData() : Object(OBJECT_TYPE::MESH_DATA)
 {
@@ -17,7 +18,6 @@ MeshData::~MeshData()
 
 shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& path)
 {
-	// Loader를 이용해 파일 데이터 파싱
 	FBXLoader loader;
 	loader.LoadFbx(path);
 
@@ -25,15 +25,15 @@ shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& path)
 
 	for (int32 i = 0; i < loader.GetMeshCount(); i++)
 	{
-		shared_ptr<Mesh> mesh = Mesh::CreateFromFBX(&loader.GetMesh(i));
+		shared_ptr<Mesh> mesh = Mesh::CreateFromFBX(&loader.GetMesh(i), loader);
 
-		GET_SINGLETON(Resources)->Add<Mesh>(mesh->GetName(), mesh);
+		GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
 
 		// Material 찾아서 연동
 		vector<shared_ptr<Material>> materials;
 		for (size_t j = 0; j < loader.GetMesh(i).materials.size(); j++)
 		{
-			shared_ptr<Material> material = GET_SINGLETON(Resources)->Get<Material>(loader.GetMesh(i).materials[j].name);
+			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(loader.GetMesh(i).materials[j].name);
 			materials.push_back(material);
 		}
 
@@ -69,6 +69,14 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 
 		for (uint32 i = 0; i < info.materials.size(); i++)
 			gameObject->GetMeshRenderer()->SetMaterial(info.materials[i], i);
+
+		if (info.mesh->IsAnimMesh())
+		{
+			shared_ptr<Animator> animator = make_shared<Animator>();
+			gameObject->AddComponent(animator);
+			animator->SetBones(info.mesh->GetBones());
+			animator->SetAnimClip(info.mesh->GetAnimClip());
+		}
 
 		v.push_back(gameObject);
 	}

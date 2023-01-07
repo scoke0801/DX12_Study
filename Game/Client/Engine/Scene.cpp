@@ -5,61 +5,72 @@
 #include "Engine.h"
 #include "ConstantBuffer.h"
 #include "Light.h"
+#include "Engine.h"
 #include "Resources.h"
 
 void Scene::Awake()
 {
-	// &로 받지 않으면, 레퍼런스 카운트 증감처리가 발생?
-	for (shared_ptr<GameObject>& gameObject : _gameObjects) {
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	{
 		gameObject->Awake();
 	}
 }
 
 void Scene::Start()
 {
-	for (shared_ptr<GameObject>& gameObject : _gameObjects) {
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	{
 		gameObject->Start();
 	}
 }
 
 void Scene::Update()
 {
-	for (shared_ptr<GameObject>& gameObject : _gameObjects) {
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	{
 		gameObject->Update();
 	}
 }
 
 void Scene::LateUpdate()
 {
-	for (shared_ptr<GameObject>& gameObject : _gameObjects) {
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	{
 		gameObject->LateUpdate();
 	}
 }
 
 void Scene::FinalUpdate()
 {
-	for (shared_ptr<GameObject>& gameObject : _gameObjects) {
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	{
 		gameObject->FinalUpdate();
 	}
 }
 
-void Scene::Render()
-{  
-	PushLightData();
+shared_ptr<Camera> Scene::GetMainCamera()
+{
+	if (_cameras.empty())
+		return nullptr;
 
+	return _cameras[0];
+}
+
+void Scene::Render()
+{
 	PushLightData();
 
 	ClearRTV();
 
-	RenderShadow();
-
+	RenderShadow(); 
+	
 	RenderDeferred();
 
-	RenderLights();
+	RenderLights();	
 
 	RenderFinal();
 
-	RenderForward(); 
+	RenderForward();
 }
 
 void Scene::ClearRTV()
@@ -104,9 +115,6 @@ void Scene::RenderDeferred()
 
 void Scene::RenderLights()
 {
-	// 메인 카메라 설정.
-	// 쉐도우 카메라로 설정된 matrix정보들을 갱신하기 위함
-	// 스태틱이 아니었으면 상관없을듯...
 	shared_ptr<Camera> mainCamera = _cameras[0];
 	Camera::S_MatView = mainCamera->GetViewMatrix();
 	Camera::S_MatProjection = mainCamera->GetProjectionMatrix();
@@ -123,13 +131,13 @@ void Scene::RenderLights()
 }
 
 void Scene::RenderFinal()
-{	
+{
 	// Swapchain OMSet
 	int8 backIndex = GEngine->GetSwapChain()->GetBackBufferIndex();
 	GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->OMSetRenderTargets(1, backIndex);
 
-	GET_SINGLETON(Resources)->Get<Material>(L"Final")->PushGraphicsData();
-	GET_SINGLETON(Resources)->Get<Mesh>(L"Rectangle")->Render();
+	GET_SINGLE(Resources)->Get<Material>(L"Final")->PushGraphicsData();
+	GET_SINGLE(Resources)->Get<Mesh>(L"Rectangle")->Render();
 }
 
 void Scene::RenderForward()
@@ -147,12 +155,21 @@ void Scene::RenderForward()
 	}
 }
 
-shared_ptr<class Camera> Scene::GetMainCamera()
+void Scene::PushLightData()
 {
-	if (_cameras.empty())
-		return nullptr;
+	LightParams lightParams = {};
 
-	return _cameras[0];
+	for (auto& light : _lights)
+	{
+		const LightInfo& lightInfo = light->GetLightInfo();
+
+		light->SetLightIndex(lightParams.lightCount);
+
+		lightParams.lights[lightParams.lightCount] = lightInfo;
+		lightParams.lightCount++;
+	}
+
+	CONST_BUFFER(CONSTANT_BUFFER_TYPE::GLOBAL)->SetGraphicsGlobalData(&lightParams, sizeof(lightParams));
 }
 
 void Scene::AddGameObject(shared_ptr<GameObject> gameObject)
@@ -165,6 +182,7 @@ void Scene::AddGameObject(shared_ptr<GameObject> gameObject)
 	{
 		_lights.push_back(gameObject->GetLight());
 	}
+
 	_gameObjects.push_back(gameObject);
 }
 
@@ -183,26 +201,7 @@ void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 			_lights.erase(findIt);
 	}
 
-	auto res = std::find(_gameObjects.begin(), _gameObjects.end(), gameObject);
-	if (res != _gameObjects.end()) 
-	{
-		_gameObjects.erase(res);
-	}
-}
-
-void Scene::PushLightData()
-{
-	LightParams lightParams = {};
-	
-	for (auto& light : _lights)
-	{
-		const LightInfo& lightInfo = light->GetLightInfo();
-
-		light->SetLightIndex(lightParams.lightCount);
-
-		lightParams.lights[lightParams.lightCount] = lightInfo;
-		++lightParams.lightCount;
-	}
-
-	CONSTANT_BUFFER(CONSTANT_BUFFER_TYPE::GLOBAL)->PushGraphicsGlobalData(&lightParams, sizeof(lightParams));
+	auto findIt = std::find(_gameObjects.begin(), _gameObjects.end(), gameObject);
+	if (findIt != _gameObjects.end())
+		_gameObjects.erase(findIt);
 }

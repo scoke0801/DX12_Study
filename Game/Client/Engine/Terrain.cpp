@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Terrain.h"
-
 #include "Resources.h"
 #include "SceneManager.h"
 #include "Scene.h"
@@ -25,13 +24,13 @@ void Terrain::Init(int32 sizeX, int32 sizeZ)
 	_sizeX = sizeX;
 	_sizeZ = sizeZ;
 
-	_material = GET_SINGLETON(Resources)->Get<Material>(L"Terrain");
+	_material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
 
 	_material->SetInt(1, _sizeX);
 	_material->SetInt(2, _sizeZ);
 	_material->SetFloat(0, _maxTesselation);
 
-	shared_ptr<Texture> heightMap = GET_SINGLETON(Resources)->Load<Texture>(L"HeightMap", L"..\\Resources\\Texture\\Terrain\\height.png");
+	shared_ptr<Texture> heightMap = GET_SINGLE(Resources)->Load<Texture>(L"HeightMap", L"..\\Resources\\Texture\\Terrain\\height.png");
 	Vec2 v = Vec2(heightMap->GetWidth(), heightMap->GetHeight());
 	_material->SetVec2(0, Vec2(heightMap->GetWidth(), heightMap->GetHeight()));
 	_material->SetVec2(1, Vec2(1000.f, 5000.f));
@@ -39,18 +38,18 @@ void Terrain::Init(int32 sizeX, int32 sizeZ)
 
 	shared_ptr<MeshRenderer> meshRenderer = GetGameObject()->GetMeshRenderer();
 	{
-		shared_ptr<Mesh> mesh = GET_SINGLETON(Resources)->LoadTerrainMesh(sizeX, sizeZ);
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh(sizeX, sizeZ);
 		meshRenderer->SetMesh(mesh);
 	}
 	{
-		shared_ptr<Material> material = GET_SINGLETON(Resources)->Get<Material>(L"Terrain");
+		shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
 		meshRenderer->SetMaterial(material);
 	}
 }
 
 void Terrain::FinalUpdate()
 {
-	shared_ptr<Camera> mainCamera = GET_SINGLETON(SceneManager)->GetActiveScene()->GetMainCamera();
+	shared_ptr<Camera> mainCamera = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
 	if (mainCamera == nullptr)
 		return;
 

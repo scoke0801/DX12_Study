@@ -4,44 +4,42 @@
 
 Texture::Texture() : Object(OBJECT_TYPE::TEXTURE)
 {
+
 }
 
 Texture::~Texture()
 {
+
 }
 
 void Texture::Load(const wstring& path)
 {
+	// 파일 확장자 얻기
 	wstring ext = fs::path(path).extension();
 
-	if (ext == L".dds" || ext == L".DDS") {
+	if (ext == L".dds" || ext == L".DDS")
 		::LoadFromDDSFile(path.c_str(), DDS_FLAGS_NONE, nullptr, _image);
-	}
-	else if (ext == L".tga" || ext == L".TGA") {
+	else if (ext == L".tga" || ext == L".TGA")
 		::LoadFromTGAFile(path.c_str(), nullptr, _image);
-	}
-	else {	// png, jpg, jpeg, bmp..
+	else // png, jpg, jpeg, bmp
 		::LoadFromWICFile(path.c_str(), WIC_FLAGS_NONE, nullptr, _image);
-	}
 
 	HRESULT hr = ::CreateTexture(DEVICE.Get(), _image.GetMetadata(), &_tex2D);
-	if (FAILED(hr)) {
-		assert(false);
-	}
+	if (FAILED(hr))
+		assert(nullptr);
+
+	_desc = _tex2D->GetDesc();
 
 	vector<D3D12_SUBRESOURCE_DATA> subResources;
 
-	hr = ::PrepareUpload(DEVICE.Get()
-		, _image.GetImages()
-		, _image.GetImageCount()
-		, _image.GetMetadata()
-		, subResources);
+	hr = ::PrepareUpload(DEVICE.Get(),
+		_image.GetImages(),
+		_image.GetImageCount(),
+		_image.GetMetadata(),
+		subResources);
 
-	if (FAILED(hr)) {
-		assert(false);
-	}
-
-	_desc = _tex2D->GetDesc();
+	if (FAILED(hr))
+		assert(nullptr);
 
 	const uint64 bufferSize = ::GetRequiredIntermediateSize(_tex2D.Get(), 0, static_cast<uint32>(subResources.size()));
 
@@ -50,26 +48,24 @@ void Texture::Load(const wstring& path)
 
 	ComPtr<ID3D12Resource> textureUploadHeap;
 	hr = DEVICE->CreateCommittedResource(
-		&heapProperty
-		, D3D12_HEAP_FLAG_NONE
-		, &desc
-		, D3D12_RESOURCE_STATE_GENERIC_READ
-		, nullptr
-		, IID_PPV_ARGS(textureUploadHeap.GetAddressOf()));
+		&heapProperty,
+		D3D12_HEAP_FLAG_NONE,
+		&desc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(textureUploadHeap.GetAddressOf()));
 
 	if (FAILED(hr))
-	{
-		assert(false);
-	}
+		assert(nullptr);
 
-	::UpdateSubresources(RESOURCE_CMD_LIST.Get()
-		, _tex2D.Get()
-		, textureUploadHeap.Get()
-		, 0, 0
-		, static_cast<unsigned int>(subResources.size())
-		, subResources.data());
+	::UpdateSubresources(RESOURCE_CMD_LIST.Get(),
+		_tex2D.Get(),
+		textureUploadHeap.Get(),
+		0, 0,
+		static_cast<unsigned int>(subResources.size()),
+		subResources.data());
 
-	GEngine->GetGraphicsCommandQueue()->FlushResourceCommandQueue();
+	GEngine->GetGraphicsCmdQueue()->FlushResourceCommandQueue();
 
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 	srvHeapDesc.NumDescriptors = 1;
@@ -87,25 +83,28 @@ void Texture::Load(const wstring& path)
 	DEVICE->CreateShaderResourceView(_tex2D.Get(), &srvDesc, _srvHeapBegin);
 }
 
-void Texture::Create(DXGI_FORMAT format, uint32 width, uint32 height, const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags, D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor)
+void Texture::Create(DXGI_FORMAT format, uint32 width, uint32 height,
+	const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
+	D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor)
 {
 	_desc = CD3DX12_RESOURCE_DESC::Tex2D(format, width, height);
 	_desc.Flags = resFlags;
 
 	D3D12_CLEAR_VALUE optimizedClearValue = {};
 	D3D12_CLEAR_VALUE* pOptimizedClearValue = nullptr;
+
 	D3D12_RESOURCE_STATES resourceStates = D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON;
 
-	if (resFlags & D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL) 
+	if (resFlags & D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL)
 	{
-		resourceStates = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+		resourceStates = D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_DEPTH_WRITE;
 		optimizedClearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0);
 		pOptimizedClearValue = &optimizedClearValue;
 	}
 	else if (resFlags & D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET)
 	{
-		resourceStates = D3D12_RESOURCE_STATE_COMMON;
-		float arrFloat[4] = { clearColor.x, clearColor.y, clearColor.y, clearColor.w };
+		resourceStates = D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON;
+		float arrFloat[4] = { clearColor.x, clearColor.y, clearColor.z, clearColor.w };
 		optimizedClearValue = CD3DX12_CLEAR_VALUE(format, arrFloat);
 		pOptimizedClearValue = &optimizedClearValue;
 	}
@@ -125,13 +124,13 @@ void Texture::Create(DXGI_FORMAT format, uint32 width, uint32 height, const D3D1
 }
 
 void Texture::CreateFromResource(ComPtr<ID3D12Resource> tex2D)
-{ 
+{
 	_tex2D = tex2D;
 
 	_desc = tex2D->GetDesc();
 
-	// 주요조합
-	// - DSV단독
+	// 주요 조합
+	// - DSV 단독 (조합X)
 	// - SRV
 	// - RTV + SRV
 	if (_desc.Flags & D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL)
@@ -142,7 +141,6 @@ void Texture::CreateFromResource(ComPtr<ID3D12Resource> tex2D)
 		heapDesc.NumDescriptors = 1;
 		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 		heapDesc.NodeMask = 0;
-
 		DEVICE->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&_dsvHeap));
 
 		D3D12_CPU_DESCRIPTOR_HANDLE hDSVHandle = _dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -154,15 +152,16 @@ void Texture::CreateFromResource(ComPtr<ID3D12Resource> tex2D)
 		{
 			// RTV
 			D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
-			heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 			heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-			heapDesc.NodeMask = 0;
 			heapDesc.NumDescriptors = 1;
+			heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+			heapDesc.NodeMask = 0;
 			DEVICE->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&_rtvHeap));
-		
-			D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = _rtvHeap->GetCPUDescriptorHandleForHeapStart();
-			DEVICE->CreateRenderTargetView(_tex2D.Get(),nullptr, rtvHandle);
+
+			D3D12_CPU_DESCRIPTOR_HANDLE rtvHeapBegin = _rtvHeap->GetCPUDescriptorHandleForHeapStart();
+			DEVICE->CreateRenderTargetView(_tex2D.Get(), nullptr, rtvHeapBegin);
 		}
+
 		if (_desc.Flags & D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS)
 		{
 			// UAV
@@ -181,9 +180,9 @@ void Texture::CreateFromResource(ComPtr<ID3D12Resource> tex2D)
 
 			DEVICE->CreateUnorderedAccessView(_tex2D.Get(), nullptr, &uavDesc, _uavHeapBegin);
 		}
+
 		// SRV
 		D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-		srvHeapDesc.NodeMask = 0;
 		srvHeapDesc.NumDescriptors = 1;
 		srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -199,4 +198,3 @@ void Texture::CreateFromResource(ComPtr<ID3D12Resource> tex2D)
 		DEVICE->CreateShaderResourceView(_tex2D.Get(), &srvDesc, _srvHeapBegin);
 	}
 }
- 

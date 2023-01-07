@@ -1,22 +1,21 @@
 #pragma once
-
 #include "Texture.h"
 
 enum class RENDER_TARGET_GROUP_TYPE : uint8
 {
-	SWAP_CHAIN,	// BACK_BUFFER, FRONT_BUFFER
-	SHADOW,		// SHADOW
-	G_BUFFER,	// Position, Normal, Color	( Geometry Buffer, 기하 정보를 담은 버퍼 )
-	LIGHTING,	// DIFFUSE LIGHT, SPECULAR LIGHT
-	END
+	SWAP_CHAIN, // BACK_BUFFER, FRONT_BUFFER
+	SHADOW, // SHADOW
+	G_BUFFER, // POSITION, NORMAL, COLOR
+	LIGHTING, // DIFFUSE LIGHT, SPECULAR LIGHT	
+	END,
 };
 
 enum
 {
 	RENDER_TARGET_SHADOW_GROUP_MEMBER_COUNT = 1,
-	RENDER_TARGET_G_BUFFER_GROUP_MEMBER_COUNT = 3,  
+	RENDER_TARGET_G_BUFFER_GROUP_MEMBER_COUNT = 3,
 	RENDER_TARGET_LIGHTING_GROUP_MEMBER_COUNT = 2,
-	RENDER_TARGET_GROUP_COUNT = static_cast<uint8>(RENDER_TARGET_GROUP_TYPE::END),
+	RENDER_TARGET_GROUP_COUNT = static_cast<uint8>(RENDER_TARGET_GROUP_TYPE::END)
 };
 
 struct RenderTarget
@@ -25,7 +24,6 @@ struct RenderTarget
 	float clearColor[4];
 };
 
-// 렌더타겟을 묶어서 관리하기 위한 클래스.
 class RenderTargetGroup
 {
 public:
@@ -42,9 +40,9 @@ public:
 
 	void WaitTargetToResource();
 	void WaitResourceToTarget();
+
 private:
 	RENDER_TARGET_GROUP_TYPE		_groupType;
-	
 	vector<RenderTarget>			_rtVec;
 	uint32							_rtCount;
 	shared_ptr<Texture>				_dsTexture;
@@ -53,7 +51,7 @@ private:
 private:
 	uint32							_rtvHeapSize;
 	D3D12_CPU_DESCRIPTOR_HANDLE		_rtvHeapBegin;
-	D3D12_CPU_DESCRIPTOR_HANDLE		_dsvHeapBegin; 
+	D3D12_CPU_DESCRIPTOR_HANDLE		_dsvHeapBegin;
 
 private:
 	D3D12_RESOURCE_BARRIER			_targetToResource[8];

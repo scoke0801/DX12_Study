@@ -2,18 +2,20 @@
 #include "Shader.h"
 #include "Engine.h"
 
-Shader::Shader() :Object(OBJECT_TYPE::SHADER)
+Shader::Shader() : Object(OBJECT_TYPE::SHADER)
 {
+
 }
 
 Shader::~Shader()
 {
+
 }
 
 void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderArg arg)
 {
-	_shaderInfo = info;
-	  
+	_info = info;
+
 	CreateVertexShader(path, arg.vs, "vs_5_0");
 	CreatePixelShader(path, arg.ps, "ps_5_0");
 
@@ -26,16 +28,15 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 	if (arg.gs.empty() == false)
 		CreateGeometryShader(path, arg.gs, "gs_5_0");
 
-	// InputLayout, 셰이더 입력값으로 들어갈 구조체 정보를 정의
 	D3D12_INPUT_ELEMENT_DESC desc[] =
 	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}, 
-		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-	
-		// 인스턴싱을 위한 정보
-		// 1번 슬롯에 넣을 것이고, 1번씩 인스턴싱해서 그릴것?
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "WEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 44, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "INDICES", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 60, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+
 		{ "W", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0,  D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA, 1},
 		{ "W", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA, 1},
 		{ "W", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA, 1},
@@ -65,21 +66,21 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 
 	switch (info.shaderType)
 	{
+	case SHADER_TYPE::DEFERRED:
+		_graphicsPipelineDesc.NumRenderTargets = RENDER_TARGET_G_BUFFER_GROUP_MEMBER_COUNT;
+		_graphicsPipelineDesc.RTVFormats[0] = DXGI_FORMAT_R32G32B32A32_FLOAT; // POSITION
+		_graphicsPipelineDesc.RTVFormats[1] = DXGI_FORMAT_R32G32B32A32_FLOAT; // NORMAL
+		_graphicsPipelineDesc.RTVFormats[2] = DXGI_FORMAT_R8G8B8A8_UNORM; // COLOR
+		break;
 	case SHADER_TYPE::FORWARD:
 		_graphicsPipelineDesc.NumRenderTargets = 1;
 		_graphicsPipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-		break;
-	case SHADER_TYPE::DEFERRED:
-		_graphicsPipelineDesc.NumRenderTargets = RENDER_TARGET_G_BUFFER_GROUP_MEMBER_COUNT;
-		_graphicsPipelineDesc.RTVFormats[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;	// position
-		_graphicsPipelineDesc.RTVFormats[1] = DXGI_FORMAT_R32G32B32A32_FLOAT;	// normal
-		_graphicsPipelineDesc.RTVFormats[2] = DXGI_FORMAT_R8G8B8A8_UNORM;		// color
 		break;
 	case SHADER_TYPE::LIGHTING:
 		_graphicsPipelineDesc.NumRenderTargets = 2;
 		_graphicsPipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 		_graphicsPipelineDesc.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
-		break;	
+		break;
 	case SHADER_TYPE::PARTICLE:
 		_graphicsPipelineDesc.NumRenderTargets = 1;
 		_graphicsPipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -95,36 +96,40 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 
 	switch (info.rasterizerType)
 	{
-		case RASTERIZER_TYPE::CULL_NONE:
-			_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-			_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-			break;
-		case RASTERIZER_TYPE::CULL_FRONT:
-			_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-			_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_FRONT;	
-			break;
-		case RASTERIZER_TYPE::CULL_BACK:
-			_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-			_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
-			break;
-		case RASTERIZER_TYPE::WIREFRAME:
-			_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
-			_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-			break;
+	case RASTERIZER_TYPE::CULL_BACK:
+		_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
+		break;
+	case RASTERIZER_TYPE::CULL_FRONT:
+		_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_FRONT;
+		break;
+	case RASTERIZER_TYPE::CULL_NONE:
+		_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+		break;
+	case RASTERIZER_TYPE::WIREFRAME:
+		_graphicsPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+		_graphicsPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+		break;
 	}
-	
+
 	switch (info.depthStencilType)
 	{
 	case DEPTH_STENCIL_TYPE::LESS:
+		_graphicsPipelineDesc.DepthStencilState.DepthEnable = TRUE;
 		_graphicsPipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 		break;
 	case DEPTH_STENCIL_TYPE::LESS_EQUAL:
+		_graphicsPipelineDesc.DepthStencilState.DepthEnable = TRUE;
 		_graphicsPipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 		break;
 	case DEPTH_STENCIL_TYPE::GREATER:
+		_graphicsPipelineDesc.DepthStencilState.DepthEnable = TRUE;
 		_graphicsPipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_GREATER;
 		break;
 	case DEPTH_STENCIL_TYPE::GREATER_EQUAL:
+		_graphicsPipelineDesc.DepthStencilState.DepthEnable = TRUE;
 		_graphicsPipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_GREATER_EQUAL;
 		break;
 	case DEPTH_STENCIL_TYPE::NO_DEPTH_TEST:
@@ -151,28 +156,29 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 	case BLEND_TYPE::DEFAULT:
 		rt.BlendEnable = FALSE;
 		rt.LogicOpEnable = FALSE;
-		rt.SrcBlend = D3D12_BLEND_ONE;	// 1,1,1,1
-		rt.DestBlend = D3D12_BLEND_ZERO;	// 0,0,0,0
+		rt.SrcBlend = D3D12_BLEND_ONE;
+		rt.DestBlend = D3D12_BLEND_ZERO;
 		break;
 	case BLEND_TYPE::ALPHA_BLEND:
 		rt.BlendEnable = TRUE;
 		rt.LogicOpEnable = FALSE;
-		rt.SrcBlend = D3D12_BLEND_SRC_ALPHA;	// A, A, A, A
-		rt.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1-A, 1-A, 1-A, 1-A
+		rt.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		rt.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 		break;
-	case BLEND_TYPE::ONE_TO_ONE_BLEND:	// 1:1
+	case BLEND_TYPE::ONE_TO_ONE_BLEND:
 		rt.BlendEnable = TRUE;
 		rt.LogicOpEnable = FALSE;
 		rt.SrcBlend = D3D12_BLEND_ONE;
 		rt.DestBlend = D3D12_BLEND_ONE;
 		break;
 	}
+
 	DEVICE->CreateGraphicsPipelineState(&_graphicsPipelineDesc, IID_PPV_ARGS(&_pipelineState));
 }
 
 void Shader::CreateComputeShader(const wstring& path, const string& name, const string& version)
 {
-	_shaderInfo.shaderType = SHADER_TYPE::COMPUTE;
+	_info.shaderType = SHADER_TYPE::COMPUTE;
 
 	CreateShader(path, name, version, _csBlob, _computePipelineDesc.CS);
 	_computePipelineDesc.pRootSignature = COMPUTE_ROOT_SIGNATURE.Get();
@@ -184,14 +190,12 @@ void Shader::CreateComputeShader(const wstring& path, const string& name, const 
 void Shader::Update()
 {
 	if (GetShaderType() == SHADER_TYPE::COMPUTE)
-	{
 		COMPUTE_CMD_LIST->SetPipelineState(_pipelineState.Get());
-	}
 	else
-	{ 
-		GRAPHICS_CMD_LIST->IASetPrimitiveTopology(_shaderInfo.topology);
+	{
+		GRAPHICS_CMD_LIST->IASetPrimitiveTopology(_info.topology);
 		GRAPHICS_CMD_LIST->SetPipelineState(_pipelineState.Get());
-	}
+	}	
 }
 
 void Shader::CreateShader(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob, D3D12_SHADER_BYTECODE& shaderByteCode)
@@ -201,10 +205,10 @@ void Shader::CreateShader(const wstring& path, const string& name, const string&
 	compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
 
-	if (FAILED(::D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		name.c_str(), version.c_str(), compileFlag, 0, &blob, &_errBlob)))
+	if (FAILED(::D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		, name.c_str(), version.c_str(), compileFlag, 0, &blob, &_errBlob)))
 	{
-		::MessageBoxA(nullptr, "Shader Create Failed!", nullptr, MB_OK);
+		::MessageBoxA(nullptr, "Shader Create Failed !", nullptr, MB_OK);
 	}
 
 	shaderByteCode = { blob->GetBufferPointer(), blob->GetBufferSize() };
@@ -212,7 +216,7 @@ void Shader::CreateShader(const wstring& path, const string& name, const string&
 
 void Shader::CreateVertexShader(const wstring& path, const string& name, const string& version)
 {
-	CreateShader(path, name, version, _vsBlob, _graphicsPipelineDesc.VS );
+	CreateShader(path, name, version, _vsBlob, _graphicsPipelineDesc.VS);
 }
 
 void Shader::CreateHullShader(const wstring& path, const string& name, const string& version)
@@ -235,8 +239,6 @@ void Shader::CreatePixelShader(const wstring& path, const string& name, const st
 	CreateShader(path, name, version, _psBlob, _graphicsPipelineDesc.PS);
 }
 
-
-// static
 D3D12_PRIMITIVE_TOPOLOGY_TYPE Shader::GetTopologyType(D3D_PRIMITIVE_TOPOLOGY topology)
 {
 	switch (topology)

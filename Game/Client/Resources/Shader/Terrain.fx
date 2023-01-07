@@ -48,8 +48,8 @@ PatchTess ConstantHS(InputPatch<VS_OUT, 3> input, int patchID : SV_PrimitiveID)
 {
     PatchTess output = (PatchTess)0.f;
 
-    float minDistance = g_vec_1.x;
-    float maxDistance = g_vec_1.y;
+    float minDistance = g_vec2_1.x;
+    float maxDistance = g_vec2_1.y;
 
     float3 edge0Pos = (input[1].pos + input[2].pos) / 2.f;
     float3 edge1Pos = (input[2].pos + input[0].pos) / 2.f;
@@ -122,8 +122,8 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, 3> input, float3 location : SV_DomainLo
 
     int tileCountX = g_int_1;
     int tileCountZ = g_int_2;
-    int mapWidth = g_vec_0.x;
-    int mapHeight = g_vec_0.y;
+    int mapWidth = g_vec2_0.x;
+    int mapHeight = g_vec2_0.y;
 
     float2 fullUV = float2(uv.x / (float)tileCountX, uv.y / (float)tileCountZ);
     float height = g_tex_2.SampleLevel(g_sam_0, fullUV, 0).x;
@@ -142,11 +142,11 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, 3> input, float3 location : SV_DomainLo
     float3 localTangent = float3(localPos.x + deltaPos.x, rightHeight, localPos.z) - float3(localPos.x - deltaPos.x, leftHeight, localPos.z);
     float3 localBinormal = float3(localPos.x, upHeight, localPos.z + deltaPos.y) - float3(localPos.x, downHeight, localPos.z - deltaPos.y);
 
-    output.pos = mul(float4(localPos, 1.f), g_matWorldViewProj);
-    output.viewPos = mul(float4(localPos, 1.f), g_matWorldView).xyz;
+    output.pos = mul(float4(localPos, 1.f), g_matWVP);
+    output.viewPos = mul(float4(localPos, 1.f), g_matWV).xyz;
 
-    output.viewTangent = normalize(mul(float4(localTangent, 0.f), g_matWorldView)).xyz;
-    output.viewBinormal = normalize(mul(float4(localBinormal, 0.f), g_matWorldView)).xyz;
+    output.viewTangent = normalize(mul(float4(localTangent, 0.f), g_matWV)).xyz;
+    output.viewBinormal = normalize(mul(float4(localBinormal, 0.f), g_matWV)).xyz;
     output.viewNormal = normalize(cross(output.viewBinormal, output.viewTangent));
 
     output.uv = uv;

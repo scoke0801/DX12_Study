@@ -4,7 +4,6 @@
 
 unique_ptr<Engine> GEngine = make_unique<Engine>();
 
-
 wstring s2ws(const string& s)
 {
 	int32 len;
