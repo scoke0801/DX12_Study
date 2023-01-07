@@ -10,6 +10,7 @@ enum class COMPONENT_TYPE : uint8
 	LIGHT,	
 	PARTICLE_SYSTEM,
 	TERRAIN,
+	COLLIDER,
 	/// ...
 
 	MONO_BEHAVIOUR,

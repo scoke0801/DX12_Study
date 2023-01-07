@@ -7,6 +7,7 @@
 #include "MeshRenderer.h"
 #include "ParticleSystem.h"
 #include "Terrain.h"
+#include "Collider.h"
 
 GameObject::GameObject()
 	:Object(OBJECT_TYPE::GAMEOBJECT)
@@ -126,6 +127,12 @@ shared_ptr<Terrain> GameObject::GetTerrain()
 {
 	shared_ptr<Component> component = GetFixedComponent(COMPONENT_TYPE::TERRAIN);
 	return static_pointer_cast<Terrain>(component);
+}
+
+shared_ptr<Collider> GameObject::GetCollider()
+{
+	shared_ptr<Component> component = GetFixedComponent(COMPONENT_TYPE::COLLIDER);
+	return static_pointer_cast<Collider>(component);
 }
 
 shared_ptr<Component> GameObject::GetFixedComponent(COMPONENT_TYPE type)

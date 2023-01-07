@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Input.h"
+#include "Engine.h"
 
 void Input::Init(HWND hWnd)
 {
@@ -55,4 +56,7 @@ void Input::Update()
 			}
 		}
 	}
+
+	::GetCursorPos(&_mousePos);
+	::ScreenToClient(GEngine->GetWindow().hwnd, &_mousePos);
 }

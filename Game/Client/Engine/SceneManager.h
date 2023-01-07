@@ -19,6 +19,9 @@ public:
 	void LoadScene(wstring sceneName);
 
 public:
+	shared_ptr<class GameObject> Pick(int32 screenX, int32 screenY);
+
+public:
 	void SetLayerName(uint8 index, const wstring& name);
 	const wstring& IndexToLayerName(uint8 index) { return _layerNames[index]; }
 	uint8 LayerNameToIndex(const wstring& name);

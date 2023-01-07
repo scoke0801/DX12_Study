@@ -28,6 +28,7 @@ public:
 	shared_ptr<class Light> GetLight();
 	shared_ptr<class ParticleSystem> GetParticleSystem();
 	shared_ptr<class Terrain> GetTerrain();
+	shared_ptr<class Collider> GetCollider();
 
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
 	
