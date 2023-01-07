@@ -28,14 +28,15 @@ public:
 	void RenderShadow();
 
 public:
-	shared_ptr<Material> GetMaterial() { return _material; }
+	shared_ptr<Material> GetMaterial(uint32 index = 0) { return _materials[index]; }
 
-	void SetMaterial(shared_ptr<Material> material) { _material = material; }
+	void SetMaterial(shared_ptr<Material> material, uint32 index = 0);
 	void SetMesh(shared_ptr<Mesh> mesh) { _mesh = mesh; }
 
 	uint64 GetInstanceID();
 private:
 	shared_ptr<Mesh>		_mesh;
-	shared_ptr<Material>	_material;
+
+	vector<shared_ptr<Material>> _materials; 
 };
 

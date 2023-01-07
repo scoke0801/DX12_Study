@@ -34,6 +34,9 @@
     <Filter Include="Object\Component\Colider">
       <UniqueIdentifier>{5cbaf7bf-e06f-4845-a150-52d11e6f785c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FBX">
+      <UniqueIdentifier>{21f7ef72-dd55-43a3-a3b7-1c767a8c0cd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -146,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="SphereCollider.cpp">
       <Filter>Object\Component\Colider</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +272,12 @@
     <ClInclude Include="SphereCollider.h">
       <Filter>Object\Component\Colider</Filter>
     </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="메모.txt" />
@@ -275,7 +290,6 @@
     <None Include="Resources.inl">
       <Filter>Manager</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Resources\Shader\skybox.fx">

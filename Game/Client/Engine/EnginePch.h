@@ -33,6 +33,8 @@ using namespace Microsoft::WRL;
 #include <DirectXTex.h>
 #include <DirectXTex.inl>
 
+#include <FBX/fbxsdk.h>
+
 // 각종 lib
 #pragma comment(lib, "d3d12")
 #pragma comment(lib, "dxgi")
@@ -43,6 +45,17 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "DirectXTex_Debug.lib")
 #else
 #pragma comment(lib, "DirectXTex_Release.lib")
+#endif
+
+// FBX
+#ifdef _DEBUG
+#pragma comment(lib, "FBX\\debug\\libfbxsdk-md.lib")
+#pragma comment(lib, "FBX\\debug\\libxml2-md.lib")
+#pragma comment(lib, "FBX\\debug\\zlib-md.lib")
+#else
+#pragma comment(lib, "FBX\\release\libfbxsdk-md.lib")
+#pragma comment(lib, "FBX\\release\libxml2-md.lib")
+#pragma comment(lib, "FBX\\release\\zlib-md.lib")
 #endif
 
 // 각종 typedef
@@ -79,6 +92,8 @@ struct Vertex
 	Vec2 uv;
 	Vec3 normal;
 	Vec3 tangent;
+	Vec4 weights;
+	Vec4 indices;
 };
 
 enum class CBV_REGISTER : uint8
@@ -174,5 +189,8 @@ struct TransformParams
 	Matrix matViewInv;
 };
 
+// Utils
+wstring s2ws(const string& s);
+string ws2s(const wstring& s);
 
 // #define __USE_VSYNC__

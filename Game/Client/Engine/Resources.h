@@ -37,6 +37,9 @@ public:
 
 	// 이미 있는 정보에서 텍스쳐를 생성할 때. ex) 스왑체인getbuffer
 	shared_ptr<Texture> CreateTextureFromResource(const wstring& name, ComPtr<ID3D12Resource> tex2D);
+
+	shared_ptr<class MeshData> LoadFBX(const wstring& path);
+
 private:
 	void CreateDefaultShader();
 	void CreateDefaultMaterial();
