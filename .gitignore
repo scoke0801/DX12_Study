@@ -22,3 +22,5 @@
 
 **/.vs
 **/FBX
+**.FileListAbsolute.txt
+**/Client.exe.recipe

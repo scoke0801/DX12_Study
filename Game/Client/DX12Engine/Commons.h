@@ -51,4 +51,38 @@ namespace __DX12Engine
 		int32	height; // 높이
 		bool	windowed; // 창모드 or 전체화면
 	}; 
+
+	template< class T >
+	class Singleton abstract
+	{
+	protected:
+		Singleton() {}
+		virtual ~Singleton() { }
+
+	private:  
+		Singleton(const Singleton& other) = delete;
+		Singleton(Singleton&& other) = delete;
+
+		Singleton& operator=(const Singleton& other) = delete;
+		Singleton& operator=(Singleton&& other) = delete;
+
+	public:
+		static T* Get()
+		{
+			static T instance;
+			return &instance;
+			/*
+			if (!_instance) {
+				_instance = new T();
+				_instance->Init();
+			}
+			return _instance;*/
+		}   
+
+	private:
+		// static T* _instance;
+	}; 
+
+	//template <typename T>
+	//T* SingleTon<T>::_instance = nullptr;
 }

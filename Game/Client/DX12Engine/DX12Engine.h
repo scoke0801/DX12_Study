@@ -1,10 +1,26 @@
 #pragma once
 
-class DX12Engine
+namespace __DX12Engine
 {
+	class DX12Engine
+	{
+	public:
+		void Init(const WindowInfo& info);
+		
+		void PreUpdate();
 
-public:
-	void Init();
-	void Update();
-};
+		void Update(float deltaTime);
+		void LateUpdate(float deltaTime);
 
+	private:
+
+#if defined(__SHOW_FPS__)
+		void ShowFPS(); 
+#endif
+
+		WindowInfo  _info;
+		 
+		WCHAR		_titleText[50];
+		size_t		_titleLength;
+	};
+}

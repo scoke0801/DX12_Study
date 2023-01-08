@@ -29,4 +29,13 @@ using namespace std;
 #include <filesystem>
 namespace fs = std::filesystem;
 
+
+#if defined(_DEBUG)
+
+#define __SHOW_FPS__
+
+#else
+
+#endif
+
 #endif //PCH_H

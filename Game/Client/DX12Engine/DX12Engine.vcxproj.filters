@@ -19,14 +19,47 @@
     <Filter Include="4.Component">
       <UniqueIdentifier>{f76341e8-8a57-461d-ae47-2a1a2dcdf390}</UniqueIdentifier>
     </Filter>
-    <Filter Include="5.Scene">
-      <UniqueIdentifier>{e36c3e2f-84a0-4369-8e9c-f5991bf7bd8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="6.Manager">
-      <UniqueIdentifier>{71200107-92e8-4670-87fc-cf106f27d009}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CommonHeaders\DX12Lib">
       <UniqueIdentifier>{9479eefb-f007-4bed-a0fa-0ab7fb96d10a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device\Device">
+      <UniqueIdentifier>{4de57949-268c-40b8-b803-a4f2e236ece9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device\RootSignature">
+      <UniqueIdentifier>{d6cf1ce0-1d02-45bd-a1a4-ec2f078c0aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device\CommandLine">
+      <UniqueIdentifier>{917e8109-c20a-4b93-b9a8-98e7b153f84d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device\Buffer">
+      <UniqueIdentifier>{3fdfe2d6-db73-44e2-ab13-ff46b9ede8ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Utils\Input">
+      <UniqueIdentifier>{a166b95a-d76f-4234-a82b-60ffd14d2abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Utils\Timer">
+      <UniqueIdentifier>{634a6de8-9498-428b-8cc7-449125d5b14b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6.Scene">
+      <UniqueIdentifier>{e36c3e2f-84a0-4369-8e9c-f5991bf7bd8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6.Scene\Base">
+      <UniqueIdentifier>{c1812f31-1092-4cf6-b5f2-0255bb2fa819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6.Scene\Game">
+      <UniqueIdentifier>{1d2998b4-f0bd-40f0-a1e2-a79b3dbc3617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5.Object">
+      <UniqueIdentifier>{a49df2db-f474-424c-a821-c0f379bc89d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8.Manager">
+      <UniqueIdentifier>{71200107-92e8-4670-87fc-cf106f27d009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8.Manager\ScneManager">
+      <UniqueIdentifier>{b4ec1079-8dd6-4533-91a2-481eaf8349ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7.Popup">
+      <UniqueIdentifier>{4395ca75-6a2a-48e6-a564-e6becb0df852}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +81,24 @@
     <ClInclude Include="d3dx12.h">
       <Filter>CommonHeaders\DX12Lib</Filter>
     </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>1.Device\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>3.Utils\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>3.Utils\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>8.Manager\ScneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>6.Scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>6.Scene\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -58,6 +109,24 @@
     </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
       <Filter>CommonHeaders\DX12Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>1.Device\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>3.Utils\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>3.Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>8.Manager\ScneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>6.Scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>6.Scene\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

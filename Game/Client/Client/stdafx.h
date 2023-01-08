@@ -8,3 +8,5 @@
 #include "Commons.h"
 #include "Defines.h"
 #include "DX12Engine.h"
+
+#include <memory>

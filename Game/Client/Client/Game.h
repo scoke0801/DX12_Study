@@ -3,11 +3,11 @@
 class Game
 {
 public:
-	void Init(__DX12Engine::WindowInfo& info) {}
+	void Init(__DX12Engine::WindowInfo& info);
 
-	void OnUpdate() {}
+	void OnUpdate();
 
 private:
-	DX12Engine* _engine;
+	std::shared_ptr<__DX12Engine::DX12Engine> _engine;
 };
 
