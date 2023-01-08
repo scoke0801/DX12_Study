@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="CommonHeaders">
+      <UniqueIdentifier>{d2532f93-651a-4fcd-bdc7-399252feff5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Main">
+      <UniqueIdentifier>{f406b9bf-fbbb-472a-ad5c-0ea1d3aea706}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device">
+      <UniqueIdentifier>{7cf1c19b-bc88-4721-9768-358494be4597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.Renderer">
+      <UniqueIdentifier>{08d0f5e8-65bf-4199-a3ce-d62050f2f4f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Utils">
+      <UniqueIdentifier>{db082847-050d-42ab-94f6-feb3c42dfe64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4.Component">
+      <UniqueIdentifier>{f76341e8-8a57-461d-ae47-2a1a2dcdf390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5.Scene">
+      <UniqueIdentifier>{e36c3e2f-84a0-4369-8e9c-f5991bf7bd8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6.Manager">
+      <UniqueIdentifier>{71200107-92e8-4670-87fc-cf106f27d009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CommonHeaders\DX12Lib">
+      <UniqueIdentifier>{9479eefb-f007-4bed-a0fa-0ab7fb96d10a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>CommonHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Commons.h">
+      <Filter>CommonHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>CommonHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="DX12Engine.h">
+      <Filter>0.Main</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>CommonHeaders\DX12Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>CommonHeaders\DX12Lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>CommonHeaders</Filter>
+    </ClCompile>
+    <ClCompile Include="DX12Engine.cpp">
+      <Filter>0.Main</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>CommonHeaders\DX12Lib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>CommonHeaders\DX12Lib</Filter>
+    </None>
+  </ItemGroup>
+</Project>
