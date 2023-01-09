@@ -30,6 +30,6 @@ namespace __DX12Engine
 		float	_frameTime = 0.f;
 		uint32	_fps = 0;
 
-		bool	_stopped = false;
+		bool	_stopped = false; 
 	};
 }

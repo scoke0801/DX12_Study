@@ -15,7 +15,7 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "Defines.h"
 
-// 각종 include
+// 각종 include 
 #include <windows.h>
 #include <tchar.h>
 #include <memory>
@@ -28,7 +28,6 @@ using namespace std;
 
 #include <filesystem>
 namespace fs = std::filesystem;
-
 
 #if defined(_DEBUG)
 

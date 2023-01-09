@@ -63,6 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         g_game->OnUpdate();
     }
 
+
     return (int) msg.wParam;
 }
 
