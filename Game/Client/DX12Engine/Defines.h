@@ -12,4 +12,12 @@ namespace __DX12Engine
 #define TIMER Timer::Get()
 #define SCENE_MANAGER SceneManager::Get()
 #define CUR_SCENE SceneManager::Get()->GetCurrentScene()
+
+#define GRAPHICS_ROOT_SIGNATURE DX12Engine::Get()->GetRootSignature(RootSignatureType::GRAPHICS)
+#define COMPUTE_ROOT_SIGNATURE DX12Engine::Get()->GetRootSignature(RootSignatureType::COMPUTE)
+
+#define GRAPHCIS_COMMAND_LIST DX12Engine::Get()->GetCommandQueue(CommandQueueType::GRAPHICS)
+#define COMPUTE_COMMAND_LIST DX12Engine::Get()->GetCommandQueue(CommandQueueType::COMPUTE)
+#define RESOURCES_COMMAND_LIST DX12Engine::Get()->GetCommandQueue(CommandQueueType::RESOURCES)
+
 }

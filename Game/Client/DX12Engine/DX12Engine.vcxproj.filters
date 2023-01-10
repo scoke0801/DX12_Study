@@ -25,9 +25,6 @@
     <Filter Include="1.Device\RootSignature">
       <UniqueIdentifier>{d6cf1ce0-1d02-45bd-a1a4-ec2f078c0aa9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Device\CommandLine">
-      <UniqueIdentifier>{917e8109-c20a-4b93-b9a8-98e7b153f84d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1.Device\Buffer">
       <UniqueIdentifier>{3fdfe2d6-db73-44e2-ab13-ff46b9ede8ab}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,15 @@
     </Filter>
     <Filter Include="9.Resources\Shader">
       <UniqueIdentifier>{a21a6828-8c59-472e-ba48-629b60eaaf14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device\Command">
+      <UniqueIdentifier>{917e8109-c20a-4b93-b9a8-98e7b153f84d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device\SwapChain">
+      <UniqueIdentifier>{900ed605-1e90-451f-82a9-7bb1912fb28a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9.Resources\Material">
+      <UniqueIdentifier>{2915f5ff-41d7-4307-be36-231c479241c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +174,24 @@
     <ClInclude Include="PopupManager.h">
       <Filter>2.Managers\PopupManager</Filter>
     </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>1.Device\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapChain.h">
+      <Filter>1.Device\SwapChain</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h">
+      <Filter>CommonHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>9.Resources\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>9.Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="RootSignature.h">
+      <Filter>1.Device\RootSignature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -232,6 +256,21 @@
     </ClCompile>
     <ClCompile Include="PopupManager.cpp">
       <Filter>2.Managers\PopupManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandQueue.cpp">
+      <Filter>1.Device\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapChain.cpp">
+      <Filter>1.Device\SwapChain</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>9.Resources\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>9.Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="RootSignature.cpp">
+      <Filter>1.Device\RootSignature</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

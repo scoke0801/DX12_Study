@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Animator.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="Defines.h" />
@@ -175,22 +176,28 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PopupBase.h" />
     <ClInclude Include="PopupManager.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RootSignature.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DX12Engine.cpp" />
@@ -198,6 +205,8 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -208,10 +217,12 @@
     <ClCompile Include="PopupBase.cpp" />
     <ClCompile Include="PopupManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />

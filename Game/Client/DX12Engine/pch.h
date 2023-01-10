@@ -14,6 +14,7 @@
 
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "Defines.h"
+#include "types.h"
 
 // 각종 include 
 #include <windows.h>

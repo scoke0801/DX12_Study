@@ -9,7 +9,7 @@ void __DX12Engine::DX12Engine::Init(const WindowInfo& info)
 {
 	_info = info;
 	 
-	 _device = make_shared<Device>();
+	_device = make_shared<Device>();
 	_device->Init();
 
 #if defined(__SHOW_FPS__)
