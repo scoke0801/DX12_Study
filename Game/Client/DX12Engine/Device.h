@@ -8,6 +8,7 @@ namespace __DX12Engine
 		void Init();
 
 		ComPtr<IDXGIFactory> GetDXGI() { return _dxgiFactory; }
+		ComPtr<ID3D12Device> GetDevice() { return _device; }
 
 	private:
 		ComPtr<IDXGIFactory>		_dxgiFactory;	

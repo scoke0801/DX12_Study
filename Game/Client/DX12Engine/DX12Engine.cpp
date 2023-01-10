@@ -4,6 +4,8 @@
 #include "Input.h"
 #include "SceneManager.h" 
 #include "Device.h"
+#include "SwapChain.h"
+#include "CommandQueue.h"
 
 void __DX12Engine::DX12Engine::Init(const WindowInfo& info)
 {
@@ -11,6 +13,15 @@ void __DX12Engine::DX12Engine::Init(const WindowInfo& info)
 	 
 	_device = make_shared<Device>();
 	_device->Init();
+	
+	// Graphics, Compute, Resource
+	_cmdLists[0] = make_shared<GraphicsCommandQueue>();
+	_cmdLists[1] = make_shared<ComputeCommandQueue>();
+	_cmdLists[2] = make_shared<GraphicsCommandQueue>();
+
+	_swapChain = make_shared<SwapChain>();
+	_swapChain->Init(_info, _device->GetDevice(), _device->GetDXGI(), _cmdLists[0]->GetCommandQueue());
+
 
 #if defined(__SHOW_FPS__)
 	_tcscpy_s(_titleText, _T("DX12_MMO("));

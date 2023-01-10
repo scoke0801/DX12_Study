@@ -9,15 +9,18 @@ namespace __DX12Engine
 
 	constexpr uint8 TITLE_LENGTH = 50;
 
+	constexpr uint8	SWAP_CHAIN_BUFFER_COUNT = 2;
+
 #define TIMER Timer::Get()
 #define SCENE_MANAGER SceneManager::Get()
 #define CUR_SCENE SceneManager::Get()->GetCurrentScene()
 
-#define GRAPHICS_ROOT_SIGNATURE DX12Engine::Get()->GetRootSignature(RootSignatureType::GRAPHICS)
-#define COMPUTE_ROOT_SIGNATURE DX12Engine::Get()->GetRootSignature(RootSignatureType::COMPUTE)
+#define ENGINE DX12Engine::Get()
 
-#define GRAPHCIS_COMMAND_LIST DX12Engine::Get()->GetCommandQueue(CommandQueueType::GRAPHICS)
-#define COMPUTE_COMMAND_LIST DX12Engine::Get()->GetCommandQueue(CommandQueueType::COMPUTE)
-#define RESOURCES_COMMAND_LIST DX12Engine::Get()->GetCommandQueue(CommandQueueType::RESOURCES)
+#define GRAPHICS_ROOT_SIGNATURE ENGINE::Get()->GetRootSignature(RootSignatureType::GRAPHICS)
+#define COMPUTE_ROOT_SIGNATURE ENGINE::Get()->GetRootSignature(RootSignatureType::COMPUTE)
 
+#define GRAPHCIS_COMMAND_LIST ENGINE::Get()->GetCommandQueue(CommandQueueType::GRAPHICS)
+#define COMPUTE_COMMAND_LIST ENGINE:Get()->GetCommandQueue(CommandQueueType::COMPUTE)
+#define RESOURCES_COMMAND_LIST ENGINE::Get()->GetCommandQueue(CommandQueueType::RESOURCES)
 }

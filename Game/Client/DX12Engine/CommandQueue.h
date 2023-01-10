@@ -18,6 +18,8 @@ namespace __DX12Engine
 	public:
 		ComPtr<ID3D12CommandQueue>	GetCommandQueue() { return _cmdQueue; }
 		CommandQueueType GetType() { return _type; }
+		
+		ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return _cmdList; }
 
 	protected:
 		shared_ptr<class SwapChain>					_swapChain;
