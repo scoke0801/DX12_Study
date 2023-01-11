@@ -20,7 +20,8 @@ namespace __DX12Engine
 		shared_ptr<class SwapChain> GetSwapChain() { return _swapChain; }
 		shared_ptr<class CommandQueue> GetCommandQueue(CommandQueueType type) { return _cmdLists[static_cast<uint8>(type)]; }
 		shared_ptr<class RootSignature> GetRootSignature(RootSignatureType type) { return _rootSignatures[static_cast<uint8>(type)]; }
-
+		shared_ptr<class DescriptorHeap> GetDescriptorHeap(DescriptorHeapType type) { return _descriptorHeaps[static_cast<uint8>(type)]; }
+	
 	private:
 #ifdef __SHOW_FPS__
 		void ShowFPS();
@@ -30,12 +31,13 @@ namespace __DX12Engine
 
 		WCHAR		_titleText[50];
 		size_t		_titleLength;
-
+		
 	private:
 		shared_ptr<class Device>	_device;
 		shared_ptr<class SwapChain>	_swapChain;
 		array< shared_ptr<class CommandQueue>, COMMAND_LIST_COUNT >		_cmdLists;
 		array< shared_ptr<class RootSignature>, ROOT_SIGNATURE_COUNT >	_rootSignatures;
+		array< shared_ptr<class DescriptorHeap>, DESCRIPTOR_HEAP_COUNT> _descriptorHeaps;
 	};
 }
 

@@ -16,6 +16,7 @@ namespace __DX12Engine
 #define CUR_SCENE SceneManager::Get()->GetCurrentScene()
 
 #define ENGINE DX12Engine::Get()
+#define DEVICE DX12Engine::Get()->GetDevice()->GetDevice()
 
 #define GRAPHICS_ROOT_SIGNATURE ENGINE::Get()->GetRootSignature(RootSignatureType::GRAPHICS)
 #define COMPUTE_ROOT_SIGNATURE ENGINE::Get()->GetRootSignature(RootSignatureType::COMPUTE)

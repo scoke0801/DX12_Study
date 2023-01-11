@@ -2,6 +2,7 @@
 #include "CommandQueue.h"
 #include "DX12Engine.h"
 #include "SwapChain.h"
+#include "DescriptorHeap.h"
 
 __DX12Engine::CommandQueue::~CommandQueue()
 {
@@ -77,14 +78,15 @@ void __DX12Engine::GraphicsCommandQueue::RenderBegin()
 		D3D12_RESOURCE_STATE_PRESENT, // 화면 출력
 		D3D12_RESOURCE_STATE_RENDER_TARGET); // 외주 결과물
 
-	_cmdList->SetGraphicsRootSignature(GRAPHICS_ROOT_SIGNATURE.Get());
+//	_cmdList->SetGraphicsRootSignature(ENGINE->GetDescriptorHeap(DescriptorHeapType::GRAPHICS).get());
 
-	ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::TRANSFORM)->Clear();
-	ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::MATERIAL)->Clear();
+//	ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::TRANSFORM)->Clear();
+//	ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::MATERIAL)->Clear();
 
-	ENGINE->GetGraphicsDescHeap()->Clear();
+	ENGINE->GetDescriptorHeap(DescriptorHeapType::GRAPHICS)->Clear();
+//	ENGINE->GetGraphicsDescHeap()->Clear();
 
-	ID3D12DescriptorHeap* descHeap = ENGINE->GetGraphicsDescHeap()->GetDescriptorHeap().Get();
+	ID3D12DescriptorHeap* descHeap = ENGINE->GetDescriptorHeap(DescriptorHeapType::GRAPHICS)->GetDescriptorHeap().Get();
 	_cmdList->SetDescriptorHeaps(1, &descHeap);
 
 	_cmdList->ResourceBarrier(1, &barrier);

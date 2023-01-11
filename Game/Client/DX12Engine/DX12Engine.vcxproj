@@ -169,6 +169,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="DescriptorHeap.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Commons.h" />
     <ClInclude Include="DX12Engine.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DX12Engine.cpp" />
     <ClCompile Include="GameObject.cpp" />

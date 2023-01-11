@@ -31,6 +31,17 @@ namespace __DX12Engine
 	constexpr uint8 ROOT_SIGNATURE_COUNT = static_cast<uint8>(RootSignatureType::END);
 #pragma endregion
 
+#pragma region EnumDescriptorHeap	
+	enum class DescriptorHeapType : uint8
+	{
+		GRAPHICS,
+		COMPUTE,
+	
+		END
+	};
+	constexpr uint8 DESCRIPTOR_HEAP_COUNT = static_cast<uint8>(DescriptorHeapType::END);
+#pragma endregion
+
 #pragma region PIPELINE_TYPE
 	// 파이프라인을 공통으로 사용하는 타입을 정의할 수 있으면 아래에 추가.
 	enum class PipelineType : uint8

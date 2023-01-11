@@ -100,6 +100,9 @@
     <Filter Include="9.Resources\Material">
       <UniqueIdentifier>{2915f5ff-41d7-4307-be36-231c479241c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1.Device\DescriptorHeap">
+      <UniqueIdentifier>{cf53b74a-57fa-4be5-8f10-06e61523ec37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -192,6 +195,9 @@
     <ClInclude Include="RootSignature.h">
       <Filter>1.Device\RootSignature</Filter>
     </ClInclude>
+    <ClInclude Include="DescriptorHeap.h">
+      <Filter>1.Device\DescriptorHeap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -271,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="RootSignature.cpp">
       <Filter>1.Device\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptorHeap.cpp">
+      <Filter>1.Device\DescriptorHeap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
