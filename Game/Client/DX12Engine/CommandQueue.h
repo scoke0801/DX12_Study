@@ -8,7 +8,7 @@ namespace __DX12Engine
 		virtual ~CommandQueue();
 
 	public:
-		void Init(ComPtr<ID3D12Device> device, CommandQueueType cmdQueueType);
+		void Init(ComPtr<ID3D12Device> device);
 
 		virtual void RenderBegin() = 0;
 		virtual void RenderEnd() = 0;
@@ -17,7 +17,6 @@ namespace __DX12Engine
 
 	public:
 		ComPtr<ID3D12CommandQueue>	GetCommandQueue() { return _cmdQueue; }
-		CommandQueueType GetType() { return _type; }
 		
 		ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return _cmdList; }
 
@@ -33,7 +32,6 @@ namespace __DX12Engine
 		HANDLE										_fenceEvent = INVALID_HANDLE_VALUE;
 
 	private:
-		CommandQueueType							_type;
 	};
 
 	class GraphicsCommandQueue : public CommandQueue

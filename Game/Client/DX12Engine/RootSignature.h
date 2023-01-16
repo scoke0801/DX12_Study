@@ -8,9 +8,6 @@ namespace __DX12Engine
 		virtual void Init() = 0;
 
 	public:
-		virtual RootSignatureType GetRootSignatureType() = 0;
-
-		ComPtr<ID3D12RootSignature>	GetRootSignature() { return _rootSignature; }
 
 	protected:
 		D3D12_STATIC_SAMPLER_DESC			_samplerDesc;
@@ -23,7 +20,6 @@ namespace __DX12Engine
 		virtual void Init() override;
 
 	public:
-		virtual RootSignatureType GetRootSignatureType() override { return RootSignatureType::GRAPHICS; }
 	};
 
 	class ComputeRootSignature : public RootSignature
@@ -32,7 +28,6 @@ namespace __DX12Engine
 		virtual void Init() override;
 
 	public:
-		virtual RootSignatureType GetRootSignatureType() override { return RootSignatureType::COMPUTE; }
 	};
 }
 

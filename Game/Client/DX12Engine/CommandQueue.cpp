@@ -11,9 +11,8 @@ __DX12Engine::CommandQueue::~CommandQueue()
 	}
 }
 
-void __DX12Engine::CommandQueue::Init(ComPtr<ID3D12Device> device, CommandQueueType cmdQueueType)
+void __DX12Engine::CommandQueue::Init(ComPtr<ID3D12Device> device)
 {
-	_type = cmdQueueType;
 
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -22,18 +21,6 @@ void __DX12Engine::CommandQueue::Init(ComPtr<ID3D12Device> device, CommandQueueT
 	device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&_cmdQueue));
 
 	D3D12_COMMAND_LIST_TYPE cmdListType = {};
-	switch (_type)
-	{
-	case CommandQueueType::GRAPHICS:
-	case CommandQueueType::RESOURCE:
-	{
-		cmdListType = D3D12_COMMAND_LIST_TYPE_DIRECT;
-	}break;
-	case CommandQueueType::COMPUTE:
-	{
-		cmdListType = D3D12_COMMAND_LIST_TYPE_COMPUTE;
-	}break;
-	}
 
 	device->CreateCommandAllocator( cmdListType, IID_PPV_ARGS(&_cmdAlloc));
 	device->CreateCommandList(0, cmdListType, _cmdAlloc.Get(), nullptr, IID_PPV_ARGS(&_cmdList));
@@ -64,40 +51,4 @@ void __DX12Engine::CommandQueue::WaitSync()
 		// Wait until the GPU hits current fence event is fired.
 		::WaitForSingleObject(_fenceEvent, INFINITE);
 	}
-}
-
-void __DX12Engine::GraphicsCommandQueue::RenderBegin()
-{
-	_cmdAlloc->Reset();
-	_cmdList->Reset(_cmdAlloc.Get(), nullptr);
-
-	int8 backIndex = _swapChain->GetBackBufferIndex();
-
-	D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		ENGINE->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->GetRTTexture(backIndex)->GetTex2D().Get(),
-		D3D12_RESOURCE_STATE_PRESENT, // 화면 출력
-		D3D12_RESOURCE_STATE_RENDER_TARGET); // 외주 결과물
-
-//	_cmdList->SetGraphicsRootSignature(ENGINE->GetDescriptorHeap(DescriptorHeapType::GRAPHICS).get());
-
-//	ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::TRANSFORM)->Clear();
-//	ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::MATERIAL)->Clear();
-
-	ENGINE->GetDescriptorHeap(DescriptorHeapType::GRAPHICS)->Clear();
-//	ENGINE->GetGraphicsDescHeap()->Clear();
-
-	ID3D12DescriptorHeap* descHeap = ENGINE->GetDescriptorHeap(DescriptorHeapType::GRAPHICS)->GetDescriptorHeap().Get();
-	_cmdList->SetDescriptorHeaps(1, &descHeap);
-
-	_cmdList->ResourceBarrier(1, &barrier);
-}
-
-void __DX12Engine::GraphicsCommandQueue::RenderEnd()
-{
-
-}
-
-void __DX12Engine::ComputeCommandQueue::RenderEnd()
-{
-
 }

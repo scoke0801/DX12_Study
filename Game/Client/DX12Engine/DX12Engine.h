@@ -2,6 +2,12 @@
 
 namespace __DX12Engine
 {
+	class Device;
+	class SwapChain;
+	class CommandQueue;
+	class RootSignature;
+	class DescriptorHeap;
+
 	class DX12Engine : public Singleton<DX12Engine>
 	{
 	private:
@@ -16,12 +22,9 @@ namespace __DX12Engine
 		void LateUpdate(float deltaTime);
 
 	public:
-		shared_ptr<class Device> GetDevice() { return _device; }
-		shared_ptr<class SwapChain> GetSwapChain() { return _swapChain; }
-		shared_ptr<class CommandQueue> GetCommandQueue(CommandQueueType type) { return _cmdLists[static_cast<uint8>(type)]; }
-		shared_ptr<class RootSignature> GetRootSignature(RootSignatureType type) { return _rootSignatures[static_cast<uint8>(type)]; }
-		shared_ptr<class DescriptorHeap> GetDescriptorHeap(DescriptorHeapType type) { return _descriptorHeaps[static_cast<uint8>(type)]; }
-	
+		shared_ptr<Device> GetDevice() { return _device; }
+		shared_ptr<SwapChain> GetSwapChain() { return _swapChain; }
+			
 	private:
 #ifdef __SHOW_FPS__
 		void ShowFPS();
@@ -33,11 +36,8 @@ namespace __DX12Engine
 		size_t		_titleLength;
 		
 	private:
-		shared_ptr<class Device>	_device;
-		shared_ptr<class SwapChain>	_swapChain;
-		array< shared_ptr<class CommandQueue>, COMMAND_LIST_COUNT >		_cmdLists;
-		array< shared_ptr<class RootSignature>, ROOT_SIGNATURE_COUNT >	_rootSignatures;
-		array< shared_ptr<class DescriptorHeap>, DESCRIPTOR_HEAP_COUNT> _descriptorHeaps;
+		shared_ptr<Device>	_device;
+		shared_ptr<SwapChain>	_swapChain;
 	};
 }
 
