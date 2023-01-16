@@ -5,29 +5,20 @@ namespace __DX12Engine
 	class RootSignature
 	{
 	public:
-		virtual void Init() = 0;
+		void Init();
 
-	public:
+		ComPtr<ID3D12RootSignature>	GetGraphicsRootSignature() { return _graphicsRootSignature; }
+		ComPtr<ID3D12RootSignature>	GetComputeRootSignature() { return _computeRootSignature; }
 
-	protected:
-		D3D12_STATIC_SAMPLER_DESC			_samplerDesc;
-		ComPtr<ID3D12RootSignature>			_rootSignature;
+	private:
+		void CreateGraphicsRootSignature();
+		void CreateComputeRootSignature();
+
+	private:
+		D3D12_STATIC_SAMPLER_DESC	_samplerDesc;
+		ComPtr<ID3D12RootSignature>	_graphicsRootSignature;
+		ComPtr<ID3D12RootSignature>	_computeRootSignature;
 	};
 
-	class GraphicsRootSignature : public RootSignature
-	{
-	public:
-		virtual void Init() override;
-
-	public:
-	};
-
-	class ComputeRootSignature : public RootSignature
-	{
-	public:
-		virtual void Init() override;
-
-	public:
-	};
 }
 

@@ -167,6 +167,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DescriptorHeap.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="PopupBase.h" />
     <ClInclude Include="PopupManager.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderTargetGroup.h" />
     <ClInclude Include="RootSignature.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
@@ -200,6 +202,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DX12Engine.cpp" />
@@ -219,6 +222,7 @@
     <ClCompile Include="PopupBase.cpp" />
     <ClCompile Include="PopupManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RenderTargetGroup.cpp" />
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />

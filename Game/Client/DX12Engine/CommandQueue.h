@@ -2,49 +2,64 @@
 
 namespace __DX12Engine
 {
-	class CommandQueue
+	class SwapChain;
+
+	class GraphicsCommandQueue
 	{
 	public:
-		virtual ~CommandQueue();
+		~GraphicsCommandQueue();
 
-	public:
-		void Init(ComPtr<ID3D12Device> device);
-
-		virtual void RenderBegin() = 0;
-		virtual void RenderEnd() = 0;
-
+		void Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain);
 		void WaitSync();
 
-	public:
-		ComPtr<ID3D12CommandQueue>	GetCommandQueue() { return _cmdQueue; }
-		
-		ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return _cmdList; }
+		void RenderBegin();
+		void RenderEnd();
 
-	protected:
-		shared_ptr<class SwapChain>					_swapChain;
+		void FlushResourceCommandQueue();
 
-		ComPtr<ID3D12CommandQueue>					_cmdQueue;
-		ComPtr<ID3D12CommandAllocator>				_cmdAlloc;
-		ComPtr<ID3D12GraphicsCommandList>			_cmdList;		
-		
-		ComPtr<ID3D12Fence>							_fence;
-		uint32										_fenceValue = 0;
-		HANDLE										_fenceEvent = INVALID_HANDLE_VALUE;
+		ComPtr<ID3D12CommandQueue> GetCmdQueue() { return _cmdQueue; }
+		ComPtr<ID3D12GraphicsCommandList> GetGraphicsCmdList() { return	_cmdList; }
+		ComPtr<ID3D12GraphicsCommandList> GetResourceCmdList() { return	_resCmdList; }
 
 	private:
+		ComPtr<ID3D12CommandQueue>			_cmdQueue;
+		ComPtr<ID3D12CommandAllocator>		_cmdAlloc;
+		ComPtr<ID3D12GraphicsCommandList>	_cmdList;
+
+		ComPtr<ID3D12CommandAllocator>		_resCmdAlloc;
+		ComPtr<ID3D12GraphicsCommandList>	_resCmdList;
+
+		ComPtr<ID3D12Fence>					_fence;
+		uint32								_fenceValue = 0;
+		HANDLE								_fenceEvent = INVALID_HANDLE_VALUE;
+
+		shared_ptr<SwapChain>		_swapChain;
 	};
 
-	class GraphicsCommandQueue : public CommandQueue
+	// ************************
+	// ComputeCommandQueue
+	// ************************
+
+	class ComputeCommandQueue
 	{
 	public:
-		virtual void RenderBegin() override;
-		virtual void RenderEnd() override;
-	};
+		~ComputeCommandQueue();
 
-	class ComputeCommandQueue : public CommandQueue
-	{
-		virtual void RenderBegin() sealed;
-		virtual void RenderEnd() override;
+		void Init(ComPtr<ID3D12Device> device);
+		void WaitSync();
+		void FlushComputeCommandQueue();
+
+		ComPtr<ID3D12CommandQueue> GetCmdQueue() { return _cmdQueue; }
+		ComPtr<ID3D12GraphicsCommandList> GetComputeCmdList() { return _cmdList; }
+
+	private:
+		ComPtr<ID3D12CommandQueue>			_cmdQueue;
+		ComPtr<ID3D12CommandAllocator>		_cmdAlloc;
+		ComPtr<ID3D12GraphicsCommandList>	_cmdList;
+
+		ComPtr<ID3D12Fence>					_fence;
+		uint32								_fenceValue = 0;
+		HANDLE								_fenceEvent = INVALID_HANDLE_VALUE;
 	};
 }
 

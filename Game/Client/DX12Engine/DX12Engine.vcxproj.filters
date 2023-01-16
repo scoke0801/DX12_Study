@@ -103,6 +103,12 @@
     <Filter Include="1.Device\DescriptorHeap">
       <UniqueIdentifier>{cf53b74a-57fa-4be5-8f10-06e61523ec37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1.Device\RenderTargetGroup">
+      <UniqueIdentifier>{9e901ed1-8cbc-4981-94bf-8e5b37c0d2bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Device\ConstantBuffer">
+      <UniqueIdentifier>{37d0a3e1-e4af-4632-b5ae-bfdf5eb9b422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -198,6 +204,12 @@
     <ClInclude Include="DescriptorHeap.h">
       <Filter>1.Device\DescriptorHeap</Filter>
     </ClInclude>
+    <ClInclude Include="RenderTargetGroup.h">
+      <Filter>1.Device\RenderTargetGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>1.Device\ConstantBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -280,6 +292,12 @@
     </ClCompile>
     <ClCompile Include="DescriptorHeap.cpp">
       <Filter>1.Device\DescriptorHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTargetGroup.cpp">
+      <Filter>1.Device\RenderTargetGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>1.Device\ConstantBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
