@@ -21,7 +21,7 @@ namespace __DX12Engine
 #define GRAPHICS_ROOT_SIGNATURE ENGINE::Get()->GetRootSignature(RootSignatureType::GRAPHICS)
 #define COMPUTE_ROOT_SIGNATURE ENGINE::Get()->GetRootSignature(RootSignatureType::COMPUTE)
 
-#define GRAPHCIS_COMMAND_LIST ENGINE::Get()->GetCommandQueue(CommandQueueType::GRAPHICS)
-#define COMPUTE_COMMAND_LIST ENGINE:Get()->GetCommandQueue(CommandQueueType::COMPUTE)
-#define RESOURCES_COMMAND_LIST ENGINE::Get()->GetCommandQueue(CommandQueueType::RESOURCES)
+#define GRAPHCIS_COMMAND_LIST ENGINE::Get()->GetCommandQueue(CommandQueueType::GRAPHICS)->GetComandList()
+#define COMPUTE_COMMAND_LIST ENGINE:Get()->GetCommandQueue(CommandQueueType::COMPUTE)->GetCommandList()
+#define RESOURCES_COMMAND_LIST ENGINE::Get()->GetCommandQueue(CommandQueueType::RESOURCES)->GetCommandList()
 }
