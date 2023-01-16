@@ -1,308 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="CommonHeaders">
-      <UniqueIdentifier>{d2532f93-651a-4fcd-bdc7-399252feff5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Main">
-      <UniqueIdentifier>{f406b9bf-fbbb-472a-ad5c-0ea1d3aea706}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device">
-      <UniqueIdentifier>{7cf1c19b-bc88-4721-9768-358494be4597}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Utils">
-      <UniqueIdentifier>{db082847-050d-42ab-94f6-feb3c42dfe64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4.Component">
-      <UniqueIdentifier>{f76341e8-8a57-461d-ae47-2a1a2dcdf390}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CommonHeaders\DX12Lib">
-      <UniqueIdentifier>{9479eefb-f007-4bed-a0fa-0ab7fb96d10a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\Device">
-      <UniqueIdentifier>{4de57949-268c-40b8-b803-a4f2e236ece9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\RootSignature">
-      <UniqueIdentifier>{d6cf1ce0-1d02-45bd-a1a4-ec2f078c0aa9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\Buffer">
-      <UniqueIdentifier>{3fdfe2d6-db73-44e2-ab13-ff46b9ede8ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Utils\Input">
-      <UniqueIdentifier>{a166b95a-d76f-4234-a82b-60ffd14d2abc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Utils\Timer">
-      <UniqueIdentifier>{634a6de8-9498-428b-8cc7-449125d5b14b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4.Component\GameObject">
-      <UniqueIdentifier>{87c970ac-f1ff-41a0-959f-e863815a8036}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4.Component\Transform">
-      <UniqueIdentifier>{0e7b9830-42ce-4d4e-acb5-63359f03994e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4.Component\Renderer">
-      <UniqueIdentifier>{eada205d-a0bb-4734-8423-16a5a7fc3af9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4.Component\Animator">
-      <UniqueIdentifier>{52dba3f8-c5f0-4173-97fe-faf090e1df63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Managers">
-      <UniqueIdentifier>{08d0f5e8-65bf-4199-a3ce-d62050f2f4f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Managers\ScneManager">
-      <UniqueIdentifier>{b4ec1079-8dd6-4533-91a2-481eaf8349ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4.Component\Light">
-      <UniqueIdentifier>{3879086e-5db6-4bfd-b079-ef7352a67256}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4.Component\Camera">
-      <UniqueIdentifier>{0b36c390-7790-4e34-ab16-4c3986e0e6d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Managers\PopupManager">
-      <UniqueIdentifier>{a45829a9-0928-4a24-bf6b-26426e0a3d0e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="6.Object">
-      <UniqueIdentifier>{a49df2db-f474-424c-a821-c0f379bc89d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="5.Scripts">
-      <UniqueIdentifier>{2d432142-e60d-4c95-ba14-c6b8862dff44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="7.Scene">
-      <UniqueIdentifier>{e36c3e2f-84a0-4369-8e9c-f5991bf7bd8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="7.Scene\Base">
-      <UniqueIdentifier>{c1812f31-1092-4cf6-b5f2-0255bb2fa819}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="7.Scene\Game">
-      <UniqueIdentifier>{1d2998b4-f0bd-40f0-a1e2-a79b3dbc3617}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8.Popup">
-      <UniqueIdentifier>{4395ca75-6a2a-48e6-a564-e6becb0df852}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9.Resources">
-      <UniqueIdentifier>{a56a6714-fbd8-46a4-bee4-d4c3f3b9bced}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9.Resources\Texture">
-      <UniqueIdentifier>{7606d0e4-0adf-4e14-8e18-c990ce116ea3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9.Resources\Mesh">
-      <UniqueIdentifier>{16e88eb8-efdb-4cee-95f5-3f3d9b4619ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9.Resources\Shader">
-      <UniqueIdentifier>{a21a6828-8c59-472e-ba48-629b60eaaf14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\Command">
-      <UniqueIdentifier>{917e8109-c20a-4b93-b9a8-98e7b153f84d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\SwapChain">
-      <UniqueIdentifier>{900ed605-1e90-451f-82a9-7bb1912fb28a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9.Resources\Material">
-      <UniqueIdentifier>{2915f5ff-41d7-4307-be36-231c479241c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\DescriptorHeap">
-      <UniqueIdentifier>{cf53b74a-57fa-4be5-8f10-06e61523ec37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\RenderTargetGroup">
-      <UniqueIdentifier>{9e901ed1-8cbc-4981-94bf-8e5b37c0d2bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Device\ConstantBuffer">
-      <UniqueIdentifier>{37d0a3e1-e4af-4632-b5ae-bfdf5eb9b422}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="FBXLoader.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="InstancingBuffer.h" />
+    <ClInclude Include="InstancingManager.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshData.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="MonoBehaviour.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="RenderTargetGroup.h" />
+    <ClInclude Include="Resources.h" />
+    <ClInclude Include="RootSignature.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="StructuredBuffer.h" />
+    <ClInclude Include="SwapChain.h" />
+    <ClInclude Include="TableDescriptorHeap.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TestCameraScript.h" />
+    <ClInclude Include="TestDragon.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="EnginePch.h" />
+    <ClInclude Include="BaseCollider.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CommandQueue.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="d3dx12.h" />
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="Animator.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>CommonHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Commons.h">
-      <Filter>CommonHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Defines.h">
-      <Filter>CommonHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleMath.h">
-      <Filter>CommonHeaders\DX12Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dx12.h">
-      <Filter>CommonHeaders\DX12Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Device.h">
-      <Filter>1.Device\Device</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>3.Utils\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>3.Utils\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>7.Scene\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>7.Scene\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="DX12Engine.h">
-      <Filter>0.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>4.Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>9.Resources\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>9.Resources\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>6.Object</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>4.Component\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>4.Component\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>4.Component\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Animator.h">
-      <Filter>4.Component\Animator</Filter>
-    </ClInclude>
-    <ClInclude Include="PopupBase.h">
-      <Filter>8.Popup</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>4.Component\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>4.Component\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>2.Managers\ScneManager</Filter>
-    </ClInclude>
-    <ClInclude Include="PopupManager.h">
-      <Filter>2.Managers\PopupManager</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandQueue.h">
-      <Filter>1.Device\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="SwapChain.h">
-      <Filter>1.Device\SwapChain</Filter>
-    </ClInclude>
-    <ClInclude Include="types.h">
-      <Filter>CommonHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>9.Resources\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>9.Resources\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="RootSignature.h">
-      <Filter>1.Device\RootSignature</Filter>
-    </ClInclude>
-    <ClInclude Include="DescriptorHeap.h">
-      <Filter>1.Device\DescriptorHeap</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderTargetGroup.h">
-      <Filter>1.Device\RenderTargetGroup</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>1.Device\ConstantBuffer</Filter>
-    </ClInclude>
+    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InstancingBuffer.cpp" />
+    <ClCompile Include="InstancingManager.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshData.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="MonoBehaviour.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="RenderTargetGroup.cpp" />
+    <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="RootSignature.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="StructuredBuffer.cpp" />
+    <ClCompile Include="SwapChain.cpp" />
+    <ClCompile Include="TableDescriptorHeap.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TestCameraScript.cpp" />
+    <ClCompile Include="TestDragon.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="EnginePch.cpp" />
+    <ClCompile Include="FBXLoader.cpp" />
+    <ClCompile Include="BaseCollider.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Animator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <Filter>CommonHeaders</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleMath.cpp">
-      <Filter>CommonHeaders\DX12Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Device.cpp">
-      <Filter>1.Device\Device</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>3.Utils\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>3.Utils\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>7.Scene\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>7.Scene\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DX12Engine.cpp">
-      <Filter>0.Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>4.Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>9.Resources\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>9.Resources\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>6.Object</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>4.Component\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>4.Component\Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>4.Component\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Animator.cpp">
-      <Filter>4.Component\Animator</Filter>
-    </ClCompile>
-    <ClCompile Include="PopupBase.cpp">
-      <Filter>8.Popup</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>4.Component\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>4.Component\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>2.Managers\ScneManager</Filter>
-    </ClCompile>
-    <ClCompile Include="PopupManager.cpp">
-      <Filter>2.Managers\PopupManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandQueue.cpp">
-      <Filter>1.Device\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="SwapChain.cpp">
-      <Filter>1.Device\SwapChain</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>9.Resources\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>9.Resources\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="RootSignature.cpp">
-      <Filter>1.Device\RootSignature</Filter>
-    </ClCompile>
-    <ClCompile Include="DescriptorHeap.cpp">
-      <Filter>1.Device\DescriptorHeap</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderTargetGroup.cpp">
-      <Filter>1.Device\RenderTargetGroup</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffer.cpp">
-      <Filter>1.Device\ConstantBuffer</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SimpleMath.inl">
-      <Filter>CommonHeaders\DX12Lib</Filter>
-    </None>
+    <None Include="SimpleMath.inl" />
   </ItemGroup>
 </Project>

@@ -18,6 +18,101 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="BaseCollider.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CommandQueue.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="d3dx12.h" />
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="EnginePch.h" />
+    <ClInclude Include="FBXLoader.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="InstancingBuffer.h" />
+    <ClInclude Include="InstancingManager.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshData.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="MonoBehaviour.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="RenderTargetGroup.h" />
+    <ClInclude Include="Resources.h" />
+    <ClInclude Include="RootSignature.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="StructuredBuffer.h" />
+    <ClInclude Include="SwapChain.h" />
+    <ClInclude Include="TableDescriptorHeap.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TestCameraScript.h" />
+    <ClInclude Include="TestDragon.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Transform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="BaseCollider.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="EnginePch.cpp" />
+    <ClCompile Include="FBXLoader.cpp" />
+    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InstancingBuffer.cpp" />
+    <ClCompile Include="InstancingManager.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshData.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="MonoBehaviour.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="RenderTargetGroup.cpp" />
+    <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="RootSignature.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="StructuredBuffer.cpp" />
+    <ClCompile Include="SwapChain.cpp" />
+    <ClCompile Include="TableDescriptorHeap.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TestCameraScript.cpp" />
+    <ClCompile Include="TestDragon.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Transform.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -162,80 +257,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Animator.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CommandQueue.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="d3dx12.h" />
-    <ClInclude Include="Defines.h" />
-    <ClInclude Include="DescriptorHeap.h" />
-    <ClInclude Include="Device.h" />
-    <ClInclude Include="Commons.h" />
-    <ClInclude Include="DX12Engine.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="PopupBase.h" />
-    <ClInclude Include="PopupManager.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="RenderTargetGroup.h" />
-    <ClInclude Include="RootSignature.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="SimpleMath.h" />
-    <ClInclude Include="SwapChain.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="types.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Animator.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CommandQueue.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="DescriptorHeap.cpp" />
-    <ClCompile Include="Device.cpp" />
-    <ClCompile Include="DX12Engine.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PopupBase.cpp" />
-    <ClCompile Include="PopupManager.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="RenderTargetGroup.cpp" />
-    <ClCompile Include="RootSignature.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SimpleMath.cpp" />
-    <ClCompile Include="SwapChain.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Transform.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SimpleMath.inl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "CommandQueue.h"
-#include "DX12Engine.h"
 #include "SwapChain.h"
-#include "DescriptorHeap.h"
-#include "RootSignature.h"
-#include "DescriptorHeap.h"
-#include "Texture.h"
+#include "Engine.h"
 
-__DX12Engine::GraphicsCommandQueue::~GraphicsCommandQueue()
+// ************************
+// GraphicsCommandQueue
+// ************************
+
+GraphicsCommandQueue::~GraphicsCommandQueue()
 {
 	::CloseHandle(_fenceEvent);
 }
 
-void __DX12Engine::GraphicsCommandQueue::Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain)
+void GraphicsCommandQueue::Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain)
 {
 	_swapChain = swapChain;
 
@@ -35,7 +35,7 @@ void __DX12Engine::GraphicsCommandQueue::Init(ComPtr<ID3D12Device> device, share
 	_fenceEvent = ::CreateEvent(nullptr, FALSE, FALSE, nullptr);
 }
 
-void __DX12Engine::GraphicsCommandQueue::WaitSync()
+void GraphicsCommandQueue::WaitSync()
 {
 	// Advance the fence value to mark commands up to this fence point.
 	_fenceValue++;
@@ -56,52 +56,119 @@ void __DX12Engine::GraphicsCommandQueue::WaitSync()
 	}
 }
 
-void __DX12Engine::GraphicsCommandQueue::RenderBegin()
+void GraphicsCommandQueue::RenderBegin()
 {
 	_cmdAlloc->Reset();
 	_cmdList->Reset(_cmdAlloc.Get(), nullptr);
 
-	//int8 backIndex = _swapChain->GetBackBufferIndex();
+	int8 backIndex = _swapChain->GetBackBufferIndex();
 
-	//D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-	//	ENGINE->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->GetRTTexture(backIndex)->GetTex2D().Get(),
-	//	D3D12_RESOURCE_STATE_PRESENT, // 화면 출력
-	//	D3D12_RESOURCE_STATE_RENDER_TARGET); // 외주 결과
+	D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->GetRTTexture(backIndex)->GetTex2D().Get(),
+		D3D12_RESOURCE_STATE_PRESENT, // 화면 출력
+		D3D12_RESOURCE_STATE_RENDER_TARGET); // 외주 결과물
 
-	//_cmdList->SetGraphicsRootSignature(GRAPHICS_ROOT_SIGNATURE.Get());
+	_cmdList->SetGraphicsRootSignature(GRAPHICS_ROOT_SIGNATURE.Get());
 
-	//ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::TRANSFORM)->Clear();
-	//ENGINE->GetConstantBuffer(CONSTANT_BUFFER_TYPE::MATERIAL)->Clear();
+	GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::TRANSFORM)->Clear();
+	GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::MATERIAL)->Clear();
 
-	//ENGINE->GetGraphicsDescHeap();
-	//ENGINE->GetGraphicsDescHeap()->Clear();
+	GEngine->GetGraphicsDescHeap()->Clear();
 
-	//ID3D12DescriptorHeap* descHeap = ENGINE->GetGraphicsDescHeap()->GetDescriptorHeap().Get();
-	//_cmdList->SetDescriptorHeaps(1, &descHeap);
+	ID3D12DescriptorHeap* descHeap = GEngine->GetGraphicsDescHeap()->GetDescriptorHeap().Get();
+	_cmdList->SetDescriptorHeaps(1, &descHeap);
 
-	//_cmdList->ResourceBarrier(1, &barrier);
+	_cmdList->ResourceBarrier(1, &barrier);
 }
 
-void __DX12Engine::GraphicsCommandQueue::RenderEnd()
+void GraphicsCommandQueue::RenderEnd()
 {
+	int8 backIndex = _swapChain->GetBackBufferIndex();
+
+	D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->GetRTTexture(backIndex)->GetTex2D().Get(),
+		D3D12_RESOURCE_STATE_RENDER_TARGET, // 외주 결과물
+		D3D12_RESOURCE_STATE_PRESENT); // 화면 출력
+
+	_cmdList->ResourceBarrier(1, &barrier);
+	_cmdList->Close();
+
+	// 커맨드 리스트 수행
+	ID3D12CommandList* cmdListArr[] = { _cmdList.Get() };
+	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
+
+	_swapChain->Present();
+
+	WaitSync();
+
+	_swapChain->SwapIndex();
 }
 
-void __DX12Engine::GraphicsCommandQueue::FlushResourceCommandQueue()
+void GraphicsCommandQueue::FlushResourceCommandQueue()
 {
+	_resCmdList->Close();
+
+	ID3D12CommandList* cmdListArr[] = { _resCmdList.Get() };
+	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
+
+	WaitSync();
+
+	_resCmdAlloc->Reset();
+	_resCmdList->Reset(_resCmdAlloc.Get(), nullptr);
 }
 
-__DX12Engine::ComputeCommandQueue::~ComputeCommandQueue()
+// ************************
+// ComputeCommandQueue
+// ************************
+
+ComputeCommandQueue::~ComputeCommandQueue()
 {
+	::CloseHandle(_fenceEvent);
 }
 
-void __DX12Engine::ComputeCommandQueue::Init(ComPtr<ID3D12Device> device)
+void ComputeCommandQueue::Init(ComPtr<ID3D12Device> device)
 {
+	D3D12_COMMAND_QUEUE_DESC computeQueueDesc = {};
+	computeQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
+	computeQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+	device->CreateCommandQueue(&computeQueueDesc, IID_PPV_ARGS(&_cmdQueue));
+
+	device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_COMPUTE, IID_PPV_ARGS(&_cmdAlloc));
+	device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_COMPUTE, _cmdAlloc.Get(), nullptr, IID_PPV_ARGS(&_cmdList));
+
+	device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&_fence));
+
+	// CreateFence
+	// - CPU와 GPU의 동기화 수단으로 쓰인다
+	device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&_fence));
+	_fenceEvent = ::CreateEvent(nullptr, FALSE, FALSE, nullptr);
 }
 
-void __DX12Engine::ComputeCommandQueue::WaitSync()
+void ComputeCommandQueue::WaitSync()
 {
+	_fenceValue++;
+
+	_cmdQueue->Signal(_fence.Get(), _fenceValue);
+
+	if (_fence->GetCompletedValue() < _fenceValue)
+	{
+		_fence->SetEventOnCompletion(_fenceValue, _fenceEvent);
+		::WaitForSingleObject(_fenceEvent, INFINITE);
+	}
 }
 
-void __DX12Engine::ComputeCommandQueue::FlushComputeCommandQueue()
+void ComputeCommandQueue::FlushComputeCommandQueue()
 {
+	_cmdList->Close();
+
+	ID3D12CommandList* cmdListArr[] = { _cmdList.Get() };
+	auto t = _countof(cmdListArr);
+	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
+
+	WaitSync();
+
+	_cmdAlloc->Reset();
+	_cmdList->Reset(_cmdAlloc.Get(), nullptr);
+
+	COMPUTE_CMD_LIST->SetComputeRootSignature(COMPUTE_ROOT_SIGNATURE.Get());
 }

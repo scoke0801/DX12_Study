@@ -7,35 +7,9 @@
 #ifndef PCH_H
 #define PCH_H
 
-// std::byte 사용하지 않음
-#define _HAS_STD_BYTE 0
-
-#define WIN32_LEAN_AND_MEAN             // 거의 사용되지 않는 내용을 Windows 헤더에서 제외합니다.
-
 // 여기에 미리 컴파일하려는 헤더 추가
-#include "Defines.h"
-#include "types.h"
+#define WIN32_LEAN_AND_MEAN // 거의 사용되지 않는 내용을 Windows 헤더에서 제외합니다.
 
-// 각종 include 
-#include <windows.h>
-#include <tchar.h>
-#include <memory>
-#include <string>
-#include <vector>
-#include <array>
-#include <list>
-#include <map>
-using namespace std;
-
-#include <filesystem>
-namespace fs = std::filesystem;
-
-#if defined(_DEBUG)
-
-#define __SHOW_FPS__
-
-#else
-
-#endif
+#include "EnginePch.h"
 
 #endif //PCH_H

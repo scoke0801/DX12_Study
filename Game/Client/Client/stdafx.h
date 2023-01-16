@@ -2,7 +2,7 @@
 
 #include "framework.h"
 
-#include "Defines.h"
+#include "EnginePch.h"
 
 #pragma comment(lib, "DX12Engine.lib")
 #pragma comment(lib, "ModelLoader.lib")

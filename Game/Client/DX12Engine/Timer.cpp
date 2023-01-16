@@ -1,34 +1,14 @@
 #include "pch.h"
 #include "Timer.h"
 
-__DX12Engine::Timer::Timer()
-{ 
-	::QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&_frequency));
-	::QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&_prevCount));
-
-	Start();
-}
-
-void __DX12Engine::Timer::Start()
-{ 
-	_deltaTime = 0.f;
-
-	_frameCount = 0;
-	_frameTime = 0.f;
-	_fps = 0;	
-
-	_frameCount = 0;
-	_frameTime = 0.f;
-	_fps = 0;
-
-	_stopped = false;
-	::QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&_prevCount));
-}
-
-void __DX12Engine::Timer::Update()
+void Timer::Init()
 {
-	if (_stopped) { return; }
+	::QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&_frequency));
+	::QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&_prevCount)); // CPU Å¬·°
+}
 
+void Timer::Update()
+{
 	uint64 currentCount;
 	::QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&currentCount));
 
@@ -36,7 +16,8 @@ void __DX12Engine::Timer::Update()
 	_prevCount = currentCount;
 
 	_frameCount++;
-	_frameTime += _deltaTime; 
+	_frameTime += _deltaTime;
+
 	if (_frameTime > 1.f)
 	{
 		_fps = static_cast<uint32>(_frameCount / _frameTime);
@@ -45,18 +26,3 @@ void __DX12Engine::Timer::Update()
 		_frameCount = 0;
 	}
 }
-
-void __DX12Engine::Timer::Stop()
-{
-	_stopped = true;
-}
-
-void __DX12Engine::Timer::Restart()
-{ 
-	Start();
-}
-
-void __DX12Engine::Timer::Reset()
-{
-	Start();
-} 
