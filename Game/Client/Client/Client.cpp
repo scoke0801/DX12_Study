@@ -59,8 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
-        
-        g_game->OnUpdate();
+        //g_game->OnUpdate();
     }
 
 

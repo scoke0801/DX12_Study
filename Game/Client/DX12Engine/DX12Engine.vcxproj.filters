@@ -2,92 +2,282 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="FBXLoader.h" />
-    <ClInclude Include="Frustum.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="InstancingBuffer.h" />
-    <ClInclude Include="InstancingManager.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshData.h" />
-    <ClInclude Include="MeshRenderer.h" />
-    <ClInclude Include="MonoBehaviour.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="RenderTargetGroup.h" />
-    <ClInclude Include="Resources.h" />
-    <ClInclude Include="RootSignature.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="SimpleMath.h" />
-    <ClInclude Include="SphereCollider.h" />
-    <ClInclude Include="StructuredBuffer.h" />
-    <ClInclude Include="SwapChain.h" />
-    <ClInclude Include="TableDescriptorHeap.h" />
-    <ClInclude Include="Terrain.h" />
-    <ClInclude Include="TestCameraScript.h" />
-    <ClInclude Include="TestDragon.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="EnginePch.h" />
-    <ClInclude Include="BaseCollider.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CommandQueue.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="d3dx12.h" />
-    <ClInclude Include="Device.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Animator.h" />
+    <ClInclude Include="Animator.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>Commons</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="EnginePch.h">
+      <Filter>Commons</Filter>
+    </ClInclude>
+    <ClInclude Include="RootSignature.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuredBuffer.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapChain.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TableDescriptorHeap.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCollider.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Commons</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Commons</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancingManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCameraScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="TestDragon.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancingBuffer.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTargetGroup.h">
+      <Filter>0.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Frustum.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="InstancingBuffer.cpp" />
-    <ClCompile Include="InstancingManager.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshData.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
-    <ClCompile Include="MonoBehaviour.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="RenderTargetGroup.cpp" />
-    <ClCompile Include="Resources.cpp" />
-    <ClCompile Include="RootSignature.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SimpleMath.cpp" />
-    <ClCompile Include="SphereCollider.cpp" />
-    <ClCompile Include="StructuredBuffer.cpp" />
-    <ClCompile Include="SwapChain.cpp" />
-    <ClCompile Include="TableDescriptorHeap.cpp" />
-    <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TestCameraScript.cpp" />
-    <ClCompile Include="TestDragon.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="EnginePch.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
-    <ClCompile Include="BaseCollider.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CommandQueue.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="Device.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="Animator.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandQueue.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="EnginePch.cpp">
+      <Filter>Commons</Filter>
+    </ClCompile>
+    <ClCompile Include="RootSignature.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="StructuredBuffer.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapChain.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TableDescriptorHeap.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCollider.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>Commons</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Commons</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoBehaviour.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancingManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCameraScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="TestDragon.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancingBuffer.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTargetGroup.cpp">
+      <Filter>0.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SimpleMath.inl" />
+    <Filter Include="0.Device">
+      <UniqueIdentifier>{813a9e3b-055f-41a1-8adb-eced1dbc3360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commons">
+      <UniqueIdentifier>{b17d047d-56d3-4e6d-81f8-f75d49950c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{8b876e5d-55db-49b6-9985-7b6efb61b945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{06dcc289-6cbc-4bbd-893e-9043c733c0c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{251cee53-8db0-4a68-b727-50bf768a6f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{e5bc79d5-870f-40ed-875f-aba445aca756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{33d5b5d8-2e70-4646-a0ef-03e6927d736b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{2ca7f972-10c8-45a3-873a-c46505310333}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>Commons</Filter>
+    </None>
   </ItemGroup>
 </Project>
