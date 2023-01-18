@@ -162,7 +162,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    g_WindowInfo.hwnd = hWnd;
    g_WindowInfo.width = width;
    g_WindowInfo.height = height;
-   g_WindowInfo.windowed = false;
+   g_WindowInfo.windowed = true;
 
    g_game = new Game();
    g_game->Init(g_WindowInfo);
