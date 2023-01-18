@@ -13,7 +13,8 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 Game* g_game;
-__DX12Engine::WindowInfo g_WindowInfo;
+
+WindowInfo g_WindowInfo;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -59,7 +60,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
-        //g_game->OnUpdate();
+        g_game->PreUpdate();
     }
 
 
@@ -120,8 +121,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    // 클라이언트의 크기를 설정합니다.
    rtClient.left = rtClient.top = 0;
-   rtClient.right = static_cast<LONG>(__DX12Engine::CLIENT_WIDTH);
-   rtClient.bottom = static_cast<LONG>(__DX12Engine::CLIENT_HEIGHT);
+   rtClient.right = static_cast<LONG>(CLIENT_WIDTH);
+   rtClient.bottom = static_cast<LONG>(CLIENT_HEIGHT);
 
    // 윈도우 사이즈에서 추가되는 크기들 (캡션, 외각선 등)을 보정합니다.
    AdjustWindowRect(&rtClient, dwStyle, FALSE);
